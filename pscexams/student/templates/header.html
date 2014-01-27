@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PSC Exams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.css" media="screen">
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+          <div class="navbar navbar-inverse">
+            <div class="navbar-header">
+              <strong><a class="navbar-brand" href="#">PSC Exams</a></strong>
+            </div>
+            <div class="navbar-collapse collapse navbar-inverse-collapse">
+              <ul class="nav navbar-nav navbar-center">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Smartindia</a></li>
+                <li><a href="#">Kerala PSC</a></li>
+                <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exams <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                      </ul>
+                    </li>
+              </ul>
+              <nav>
+                <ul>
+                  <li id="signup"><a href="">Sign up FREE</a>
+                  </li>
+                  <li id="login">
+                    <a id="login-trigger" href="#" class="btn btn-warning">Log in <span>▼</span></a>
+                    <div id="login-content">
+                      <form action="/login/" method="post"> {% csrf_token %}
+                        <fieldset id="inputs">
+                          <input id="username" type="text" name="username" placeholder="Username" required>   
+                          <input id="password" type="password" name="password" placeholder="Password" required>
+                        </fieldset>
+                        <fieldset>
+                          <input type="submit" id="submit" value="Log in">
+                          <label><input type="checkbox" checked="checked"> Keep me signed in</label>
+                        </fieldset>
+                      </form>
+                    </div>                     
+                  </li>
+                  
+                </ul>
+              </nav>
+
+
+              
+            </div><!-- /.nav-collapse -->
+            <img src="static/images/banner.png">
+          </div>
+          <hr>
+        </div>

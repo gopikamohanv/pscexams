@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PSC Exams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+          <div class="navbar navbar-inverse">
+            <div class="navbar-header">
+              <strong><a class="navbar-brand" href="#">PSC Exams</a></strong>
+            </div>
+            <div class="navbar-collapse collapse navbar-inverse-collapse">
+              <ul class="nav navbar-nav navbar-center">
+                <li><a href="/home/">Home</a></li>
+                <li><a href="/tutor/questions/add/">New Questions</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a> Welcome &nbsp; {{user.name}}</a></li>
+                <li><a href="#"> My Account</a></li>
+                <li><a href="/logout/"> Sign Out</a></li>
+              </ul>
+            </div>
+          </div>

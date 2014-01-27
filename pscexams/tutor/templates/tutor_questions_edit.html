@@ -1,0 +1,253 @@
+{% include "tutor_header.html" %}
+    
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jqueryui/ui-lightness/jquery-ui-1.7.2.custom.css" />
+    <script type="text/javascript" src="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/scripts/jHtmlArea-0.7.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jHtmlArea.css" />
+
+    <script>
+        $(document).ready(function()
+        {
+             $('#state').val('{{question_obj.topic.state.id}}');
+             $('#exam').val('{{question_obj.topic.exam.id}}');
+             $('#subjects').val('{{question_obj.topic.subject.id}}');
+             $('#topic').val('{{question_obj.topic.id}}');
+             $('#test_type').val('{{question_obj.mode}}');
+             
+             $(".jHtmlArea").htmlarea();
+        });
+    </script>
+    <script type="text/javascript">
+        function state_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/state/ajax/exam/',
+                cache   : false,
+                data    : "state=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#exam").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+        function exam_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/exam/ajax/subject/',
+                cache   : false,
+                data    : "exam=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#subject").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+        function subject_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/subject/ajax/topic/',
+                cache   : false,
+                data    : "subject=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#topic").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+    function formSubmit()
+    {
+        form_error = false;
+        if (document.getElementById('syllabus').selectedIndex == 0)
+        {
+            form_error = true;
+            alert('Please select an appropriate Syllabus for your question');
+            return false;
+        }
+        if (document.getElementById('grades').selectedIndex == 0)
+        {
+            form_error = true;
+            alert('Please select an appropriate Grade for your question');
+            return false;
+        }
+        if (document.getElementById('subjects').selectedIndex == 0)
+        {
+            form_error = true;
+            alert('Please select an appropriate Subject for your question');
+            return false;
+        }
+        if (document.getElementById('chapters').selectedIndex == 0)
+        {
+            form_error = true;
+            alert('Please select an appropriate Chapter for your question');
+            return false;
+        }
+         if (document.getElementById('difficulty').selectedIndex == 0)
+        {
+            form_error = true;
+            alert('Please select an appropriate Difficulty level for your question');
+            return false;
+        }
+        $("#question").val($('#question').htmlarea('toHtmlString'));
+        $("#option1").val($('#option1').htmlarea('toHtmlString'));
+        $("#option2").val($('#option2').htmlarea('toHtmlString'));
+        $("#option3").val($('#option3').htmlarea('toHtmlString'));
+        $("#option4").val($('#option4').htmlarea('toHtmlString'));
+        $("#explanation").val($('#explanation').htmlarea('toHtmlString'));
+        document.forms["question_form"].submit();
+    }
+    </script>
+    <script language="javascript" type="text/javascript">
+    <!--
+    function popitup(url) {
+        newwindow=window.open(url,'name','height=400,width=480');
+        if (window.focus) {newwindow.focus()}
+        return false;
+    }
+    // -->
+    </script>
+    
+      <h2>Edit Question / <a href="/tutor/questions/image/" onclick="return popitup('/tutor/questions/image/')">Upload image</a>
+      </h2>
+
+      {% if form_error %}
+        <div class="alert alert-dismissable alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>{{error_text}}</strong> 
+        </div>
+      {% endif %}
+     
+      {% if question_saved %}
+        <div class="alert alert-dismissable alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Your question was saved successfully.</strong> 
+        </div>
+      {% endif %}
+
+        <form id="question_form" method="POST" action="/tutor/questions/edit/" onSubmit="return updateDivs(this);"> {% csrf_token %}
+            <div style="display:none;"><input type="hidden" name="question_id" value="{{question_obj.id}}"></div>
+            <table>
+                <tr>
+                    <td id="td_state">
+                    <select name="state" id="state" onChange="state_changed(this.value)" style="width:175px;">
+                        <option value="0">Select State</option>
+                        {% for state in states %}
+                            <option value="{{state.id}}">{{state.state}}</option> 
+                        {% endfor %}
+                    </select>
+                    </td>
+                    <td id="td_exam">
+                    <select name="exam" id="exam" onChange="exam_changed(this.value)" style="width:175px;">
+                        <option value="0">Select Exams</option>
+                        {% for exam in exams %}
+                            <option value="{{exam.id}}">{{exam.exam}}</option> 
+                        {% endfor %}
+                    </select>
+                    </td>
+                    <td id="td_subject">
+                    <select name="subject" id="subject" onChange="subject_changed(this.value)" style="width:175px;">
+                        <option value="0">Select Subject</option>
+                        {% for subject in subjects %}
+                            <option value="{{subject.id}}">{{subject.subject}}</option> 
+                        {% endfor %}
+                    </select>
+                    </td>
+                    <td id="td_topic">
+                    <select name="topic" id="topic" style="width:175px;">
+                        <option value="0">Select Topic</option>
+                        {% for topic in topics %}
+                            <option value="{{topic.id}}">{{topic.topic}}</option> 
+                        {% endfor %}
+                    </select>
+                    </td>
+                    <td>
+                    <select name="test_type" id="test_type" style="width:150px;">
+                        <option value="0">Select Test</option>
+                        <option value="1">Practice</option>
+                        <option value="2">Model Exam</option>
+                    </select>                    
+                    </td>
+                </tr>
+            </table>
+            {% autoescape off %}
+                <tr>
+                    <td>
+                        <h2>Question:</h2>
+                        <textarea name="question" id="question" class="jHtmlArea" rows="10" cols="96">{{question_obj.question}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>Option 1:</h2>
+                        <textarea name="option1" id="option1" class="jHtmlArea" rows="10" cols="96">{{question_obj.option1}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>Option 2:</h2>
+                        <textarea name="option2" id="option2" class="jHtmlArea" rows="10" cols="96">{{question_obj.option2}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>Option 3:</h2>
+                        <textarea name="option3" id="option3" class="jHtmlArea" rows="10" cols="96">{{question_obj.option3}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>Option 4:</h2>
+                        <textarea name="option4" id="option4" class="jHtmlArea" rows="10" cols="96">{{question_obj.option4}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2>Explanation:</h2>
+                        <textarea name="explanation" id="explanation" class="jHtmlArea" rows="10" cols="96">{{question_obj.explanation}}</textarea>
+                    </td>
+                </tr>
+            {% endautoescape %}
+               <tr>
+                    <td><br><br>
+                        <p><b>
+                        Select Answer: 
+                        <label for="answer_in_option1">Option 1</label> <input type="radio" id="answer_in_option1" name="answer_in_option" value="1" />
+                        <label for="answer_in_option2">Option 2</label> <input type="radio" id="answer_in_option2" name="answer_in_option" value="2" />
+                        <label for="answer_in_option3">Option 3</label> <input type="radio" id="answer_in_option3" name="answer_in_option" value="3" />
+                        <label for="answer_in_option4">Option 4</label> <input type="radio" id="answer_in_option4" name="answer_in_option" value="4" />
+                        </b></p>
+                    </td>
+                </tr>
+            
+            <tr><td><br>
+            <input type="button" class="btn btn-success" value="Update Question" onClick="formSubmit();" />
+            </td></tr>
+            </table>
+        </form>
+        <p>Created on {{question_obj.created_date}}. Last updated on {{question_obj.last_modified}}</p>
+        <div class="clr"></div>
+        <div class="bg"></div>
+    </div>
+    <div class="clr"></div>
+</div>
+</body>
+</html>

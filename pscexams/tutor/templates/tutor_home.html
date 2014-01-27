@@ -1,0 +1,12 @@
+{% include "tutor_header.html" %}
+
+<ol>
+	{% for question in questions %}
+		<li><a href="/tutor/questions/edit/?id={{question.id}}">{{question.question}}</a></li>
+		<br>
+	{%endfor%}
+</ol> 
+
+{% include "tutor_footer.html" %}
+
+

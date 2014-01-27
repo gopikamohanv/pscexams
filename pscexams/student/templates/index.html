@@ -1,0 +1,98 @@
+{% include "header.html" %}
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="col-lg-8">
+              <p><strong><h4 class="text-info">Kerala P.S.C Last Grade Servant</h4></strong></p>
+              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
+              <hr>
+
+              <p><strong><h4 class="text-info">Previous Year Question</h4></strong></p>
+              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
+              <hr>
+
+              <p><strong><h4 class="text-info">Model Exams</h4></strong></p>
+              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
+              <hr>
+
+              <p><strong><h4 class="text-info">Tips and Tricks</h4></strong></p>
+              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
+              <hr>
+
+            </div>
+
+            {%if no_user%}
+              <div class="col-lg-4">
+                <div class="alert alert-dismissable alert-danger">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>No Such User</strong>
+                </div>
+              </div>
+            {%endif%}
+
+            {%if inactive%}
+              <div class="col-lg-4">
+                <div class="alert alert-dismissable alert-danger">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>Inactive User</strong>
+                </div>
+              </div>
+            {%endif%}
+
+
+            <div class="col-lg-4">
+              <div class="well">
+              <form class="bs-example form-horizontal">
+                <fieldset>
+                  <legend>Free Registration</legend>
+                  <div class="form-group">
+                    <label for="name" class="col-lg-2 control-label">Name</label>
+                    <div class="col-lg-10">
+                      <input type="text" class="form-control" id="name" placeholder="Name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="username" class="col-lg-2 control-label">Username</label>
+                    <div class="col-lg-10">
+                      <input type="text" class="form-control" id="username" placeholder="Username">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="col-lg-2 control-label">Password</label>
+                    <div class="col-lg-10">
+                      <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="mobile" class="col-lg-2 control-label">Mobile</label>
+                    <div class="col-lg-10">
+                      <input type="text" class="form-control" id="mobile" placeholder="Mobile">
+                    </div>
+                  </div>
+                   <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                      <button class="btn btn-default">Cancel</button> 
+                      <button type="submit" class="btn btn-primary">Submit</button> 
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+
+            <div class="well">
+              <fieldset>
+                  <legend>Exams</legend>
+                  <a href="#"> Secretariate Assistant</a><br><hr>
+                  <a href="#"> Deputy Collector</a><br><hr>
+                  <a href="#"> Last grade Cleck</a><br><hr>
+                  <a href="#"> Office Assistant</a><br><hr>
+                  <a href="#"> Village Extension Officer</a><br><hr>
+                  <a href="#"> Bank P O</a><br>
+              </fieldset>
+              
+            </div>
+          </div>
+        </div>
+     
+    </div>
+
+{% include "footer.html" %}

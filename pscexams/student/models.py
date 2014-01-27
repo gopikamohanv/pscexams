@@ -8,11 +8,8 @@ from pscexams.admin.models import *
 class UserProfile(models.Model):
 	user = models.ForeignKey(User)
 	user_type= models.CharField(max_length=10)
-	state =  models.ForeignKey(State)
-	name = models.CharField(max_length=30)
-	email = models.CharField(max_length=30)
-	mobile_no = models.CharField(max_length=10)
-	address = models.CharField(max_length=30, null=True)
-	date = models.DateField()
+	state =  models.ForeignKey(State, null=True, blank=True)
+	mobile_no = models.CharField(max_length=10, null=True, blank=True)
+	address = models.CharField(max_length=30, null=True, blank=True)
 	def __unicode__(self):
 		return self.user_type

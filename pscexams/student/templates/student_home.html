@@ -1,3 +1,23 @@
-{% include "header.html" %}
+{% extends 'base.html' %}
 
-{% include "footer.html" %}
+{% block content %}
+	<div class="col-md-12">
+		<div class="jumbotron">
+			Welcome {{user.user.first_name}}
+		</div>
+		{% for exam in exams %}
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h4>{{exam}}</h4></div>
+				  <div class="panel-body">
+				  	<div class="col-md-10 col-md-offset-1">
+				    	<a href="/student/exam/{{exam.pk}}/" class="thumbnail">
+			      		<img src="https://s3.amazonaws.com/cdn.smartindia/images/competitive/kpsc.png" alt="...">
+			    		</a>
+				  	</div>
+				  </div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>	
+{% endblock %}

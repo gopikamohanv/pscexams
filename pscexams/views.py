@@ -8,8 +8,10 @@ from django.contrib import auth
 from django.contrib.auth import logout as auth_logout
 
 from pscexams.user_type import UserType
-from pscexams.student.models import *
-from pscexams.admin.models import *
+from pscexams.student.models import UserProfile
+from pscexams.admin.models import State, Question
+from pscexams.forms import FreeRegistration
+
 
 # Index page for pscexams
 #/
@@ -40,7 +42,15 @@ def keralapsc(request):
 #UserLogin
 #/login/
 def user_login(request):
+	response.update({'states':State.objects.all()})
+	return render_to_response('index.html', response)
+
+#UserLogin
+def login_view(request):
 	response={}
+
+	if request.method == 'GET':
+		return HttpResponseRedirect('/')
 	
 	if 'username' in request.POST and request.POST['username']:
 		username = request.POST['username']
@@ -65,6 +75,9 @@ def user_login(request):
 		response.update({'inactive':inactive_error})
 		return render_to_response('index.html',response)
 
+def logout_view(request):
+		auth.logout(request)
+		return HttpResponseRedirect('/')
 
 # For redirecting according to usertype
 #/home/
@@ -87,6 +100,8 @@ def home(request):
         response.update({'questions':questions})
         return render_to_response('tutor_home.html',response)
 
+    if user_profile.user_type == UserType.types['Student']:
+    	return HttpResponseRedirect('/student/dashboard/')
 
 
 
@@ -205,9 +220,53 @@ def subject_ajax_topic(request):
 	else:
 		return HttpResponse('Error# No State Specified')
 
+	if user_profile.user_type == UserType.types['Student']:
+		return HttpResponseRedirect('/student/dashboard/')
+
+# Free Registration
+def register(request):
+	response = {}
+	response.update({'states':State.objects.all()})
+
+	if request.method == 'GET':
+		return HttpResponseRedirect('/')
+
+	form = FreeRegistration(request.POST)
+	if form.is_valid():
+
+		response.update({'form':form})
+		try:
+			state = State.objects.get(pk=form.cleaned_data['state'])
+		except:
+			response.update({'error':True})
+			return render_to_response('index.html', response)
+
+		try:
+			user = User.objects.get(username=form.cleaned_data['username'])
+			response.update({'user_error':True})
+			return render_to_response('index.html', response)
+		except:
+			user = User.objects.create(username=form.cleaned_data['username'], first_name=form.cleaned_data['name'])
+			user.set_password(form.cleaned_data['password'])
+			user.save()
+
+		userprofile = UserProfile.objects.create(user=user, mobile_no=form.cleaned_data['mobile'], state=state, user_type=UserType.types['Student'])
+		try:
+			userprofile.save()
+		except:
+			user.delete()
+			response.update({'error':True})
+			return render_to_response('index.html', response)
+
+		userlogin = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+		auth.login(request,userlogin)
+		return HttpResponseRedirect('/home/')
+
 
 # For logout
 #/logout/
 def user_logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('/')
+    response.update({'form':form})
+    return render_to_response('index.html', response)
+

@@ -34,15 +34,13 @@ template {
 }
 
 html {
-  font-family: 'Roboto Slab', serif;
+  font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  font-family: 'Roboto Slab', serif;
-
 }
 
 a {
@@ -151,9 +149,8 @@ input,
 select,
 textarea {
   margin: 0;
-  font-family: 'Roboto Slab', serif;
+  font-family: inherit;
   font-size: 100%;
-  font-weight: bold;
 }
 
 button,
@@ -298,12 +295,11 @@ table {
 
 html {
   font-size: 62.5%;
-  font-family: 'Roboto Slab', serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
-  font-family: 'Roboto Slab', serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1.428571429;
   color: #222222;
@@ -397,7 +393,7 @@ h6,
 .h4,
 .h5,
 .h6 {
- font-family: 'Roboto Slab', serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
   line-height: 1.1;
   color: inherit;
@@ -2418,7 +2414,7 @@ fieldset[disabled] .btn {
 .btn-default {
   color: #333333;
   background-color: #e7e7e7;
-  border-color: #dadada;
+  border-color: #dadada;  
 }
 
 .btn-default:hover,
@@ -2511,8 +2507,8 @@ fieldset[disabled] .btn-primary.active {
   color: #ffffff;
   background-color: #e99002;
   border-color: #d08002;
-  width: 100px;
-  height: 100px;
+  height: 50px;
+
 }
 
 .btn-warning:hover,
@@ -2605,6 +2601,7 @@ fieldset[disabled] .btn-danger.active {
   color: #ffffff;
   background-color: #43ac6a;
   border-color: #3c9a5f;
+  height: 50px;
 }
 
 .btn-success:hover,
@@ -7722,7 +7719,6 @@ label,
 .radio {
   font-size: 12px;
   font-weight: normal;
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .form-group .btn,
@@ -7943,69 +7939,33 @@ nav ul {
   list-style: none;
   position: relative;
   float: right;
-  background: #eee;
-  border-bottom: 1px solid #fff;
+  background:transparent;
+  height: 50px;
+  border-bottom: 1px transparent;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;    
 }
-
 nav li {
   float: left;          
 }
-
-nav #login {
-  border-right: 1px solid #ddd;
-  -moz-box-shadow: 1px 0 0 #fff;
-  -webkit-box-shadow: 1px 0 0 #fff;
-  box-shadow: 1px 0 0 #fff;  
-}
-
-nav #login-trigger,
-nav #signup a {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  height: 25px;
-  line-height: 25px;
-  font-weight: bold;
-  padding: 0 8px;
-  text-decoration: none;
-  color: #444;
-  text-shadow: 0 1px 0 #fff; 
-}
-
 nav #signup a {
   -moz-border-radius: 0 3px 3px 0;
   -webkit-border-radius: 0 3px 3px 0;
   border-radius: 0 3px 3px 0;
 }
-
 nav #login-trigger {
   -moz-border-radius: 3px 0 0 3px;
   -webkit-border-radius: 3px 0 0 3px;
   border-radius: 3px 0 0 3px;
 }
-
-nav #login-trigger:hover,
-nav #login .active,
-nav #signup a:hover {
-  background: #fff;
-}
-
 nav #login-content {
   display: none;
   position: absolute;
-  top: 24px;
+  top: 50px;
   right: 0;
   z-index: 999;    
-  background: #fff;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
-  background-image: -webkit-linear-gradient(top, #fff, #eee);
-  background-image: -moz-linear-gradient(top, #fff, #eee);
-  background-image: -ms-linear-gradient(top, #fff, #eee);
-  background-image: -o-linear-gradient(top, #fff, #eee);
-  background-image: linear-gradient(top, #fff, #eee);  
+  background: transparent;  
   padding: 15px;
   -moz-box-shadow: 0 2px 2px -1px rgba(0,0,0,.9);
   -webkit-box-shadow: 0 2px 2px -1px rgba(0,0,0,.9);
@@ -8017,7 +7977,7 @@ nav #login-content {
 
 nav li #login-content {
   right: 0;
-  width: 250px;  
+  width: 300px;  
 }
 
 /*--------------------*/
@@ -8038,7 +7998,7 @@ nav li #login-content {
 
 #inputs input:focus {
   background-color: #fff;
-  border-color: #e8c291;
+  border-color: #F47106;
   outline: none;
   -moz-box-shadow: 0 0 0 1px #e8c291 inset;
   -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
@@ -8052,13 +8012,13 @@ nav li #login-content {
 }
 
 #login #submit {    
-  background-color: #d14545;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#e97171), to(#d14545));
-  background-image: -webkit-linear-gradient(top, #e97171, #d14545);
-  background-image: -moz-linear-gradient(top, #e97171, #d14545);
-  background-image: -ms-linear-gradient(top, #e97171, #d14545);
-  background-image: -o-linear-gradient(top, #e97171, #d14545);
-  background-image: linear-gradient(top, #e97171, #d14545);
+  background-color: #4d8720;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#4d8720), to(#2a520c));
+  background-image: -webkit-linear-gradient(top, #4d8720, #2a520c);
+  background-image: -moz-linear-gradient(top, #4d8720, #2a520c);
+  background-image: -ms-linear-gradient(top, #4d8720, #2a520c);
+  background-image: -o-linear-gradient(top, #4d8720, #2a520c);
+  background-image: linear-gradient(top, #4d8720, #2a520c);
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -8066,7 +8026,7 @@ nav li #login-content {
   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
-  border: 1px solid #7e1515;
+  border: 1px solid #2a520c;
   float: left;
   height: 30px;
   padding: 0;
@@ -8078,13 +8038,13 @@ nav li #login-content {
 
 #login #submit:hover,
 #login #submit:focus {    
-  background-color: #e97171;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#d14545), to(#e97171));
-  background-image: -webkit-linear-gradient(top, #d14545, #e97171);
-  background-image: -moz-linear-gradient(top, #d14545, #e97171);
-  background-image: -ms-linear-gradient(top, #d14545, #e97171);
-  background-image: -o-linear-gradient(top, #d14545, #e97171);
-  background-image: linear-gradient(top, #d14545, #e97171);
+  background-color: #a1d975;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#a1d975), to(#92bd71));
+  background-image: -webkit-linear-gradient(top, #a1d975, #92bd71);
+  background-image: -moz-linear-gradient(top, #a1d975, #92bd71);
+  background-image: -ms-linear-gradient(top, #a1d975, #92bd71);
+  background-image: -o-linear-gradient(top, #a1d975, #92bd71);
+  background-image: linear-gradient(top, #a1d975, #92bd71);
 } 
 
 #login #submit:active {   
@@ -8109,3 +8069,122 @@ nav li #login-content {
   right: 2px;
 }
 
+/*--------registration----*/
+.fmwarning{
+        color:red;
+        font-size: 14px;
+    }
+.form-required{
+  color: red;
+}
+#regform{
+  width: 400px;
+  margin-left: 375px;
+}
+#btn{
+  border: solid 1px #CCC;     
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 5px;
+  box-shadow: 0 1px 3px #111;
+  -moz-box-shadow: 3px 3px 1px #999;
+  -webkit-box-shadow: 3px 3px 1px #999; 
+}
+.CSSTableGenerator {
+  margin:0px;padding:0px;
+  width:100%;
+  box-shadow: 10px 10px 5px #888888;
+  border:1px solid #000000;
+  margin-top: 100px;
+  
+  -moz-border-radius-bottomleft:0px;
+  -webkit-border-bottom-left-radius:0px;
+  border-bottom-left-radius:0px;
+  
+  -moz-border-radius-bottomright:0px;
+  -webkit-border-bottom-right-radius:0px;
+  border-bottom-right-radius:0px;
+  
+  -moz-border-radius-topright:0px;
+  -webkit-border-top-right-radius:0px;
+  border-top-right-radius:0px;
+  
+  -moz-border-radius-topleft:0px;
+  -webkit-border-top-left-radius:0px;
+  border-top-left-radius:0px;
+}.CSSTableGenerator table{
+    border-collapse: collapse;
+        border-spacing: 0;
+  width:100%;
+  height:100%;
+  margin:0px;padding:0px;
+}.CSSTableGenerator tr:last-child td:last-child {
+  -moz-border-radius-bottomright:0px;
+  -webkit-border-bottom-right-radius:0px;
+  border-bottom-right-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:first-child {
+  -moz-border-radius-topleft:0px;
+  -webkit-border-top-left-radius:0px;
+  border-top-left-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:last-child {
+  -moz-border-radius-topright:0px;
+  -webkit-border-top-right-radius:0px;
+  border-top-right-radius:0px;
+}.CSSTableGenerator tr:last-child td:first-child{
+  -moz-border-radius-bottomleft:0px;
+  -webkit-border-bottom-left-radius:0px;
+  border-bottom-left-radius:0px;
+}.CSSTableGenerator tr:hover td{
+  
+}
+.CSSTableGenerator tr:nth-child(odd){ background-color:#aad4ff; }
+.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
+  vertical-align:middle;
+  
+  
+  border:1px solid #000000;
+  border-width:0px 1px 1px 0px;
+  text-align:left;
+  padding:7px;
+  font-size:18px;
+  font-family:Arial;
+  font-weight:normal;
+  color:#000000;
+}.CSSTableGenerator tr:last-child td{
+  border-width:0px 1px 0px 0px;
+}.CSSTableGenerator tr td:last-child{
+  border-width:0px 0px 1px 0px;
+}.CSSTableGenerator tr:last-child td:last-child{
+  border-width:0px 0px 0px 0px;
+}
+.CSSTableGenerator tr:first-child td{
+  background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+  background:-moz-linear-gradient( center top, #005fbf 5%, #003f7f 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");  background: -o-linear-gradient(top,#005fbf,003f7f);
+
+  background-color:#005fbf;
+  border:0px solid #000000;
+  text-align:center;
+  border-width:0px 0px 1px 1px;
+  font-size:19px;
+  font-family:Arial;
+  font-weight:bold;
+  color:#ffffff;
+
+}
+.CSSTableGenerator tr:first-child:hover td{
+  background:-o-linear-gradient(bottom, #005fbf 5%, #003f7f 100%);  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #003f7f) );
+  background:-moz-linear-gradient( center top, #005fbf 5%, #003f7f 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#003f7f");  background: -o-linear-gradient(top,#005fbf,003f7f);
+
+  background-color:#005fbf;
+}
+.CSSTableGenerator tr:first-child td:first-child{
+  border-width:0px 0px 1px 0px;
+}
+.CSSTableGenerator tr:first-child td:last-child{
+  border-width:0px 0px 1px 1px;
+}

@@ -168,7 +168,7 @@ def student_exam_submit(request, pk):
 		mock_test_type.exam = pk
 
 
-		response.update({'score':correct_answers})
+		response.update({'score':score})
 		response.update({'total_score':total_score})
 		response.update({'test':test})
 		response.update({'success':True})

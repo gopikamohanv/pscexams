@@ -26,7 +26,7 @@ class Subject(models.Model):
 		return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
 
 
-class Topic(models.Model):
+class Topics(models.Model):
 	state = models.ForeignKey(State)
 	exam = models.ForeignKey(Exam)
 	subject = models.ForeignKey(Subject)
@@ -47,7 +47,7 @@ class Question(models.Model):
     tutor = models.ForeignKey(User, related_name='question_tutor')
     publisher = models.ForeignKey(User, related_name='question_publisher', null=True, blank=True)
     is_published = models.BooleanField()
-    topic = models.ForeignKey(Topic)
+    topic = models.ForeignKey(Topics)
     mode = models.CharField(max_length=2)
     created_date = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(null=True, blank=True)

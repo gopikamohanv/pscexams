@@ -12,7 +12,5 @@ class UserProfile(models.Model):
 	name = models.CharField(max_length=30)
 	email = models.CharField(max_length=30)
 	mobile_no = models.CharField(max_length=10)
-	address = models.CharField(max_length=30, null=True)
-	date = models.DateField()
 	def __unicode__(self):
 		return self.user_type

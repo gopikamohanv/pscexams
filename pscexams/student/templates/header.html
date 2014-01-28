@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="/static/css/bootstrap.css" media="screen">
+    <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+    <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
+    <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.validate.js"></script>
     
   </head>
   <body>
@@ -16,32 +19,32 @@
             </div>
             <div class="navbar-collapse collapse navbar-inverse-collapse">
               <ul class="nav navbar-nav navbar-center">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Smartindia</a></li>
-                <li><a href="#">Kerala PSC</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/smartindia/">Smartindia</a></li>
+                <li><a href="/keralapsc/">Kerala PSC</a></li>
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exams <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
+                        {% for state in states %}
+                          <li><a href="#">{{state.state}}</a></li>
+                        {% endfor %}
                       </ul>
                     </li>
               </ul>
               <nav>
                 <ul>
-                  <li id="signup"><a href="">Sign up FREE</a>
+                   <li id="signup"><button onclick="location.href='/registration/'" class="btn btn-success">Sign up</button>
                   </li>
                   <li id="login">
-                    <a id="login-trigger" href="#" class="btn btn-warning">Log in <span>▼</span></a>
+                    <button id="login-trigger" href="#" class="btn btn-warning">Sign in <span>▼</span></button>
                     <div id="login-content">
                       <form action="/login/" method="post"> {% csrf_token %}
                         <fieldset id="inputs">
                           <input id="username" type="text" name="username" placeholder="Username" required>   
                           <input id="password" type="password" name="password" placeholder="Password" required>
                         </fieldset>
-                        <fieldset>
+                        <fieldset id="actions">
                           <input type="submit" id="submit" value="Log in">
                           <label><input type="checkbox" checked="checked"> Keep me signed in</label>
                         </fieldset>

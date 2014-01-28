@@ -1,11 +1,71 @@
 {% include "tutor_header.html" %}
 
-<ol>
-	{% for question in questions %}
-		<li><a href="/tutor/questions/edit/?id={{question.id}}">{{question.question}}</a></li>
-		<br>
-	{%endfor%}
-</ol> 
+<script>
+    $(document).ready(function()
+    {
+        $("#page_links_0").css({"padding":"5px 2px 5px 2px","border":"3px solid"});
+        /* PUBLISH PAGES*/
+        if (4 == 0)
+        {
+            $("#first").hide();
+            $("#to_first").hide();
+            $("#last").hide();
+            $("#to_last").hide();
+        }
+        if( 4 == 4)
+        {
+            $("#first").hide();
+            $("#to_first").hide();
+        }
+        if( 4 == 5 + 1) 
+        {
+            $("#last").hide();
+            $("#to_last").hide();
+        }
+    });
+</script>
+
+<div class="CSSTableGenerator" >
+    <table>
+        <tr>
+            <td>No</td>
+            <td>Status</td>
+            <td>Questions</td>
+            <td>Actions</td>
+        </tr>
+        {% for question in questions %}
+        <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><img src="/static/images/unpublished.png"></td>
+        <td>
+            <a href="/tutor/questions/edit/?id={{question.id}}">{{question.question}}</a>
+        </td>
+        <td><img src="/static/images/edit.png"><img src="/static/images/trash.png"></td></td>
+        </tr>
+        {%endfor%}
+    </table>
+    </div><br><br>
+
+
+{% if pages %}
+	<ul class="pagination" id="pages" style="margin-bottom:10px;">
+	    <li><a href="/siteadmin/student/feedback/unchecked/?page=0" title="Go to first page" id="first">&laquo;</a></li>
+	    
+	     
+	    <li><a href="/questions/browse/?page=0" id="page_links_0">1</a></li>
+	    
+	    <li><a href="/questions/browse/?page=1" id="page_links_1">2</a></li>
+	    
+	    <li><a href="/questions/browse/?page=2" id="page_links_2">3</a></li>
+	    
+	    <li><a href="/questions/browse/?page=3" id="page_links_3">4</a></li>
+	    
+	    <li><a href="/questions/browse/?page=4" id="page_links_4">5</a></li>
+	    
+	    
+	    <li><a href="/questions/browse/?page=5" title="Go to last page" id="last">&raquo;</a></li>
+	</ul>
+{% endif %}
 
 {% include "tutor_footer.html" %}
 

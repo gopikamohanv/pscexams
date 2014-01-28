@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
 from pscexams.admin.models import Exam, Question
-from pscexams.student.models import UserProfile, MockTest, MockTestData
+from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType
 
 def student_check(user):
 	try:
@@ -34,7 +34,10 @@ def student_exam(request, pk):
 	response.update({'exam':exam})
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	questions = Question.objects.filter(topic__exam=exam)
-	response.update({'questions':questions})
+	if questions.count() < 2:
+		pass
+	else:
+		response.update({'questions':questions})
 	response.update({'exam_type':ExamType.types['Exam']})
 	return render_to_response('student_exam.html', response)
 
@@ -130,6 +133,20 @@ def student_exam_submit(request, pk):
 		test.correct_answers = correct_answers
 		test.score = score
 		test.save()
+
+		mock_test_type = MockTestType()
+		if exam_type == ExamType.types['Practice']:
+			mock_test_type.mock_test_type = ExamType.types['Practice']
+		
+		elif exam_type == ExamType.types['Exam']:
+			mock_test_type.mock_test_type = ExamType.types['Exam']
+		else:
+			response.update({'form_error':True})
+			return render_to_response('student_exam_complete.html', response)
+
+		mock_test_type.mock_test = test
+		mock_test_type.exam = pk
+
 
 		response.update({'score':correct_answers})
 		response.update({'total_score':total_score})

@@ -30,6 +30,7 @@ def student_dashboard(request):
 @user_passes_test(student_check)
 def student_exam(request, pk):
 	response = {}
+	response.update({'user':UserProfile.objects.get(user=request.user)})
 	exam = get_object_or_404(Exam, pk=pk)
 	response.update({'exam':exam})
 	response.update({'user':UserProfile.objects.get(user=request.user)})
@@ -45,6 +46,7 @@ def student_exam(request, pk):
 @user_passes_test(student_check)
 def student_exam_submit(request, pk):
 	response = {}
+	response.update({'user':UserProfile.objects.get(user=request.user)})
 
 	if request.method == 'GET':
 		return HttpResponseRedirect('/student/exam/'+ str(pk)+ '/')
@@ -156,5 +158,20 @@ def student_exam_submit(request, pk):
 
 	raise Http404()
 
+@login_required
+@user_passes_test(student_check)
+def student_answersheets_list(request):
+	response = {}
+	response.update({'user':UserProfile.objects.get(user=request.user)})
+	return render_to_response('student_answersheets_list.html', response)
 
+@login_required
+@user_passes_test(student_check)
+def student_answersheet(request, pk):
+	response = {}
+	test_data = get_object_or_404(MockTest, pk=pk)
+	response.update({'user':UserProfile.objects.get(user=request.user)})
+	response.update({'test_data':test_data})
+	response.update({'total_score': test_data.mocktestdata_set.count() * 5})
+	return render_to_response('student_answersheet.html', response)
 

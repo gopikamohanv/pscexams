@@ -3,7 +3,7 @@ from django.contrib.auth.models import *
 
 
 class State(models.Model):
-	state = models.CharField(max_length=30)
+	state = models.CharField(max_length=255)
 
 	def __unicode__(self):
 		return self.state
@@ -11,30 +11,30 @@ class State(models.Model):
 
 class Exam(models.Model):
 	state = models.ForeignKey(State)
-	exam = models.CharField(max_length=30)
+	exam = models.CharField(max_length=255)
 	image = models.CharField(max_length=255, null=True, blank=True)
 
-	def __unicode__(self):
-		return self.state.state + '->' + str(self.exam)
+	#def __unicode__(self):
+	#	return self.state.state + '->' + str(self.exam)
 
 
 class Subject(models.Model):
 	state = models.ForeignKey(State)
 	exam = models.ForeignKey(Exam)
-	subject = models.CharField(max_length=30)
+	subject = models.CharField(max_length=255)
 
-	def __unicode__(self):
-		return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
+	#def __unicode__(self):
+	#	return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
 
 
 class Topic(models.Model):
 	state = models.ForeignKey(State)
 	exam = models.ForeignKey(Exam)
 	subject = models.ForeignKey(Subject)
-	topic = models.CharField(max_length=30)
+	topic = models.CharField(max_length=255)
 
-	def __unicode__(self):
-		return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
+	#def __unicode__(self):
+	#	return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
 
 
 class Question(models.Model):

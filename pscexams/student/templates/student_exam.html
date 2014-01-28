@@ -7,7 +7,12 @@
 		</div>
 		<div class="col-lg-12">
 			{% if questions %}
-			<form action="/student/exam/submit/" method="POST">
+			<form action="/student/exam/{{exam.pk}}/submit/" method="POST">
+				<div style="display:none;">
+        	{% for question in questions %}
+          	<input type="hidden" name="q_{{forloop.counter}}" value="{{question.id}}" />
+        	{% endfor %}
+     	 	</div>
 			<table class="col-md-10"> 
           {% for question in questions %}     
           <tr>
@@ -19,7 +24,7 @@
                       <div style="font-size:15px;margin-left:50px;margin-top:10px;" id="option_{{forloop.counter}}_1;">(A)&nbsp;<input type="radio" name="answer_{{forloop.counter}}" value="1" id="answer_{{forloop.counter}}_1" onClick="optionSelected('{{forloop.counter}}','1','2','3','4');">&nbsp;<label for="answer_{{forloop.counter}}_1">{{question.option1}}</label></div>
                       </td>
                       <td>
-                      <div style="font-size:15px;margin-left:50px;margin-top:10px;" id="option_{{forloop.counter}}_2">(B)&nbsp;<input type="radio" name="answer_{{forloop.counter}}" value="2" id="answer_{{forloop.counter}}_2" idonClick="optionSelected('{{forloop.counter}}','2','1','3','4');">&nbsp;<label for="answer_{{forloop.counter}}_2">{{question.option2}}</label></div>
+                      <div style="font-size:15px;margin-left:50px;margin-top:10px;" id="option_{{forloop.counter}}_2">(B)&nbsp;<input type="radio" name="answer_{{forloop.counter}}" value="2" id="answer_{{forloop.counter}}_2" onClick="optionSelected('{{forloop.counter}}','2','1','3','4');">&nbsp;<label for="answer_{{forloop.counter}}_2">{{question.option2}}</label></div>
                       </td>
                   </tr>
                   <tr>
@@ -36,7 +41,8 @@
           <tr>
           	<td>
           		<div style="text-align:center;">
-              	<input type="hidden" name="max_questions" value="{{questions.count}}">
+              	<input type="hidden" name="limit" value="{{questions.count}}">
+              	<input type="hidden" name="exam_type" value="{{exam_type}}">
               	<input type="submit" class="btn btn-success btn-lg" value="Finish Test" />
               </div>
             </td>
@@ -45,7 +51,7 @@
     	</form>
       {% else %}
       <div class="alert alert-info">
-      	We are updating questions.
+      	<h3>We are updating questions.</h3>
       </div>
       {% endif %}
    	</div>

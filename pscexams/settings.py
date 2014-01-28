@@ -58,6 +58,8 @@ ROOT_URLCONF = 'pscexams.urls'
 
 WSGI_APPLICATION = 'pscexams.wsgi.application'
 
+LOGIN_URL = '/'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -67,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pscexams',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root123',
     }
 }
 

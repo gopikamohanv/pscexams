@@ -18,12 +18,16 @@ urlpatterns = patterns('',
 
 
 	(r'^$',index),
-	(r'^login/$',login),
+	(r'^login/$',login_view),
 	(r'^home/$',home),
 	(r'^tutor/questions/add/$',tutor_questions_add),
     (r'^state/ajax/exam/$',state_ajax_exam),
     (r'^exam/ajax/subject/$',exam_ajax_subject),
     (r'^subject/ajax/topic/$',subject_ajax_topic),
     (r'^tutor/questions/edit/$', tutor_questions_edit),
-    (r'^logout/$', logout),
+    (r'^logout/$', logout_view),
+    (r'^register/$', register),
+
+    # Student Urls
+    url(r'^student/', include('pscexams.student.urls')),
 )

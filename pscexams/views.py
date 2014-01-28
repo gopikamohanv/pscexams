@@ -7,7 +7,7 @@ from django.core.context_processors import csrf
 from django.contrib import auth
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
-from pscexams.admin.models import State
+from pscexams.admin.models import State, Question
 from pscexams.forms import FreeRegistration
 
 
@@ -72,9 +72,7 @@ def home(request):
 		return render_to_response('tutor_home.html',response)
 
 	if user_profile.user_type == UserType.types['Student']:
-		return render_to_response('student_home.html',response)
-
-
+		return HttpResponseRedirect('/student/dashboard/')
 
 # Free Registration
 def register(request):

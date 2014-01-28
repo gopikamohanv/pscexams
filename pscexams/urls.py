@@ -27,4 +27,7 @@ urlpatterns = patterns('',
     (r'^tutor/questions/edit/$', tutor_questions_edit),
     (r'^logout/$', logout_view),
     (r'^register/$', register),
+
+    # Student Urls
+    url(r'^student/', include('pscexams.student.urls')),
 )

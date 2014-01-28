@@ -12,6 +12,7 @@ class State(models.Model):
 class Exam(models.Model):
 	state = models.ForeignKey(State)
 	exam = models.CharField(max_length=30)
+	image = models.CharField(max_length=255, null=True, blank=True)
 
 	def __unicode__(self):
 		return self.state.state + '->' + str(self.exam)
@@ -56,4 +57,3 @@ class Question(models.Model):
 
     def __unicode__(self):
         return self.question
-    

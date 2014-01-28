@@ -13,3 +13,25 @@ class UserProfile(models.Model):
 	address = models.CharField(max_length=30, null=True, blank=True)
 	def __unicode__(self):
 		return self.user_type
+
+
+# MOCK TEST
+class MockTest(models.Model):
+    user = models.ForeignKey(UserProfile)
+    test_date = models.DateTimeField(auto_now=True)
+    correct_answers = models.CharField(max_length=4)
+    score = models.IntegerField(null=True, blank=True)
+    time_taken = models.CharField(max_length=4, null=True, blank=True)
+    
+class MockTestData(models.Model):
+    mock_test = models.ForeignKey(MockTest)
+    question = models.ForeignKey(Question)
+    answer = models.CharField(max_length=2)
+    answered = models.BooleanField()
+    
+class MockTestType(models.Model):
+    mock_test_type = models.CharField(max_length=4)
+    mock_test = models.ForeignKey(MockTest)
+    grade = models.ForeignKey(Grade, null=True, blank=True)
+    subject = models.ForeignKey(Subject, null=True, blank=True)
+    chapter = models.ForeignKey(Chapter, null=True, blank=True)

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 from pscexams.views import *
-from tutor.views import *
+from pscexams.tutor.views import *
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.conf import settings
@@ -17,17 +17,24 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
 
-	(r'^$',index),
-	(r'^login/$',login_view),
-	(r'^home/$',home),
-	(r'^tutor/questions/add/$',tutor_questions_add),
+    # URL for index pages
+    (r'^$',index),
+    (r'^login/$',login_view),
+    (r'^home/$',home),
+    (r'^tutor/questions/add/$',tutor_questions_add),
     (r'^state/ajax/exam/$',state_ajax_exam),
     (r'^exam/ajax/subject/$',exam_ajax_subject),
     (r'^subject/ajax/topic/$',subject_ajax_topic),
     (r'^tutor/questions/edit/$', tutor_questions_edit),
     (r'^logout/$', logout_view),
     (r'^register/$', register),
+    (r'^registration/$', registration_add),
+    (r'^about/$',about),
+    (r'^smartindia/$',smartindia),
+    (r'^keralapsc/$',keralapsc),
 
+   
     # Student Urls
     url(r'^student/', include('pscexams.student.urls')),
+
 )

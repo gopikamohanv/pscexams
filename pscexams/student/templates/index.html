@@ -18,6 +18,10 @@
               <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
               <hr>
 
+              <p><strong><h4 class="text-info">Read and Learn</h4></strong></p>
+              <p class="text-muted"> Reading to Learn is one of the world's most powerful literacy programs. It is designed to enable all learners at all levels of education to read at levels grade and area of study. Apply this to your PCS preparations too. Here we sets out hand picked material and question banks, time-proven exam strategies, exam analyses and simulated tests to give you a hands-on real time test experience.We strive to ensure that you do not miss out on anything that you need on your way to success.</p>
+              <hr>
+
             </div>
 
             {%if no_user%}
@@ -47,12 +51,11 @@
               </div>
             {% endif %}
 
-
             <div class="col-lg-4">
               <div class="well">
               <form class="bs-example form-horizontal" action="/register/" method="POST">
                 <fieldset>
-                  <legend>Free Registration</legend>
+                  <legend>Free Sign up</legend>
 
                   {% if form.name.errors %}
                   <div class="form-group has-error">
@@ -63,6 +66,7 @@
                     </div>
                   </div>
                   {% else %}
+
                   <div class="form-group">
                     <label for="name" class="col-lg-2 control-label">Name</label>
                     <div class="col-lg-10">
@@ -149,7 +153,7 @@
 
                    <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
-                      <button class="btn btn-default">Cancel</button> 
+                      <button type="reset" class="btn btn-default">Cancel</button> 
                       <button type="submit" class="btn btn-primary">Submit</button> 
                     </div>
                   </div>

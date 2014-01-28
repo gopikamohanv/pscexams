@@ -12,9 +12,10 @@
         {
              $('#state').val('{{question_obj.topic.state.id}}');
              $('#exam').val('{{question_obj.topic.exam.id}}');
-             $('#subjects').val('{{question_obj.topic.subject.id}}');
+             $('#subject').val('{{question_obj.topic.subject.id}}');
              $('#topic').val('{{question_obj.topic.id}}');
              $('#test_type').val('{{question_obj.mode}}');
+             $("#answer_in_option{{question_obj.answer}}").attr("checked","checked");
              
              $(".jHtmlArea").htmlarea();
         });
@@ -139,7 +140,7 @@
       {% if question_saved %}
         <div class="alert alert-dismissable alert-success">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Your question was saved successfully.</strong> 
+          <strong>Your question was updated successfully.</strong> 
         </div>
       {% endif %}
 
@@ -239,7 +240,7 @@
                 </tr>
             
             <tr><td><br>
-            <input type="button" class="btn btn-success" value="Update Question" onClick="formSubmit();" />
+            <input type="submit" class="btn btn-success" value="Update Question" onClick="formSubmit();" />
             </td></tr>
             </table>
         </form>

@@ -32,6 +32,3 @@ class MockTestData(models.Model):
 class MockTestType(models.Model):
     mock_test_type = models.CharField(max_length=4)
     mock_test = models.ForeignKey(MockTest)
-    grade = models.ForeignKey(Grade, null=True, blank=True)
-    subject = models.ForeignKey(Subject, null=True, blank=True)
-    chapter = models.ForeignKey(Chapter, null=True, blank=True)

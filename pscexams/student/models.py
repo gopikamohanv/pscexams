@@ -33,3 +33,4 @@ class MockTestData(models.Model):
 class MockTestType(models.Model):
     mock_test_type = models.CharField(max_length=4)
     mock_test = models.ForeignKey(MockTest)
+    exam = models.CharField(max_length=255, null=True, blank=True)

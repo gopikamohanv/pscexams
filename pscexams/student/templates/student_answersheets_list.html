@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		{% for answersheet in user.mocktest_set.all %}
+			<div class="row">
+				<div class="alert alert-info col-md-4">
+					<h4><a href="/student/answersheet/{{answersheet.pk}}/">{{answersheet.test_date}}<a></h4>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

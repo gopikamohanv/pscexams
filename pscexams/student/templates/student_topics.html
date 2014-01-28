@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<div class="jumbotron">
+			Welcome {{user.user.first_name}}
+		</div>
+		{% for topic in subject.topic_set.all %}
+			<div class="row">
+				<div class="alert alert-info col-md-4">
+					<h4><a href="/student/exam/topic/{{topic.pk}}/">{{topic.topic}}<a></h4>
+				</div>
+			</div>
+		{% empty %}
+		<div class="alert alert-info">
+			No Topics are there.
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}

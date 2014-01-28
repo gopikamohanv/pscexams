@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
-from pscexams.admin.models import Exam, Question
+from pscexams.admin.models import Exam, Question, Subject, Topic
 from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType
 
 def student_check(user):
@@ -33,14 +33,32 @@ def student_exam(request, pk):
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	exam = get_object_or_404(Exam, pk=pk)
 	response.update({'exam':exam})
+	return render_to_response('student_subjects.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_exam_subject(request, pk):
+	response = {}
 	response.update({'user':UserProfile.objects.get(user=request.user)})
-	questions = Question.objects.filter(topic__exam=exam)
+	subject = get_object_or_404(Subject, pk=pk)
+	response.update({'subject':subject})
+	return render_to_response('student_topics.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_exam_topic(request, pk):
+	response = {}
+	response.update({'user':UserProfile.objects.get(user=request.user)})
+	topic = get_object_or_404(Topic, pk=pk)
+	response.update({'topic':topic})
+	questions = Question.objects.filter(topic=topic)
 	if questions.count() < 2:
 		pass
 	else:
 		response.update({'questions':questions})
 	response.update({'exam_type':ExamType.types['Exam']})
 	return render_to_response('student_exam.html', response)
+
 
 @login_required
 @user_passes_test(student_check)

@@ -7,7 +7,7 @@
 		</div>
 		<div class="col-lg-12">
 			{% if questions %}
-			<form action="/student/exam/{{exam.pk}}/submit/" method="POST">
+			<form action="/student/exam/{{topic.pk}}/submit/" method="POST">
 				<div style="display:none;">
         	{% for question in questions %}
           	<input type="hidden" name="q_{{forloop.counter}}" value="{{question.id}}" />

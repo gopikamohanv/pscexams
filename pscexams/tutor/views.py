@@ -29,7 +29,7 @@ def tutor_questions_add(request):
     except:
         raise Http500
 
-    response.update({'user':user_profile})
+    response.update({'user':request.user})
 
     if user_profile.user_type != UserType.types['Tutor']:
         return HttpResponseRedirect(DefaultUrl.login_url)
@@ -128,7 +128,7 @@ def tutor_questions_add(request):
     # We will make this a library in the future
     data_error = False
     try:
-        topic_obj = Topics.objects.get(id=topic)
+        topic_obj = Topic.objects.get(id=topic)
     except:
         data_error = True
 
@@ -178,6 +178,8 @@ def tutor_questions_edit(request):
     except:
         raise Http500
 
+    response.update({'user':request.user})
+
     if user_profile.user_type != UserType.types['Tutor']:
         return HttpResponseRedirect(DefaultUrl.login_url)
 
@@ -199,7 +201,7 @@ def tutor_questions_edit(request):
         response.update({'question_obj':question_obj})
         exams = Exam.objects.filter(state=question_obj.topic.state)
         subjects = Subject.objects.filter(exam=question_obj.topic.exam)
-        topics = Topics.objects.filter(subject=question_obj.topic.subject)
+        topics = Topic.objects.filter(subject=question_obj.topic.subject)
         response.update({'exams':exams})
         response.update({'subjects':subjects})
         response.update({'topics':topics})
@@ -301,7 +303,7 @@ def tutor_questions_edit(request):
         data_error = False
 
         try:
-            topic_obj = Topics.objects.get(id=topic)
+            topic_obj = Topic.objects.get(id=topic)
         except:
             data_error = True
 
@@ -337,7 +339,7 @@ def tutor_questions_edit(request):
         response.update({'question_obj':question_obj})
         exams = Exam.objects.filter(state=question_obj.topic.state)
         subjects = Subject.objects.filter(exam=question_obj.topic.exam)
-        topics = Topics.objects.filter(subject=question_obj.topic.subject)
+        topics = Topic.objects.filter(subject=question_obj.topic.subject)
         response.update({'exams':exams})
         response.update({'subjects':subjects})
         response.update({'topics':topics})

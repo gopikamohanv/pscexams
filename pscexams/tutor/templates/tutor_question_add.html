@@ -1,6 +1,6 @@
 {% include "tutor_header.html" %}
-	
-	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jqueryui/ui-lightness/jquery-ui-1.7.2.custom.css" />
@@ -21,16 +21,16 @@
                 return;
             }
             $.ajax({
-		        type	: 'GET',
-		        url		: '/state/ajax/exam/',
-		        cache	: false,
-		        data	: "state=" + option,
-		        success	: function(data,textStatus)
-		   		{
-		   		    $("#exam").html(data);
-		   		},
-		        error	: function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
-		    });
+                type    : 'GET',
+                url     : '/state/ajax/exam/',
+                cache   : false,
+                data    : "state=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#exam").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
         }
         function exam_changed(option)
         {
@@ -57,39 +57,39 @@
                 return;
             }
             $.ajax({
-		        type	: 'GET',
-		        url		: '/subject/ajax/topic/',
-		        cache	: false,
-		        data	: "subject=" + option,
-		        success	: function(data,textStatus)
-		   		{
-		   		    $("#topic").html(data);
-		   		},
-		        error	: function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
-		    });
+                type    : 'GET',
+                url     : '/subject/ajax/topic/',
+                cache   : false,
+                data    : "subject=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#topic").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
         }
         
-	    function formSubmit()
-	    {
-	        form_error = false;
-	        if (document.getElementById('state').selectedIndex == 0)
-	        {
-	            form_error = true;
-	            alert('Please select an appropriate State for your question');
-	            return false;
-	        }
-	        if (document.getElementById('exam').selectedIndex == 0)
-	        {
-	            form_error = true;
-	            alert('Please select an appropriate Exam for your question');
-	            return false;
-	        }
-	        if (document.getElementById('subject').selectedIndex == 0)
-	        {
-	            form_error = true;
-	            alert('Please select an appropriate Subject for your question');
-	            return false;
-	        }
+        function formSubmit()
+        {
+            form_error = false;
+            if (document.getElementById('state').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate State for your question');
+                return false;
+            }
+            if (document.getElementById('exam').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Exam for your question');
+                return false;
+            }
+            if (document.getElementById('subject').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Subject for your question');
+                return false;
+            }
             if (document.getElementById('topic').selectedIndex == 0)
             {
                 form_error = true;
@@ -102,15 +102,15 @@
                 alert('Please select an appropriate Test for your question');
                 return false;
             }
-	        
-	        $("#question").val($('#question').htmlarea('toHtmlString'));
-	        $("#option1").val($('#option1').htmlarea('toHtmlString'));
-	        $("#option2").val($('#option2').htmlarea('toHtmlString'));
-	        $("#option3").val($('#option3').htmlarea('toHtmlString'));
-	        $("#option4").val($('#option4').htmlarea('toHtmlString'));
-	        $("#explanation").val($('#explanation').htmlarea('toHtmlString'));
-	        document.forms["question_form"].submit();
-	    }
+            
+            $("#question").val($('#question').htmlarea('toHtmlString'));
+            $("#option1").val($('#option1').htmlarea('toHtmlString'));
+            $("#option2").val($('#option2').htmlarea('toHtmlString'));
+            $("#option3").val($('#option3').htmlarea('toHtmlString'));
+            $("#option4").val($('#option4').htmlarea('toHtmlString'));
+            $("#explanation").val($('#explanation').htmlarea('toHtmlString'));
+            document.forms["question_form"].submit();
+        }
     </script>
 
     <script language="javascript" type="text/javascript">
@@ -145,10 +145,10 @@
                 <tr>
                     <td id="td_state">
                     <select name="state" id="state" onChange="state_changed(this.value)" style="width:175px;">
-	                    <option value="0">Select State</option>
-	                    {% for state in states %}
-	                        <option value="{{state.id}}">{{state.state}}</option> 
-	                    {% endfor %}
+                        <option value="0">Select State</option>
+                        {% for state in states %}
+                            <option value="{{state.id}}">{{state.state}}</option> 
+                        {% endfor %}
                     </select>
                     </td>
                     <td id="td_exam">
@@ -158,19 +158,19 @@
                     </td>
                     <td id="td_subject">
                     <select name="subject" id="subject" onChange="subject_changed(this.value)" style="width:175px;">
-                    	<option value="0">Select Subject</option>
+                        <option value="0">Select Subject</option>
                     </select>
                     </td>
                     <td id="td_topic">
                     <select name="topic" id="topic" style="width:175px;">
-                    	<option value="0">Select Topic</option>
+                        <option value="0">Select Topic</option>
                     </select>
                     </td>
                     <td>
                     <select name="test_type" id="test_type" style="width:150px;">
-	                    <option value="0">Select Test</option>
-	                    <option value="1">Practice</option>
-	                    <option value="2">Model Exam</option>
+                        <option value="0">Select Test</option>
+                        <option value="1">Practice</option>
+                        <option value="2">Model Exam</option>
                     </select>                    
                     </td>
                 </tr>

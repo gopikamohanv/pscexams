@@ -9,7 +9,7 @@ from django.contrib.auth import logout as auth_logout
 
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
-from pscexams.admin.models import State, Question
+from pscexams.admin.models import State, Question, Exam, Subject, Topic
 from pscexams.forms import FreeRegistration
 
 
@@ -93,16 +93,15 @@ def home(request):
 	except:
 		raise Http404()
 
-	response.update({'user':user_profile})
+	response.update({'user':request.user})
 
 	if user_profile.user_type == UserType.types['Tutor']:
 		questions = Question.objects.filter(tutor=request.user)
-        response.update({'questions':questions})
-        return render_to_response('tutor_home.html',response)
+		response.update({'questions':questions})
+		return render_to_response('tutor_home.html',response)
 
-    if user_profile.user_type == UserType.types['Student']:
-    	return HttpResponseRedirect('/student/dashboard/')
-
+	if user_profile.user_type == UserType.types['Student']:
+		return HttpResponseRedirect('/student/dashboard/')    
 
 
 #save new user details
@@ -208,7 +207,7 @@ def exam_ajax_subject(request):
 def subject_ajax_topic(request):
 	if 'subject' in request.GET and request.GET['subject']:
 		subject = request.GET['subject']
-		topics = Topics.objects.filter(subject=subject)
+		topics = Topic.objects.filter(subject=subject)
 		response = '<option value=\"0\">Select Topics</option>'
 		for topic in topics:
 			response += '<option value=\"'
@@ -219,9 +218,6 @@ def subject_ajax_topic(request):
 		return HttpResponse(response)
 	else:
 		return HttpResponse('Error# No State Specified')
-
-	if user_profile.user_type == UserType.types['Student']:
-		return HttpResponseRedirect('/student/dashboard/')
 
 # Free Registration
 def register(request):
@@ -262,11 +258,6 @@ def register(request):
 		auth.login(request,userlogin)
 		return HttpResponseRedirect('/home/')
 
-
-# For logout
-#/logout/
-def user_logout(request):
-    auth.logout(request)
-    response.update({'form':form})
-    return render_to_response('index.html', response)
+	response.update({'form':form})
+	return render_to_response('index.html', response)
 

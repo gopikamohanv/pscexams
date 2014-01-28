@@ -19,46 +19,21 @@ urlpatterns = patterns('',
 
     # URL for index pages
     (r'^$',index),
-    (r'^about/$',about),
-    (r'^smartindia/$',smartindia),
-    (r'^keralapsc/$',keralapsc),
-
-   
-    # URL for login according to usertype
-    (r'^login/$',user_login),
+    (r'^login/$',login_view),
     (r'^home/$',home),
-
-
-    # URL for registration
-    (r'^registration/$', registration_add),
-    
-
-    # URL for tutor pages
     (r'^tutor/questions/add/$',tutor_questions_add),
-    (r'^tutor/questions/edit/$', tutor_questions_edit),
-    (r'^questions/browse/$', tutor_questions_edit),
-    
-
-    # URL for ajax 
-    (r'^state/ajax/exam/$',state_ajax_exam),
-    (r'^exam/ajax/subject/$',exam_ajax_subject),
-    (r'^subject/ajax/topic/$',subject_ajax_topic),
-
-
-    # URL for logout
-    (r'^logout/$', user_logout),
-
-	(r'^$',index),
-	(r'^login/$',login_view),
-	(r'^home/$',home),
-	(r'^tutor/questions/add/$',tutor_questions_add),
     (r'^state/ajax/exam/$',state_ajax_exam),
     (r'^exam/ajax/subject/$',exam_ajax_subject),
     (r'^subject/ajax/topic/$',subject_ajax_topic),
     (r'^tutor/questions/edit/$', tutor_questions_edit),
     (r'^logout/$', logout_view),
     (r'^register/$', register),
+    (r'^registration/$', registration_add),
+    (r'^about/$',about),
+    (r'^smartindia/$',smartindia),
+    (r'^keralapsc/$',keralapsc),
 
+   
     # Student Urls
     url(r'^student/', include('pscexams.student.urls')),
 

@@ -38,9 +38,10 @@
         <td>{{ forloop.counter }}</td>
         <td><img src="/static/images/unpublished.png"></td>
         <td>
-            <a href="/tutor/questions/edit/?id={{question.id}}">{{question.question}}</a>
+            {{question.question}}
         </td>
-        <td><img src="/static/images/edit.png"><img src="/static/images/trash.png"></td></td>
+        <td><a href="/tutor/questions/edit/?id={{question.id}}"><img src="/static/images/edit.png"></a>
+            <a><img src="/static/images/trash.png"></a></td></td>
         </tr>
         {%endfor%}
     </table>

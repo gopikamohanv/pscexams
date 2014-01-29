@@ -36,6 +36,14 @@ class Topic(models.Model):
 	#def __unicode__(self):
 	#	return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
 
+class SubTopic(models.Model):
+	state = models.ForeignKey(State)
+	exam = models.ForeignKey(Exam)
+	subject = models.ForeignKey(Subject)
+	topic = models.ForeignKey(Topic)
+	sub_topic = models.CharField(max_length=255)
+	descripition = models.TextField()
+
 
 class Question(models.Model):
     question = models.TextField()
@@ -48,8 +56,8 @@ class Question(models.Model):
     tutor = models.ForeignKey(User, related_name='question_tutor')
     publisher = models.ForeignKey(User, related_name='question_publisher', null=True, blank=True)
     is_published = models.BooleanField()
-    topic = models.ForeignKey(Topic)
-    mode = models.CharField(max_length=2)
+    sub_topic = models.ForeignKey(SubTopic)
+    question_type = models.CharField(max_length=2)
     created_date = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(null=True, blank=True)
     is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object

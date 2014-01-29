@@ -9,7 +9,7 @@ from django.contrib.auth import logout as auth_logout
 
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
-from pscexams.admin.models import State, Question, Exam, Subject, Topic
+from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic
 from pscexams.forms import FreeRegistration
 
 
@@ -208,7 +208,7 @@ def subject_ajax_topic(request):
 	if 'subject' in request.GET and request.GET['subject']:
 		subject = request.GET['subject']
 		topics = Topic.objects.filter(subject=subject)
-		response = '<option value=\"0\">Select Topics</option>'
+		response = '<option value=\"0\">Select Topic</option>'
 		for topic in topics:
 			response += '<option value=\"'
 			response += str(topic.id)
@@ -218,6 +218,24 @@ def subject_ajax_topic(request):
 		return HttpResponse(response)
 	else:
 		return HttpResponse('Error# No State Specified')
+
+# Ajax for changing topic based on subjects
+#/subject/ajax/topic/
+def topic_ajax_subtopic(request):
+	if 'topic' in request.GET and request.GET['topic']:
+		topic = request.GET['topic']
+		sub_topics = SubTopic.objects.filter(topic=topic)
+		response = '<option value=\"0\">Select Sub Topic</option>'
+		for sub_topic in sub_topics:
+			response += '<option value=\"'
+			response += str(sub_topic.id)
+			response += '\">'
+			response += sub_topic.sub_topic
+			response += '</option>'
+		return HttpResponse(response)
+	else:
+		return HttpResponse('Error# No State Specified')
+
 
 # Free Registration
 def register(request):

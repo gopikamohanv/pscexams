@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     (r'^about/$',about),
     (r'^smartindia/$',smartindia),
     (r'^keralapsc/$',keralapsc),
+    (r'^topic/ajax/subtopic/$',topic_ajax_subtopic),
 
    
     # Student Urls

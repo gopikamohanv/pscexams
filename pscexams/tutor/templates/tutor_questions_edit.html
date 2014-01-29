@@ -10,11 +10,12 @@
     <script>
         $(document).ready(function()
         {
-             $('#state').val('{{question_obj.topic.state.id}}');
-             $('#exam').val('{{question_obj.topic.exam.id}}');
-             $('#subject').val('{{question_obj.topic.subject.id}}');
-             $('#topic').val('{{question_obj.topic.id}}');
-             $('#test_type').val('{{question_obj.mode}}');
+             $('#state').val('{{question_obj.sub_topic.state.id}}');
+             $('#exam').val('{{question_obj.sub_topic.exam.id}}');
+             $('#subject').val('{{question_obj.sub_topic.subject.id}}');
+             $('#topic').val('{{question_obj.sub_topic.topic.id}}');
+             $('#sub_topic').val('{{question_obj.sub_topic.id}}');
+             $('#question_type').val('{{question_obj.question_type}}');
              $("#answer_in_option{{question_obj.answer}}").attr("checked","checked");
              
              $(".jHtmlArea").htmlarea();
@@ -75,39 +76,66 @@
                 error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
             });
         }
+        function topic_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/topic/ajax/subtopic/',
+                cache   : false,
+                data    : "topic=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#sub_topic").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+
     function formSubmit()
     {
         form_error = false;
-        if (document.getElementById('syllabus').selectedIndex == 0)
+        if (document.getElementById('state').selectedIndex == 0)
         {
             form_error = true;
-            alert('Please select an appropriate Syllabus for your question');
+            alert('Please select an appropriate State for your question');
             return false;
         }
-        if (document.getElementById('grades').selectedIndex == 0)
+        if (document.getElementById('exam').selectedIndex == 0)
         {
             form_error = true;
-            alert('Please select an appropriate Grade for your question');
+            alert('Please select an appropriate Exam for your question');
             return false;
         }
-        if (document.getElementById('subjects').selectedIndex == 0)
+        if (document.getElementById('subject').selectedIndex == 0)
         {
             form_error = true;
             alert('Please select an appropriate Subject for your question');
             return false;
         }
-        if (document.getElementById('chapters').selectedIndex == 0)
+        if (document.getElementById('topic').selectedIndex == 0)
         {
             form_error = true;
-            alert('Please select an appropriate Chapter for your question');
+            alert('Please select an appropriate Topic for your question');
             return false;
         }
-         if (document.getElementById('difficulty').selectedIndex == 0)
+        if (document.getElementById('sub_topic').selectedIndex == 0)
         {
             form_error = true;
-            alert('Please select an appropriate Difficulty level for your question');
+            alert('Please select an appropriate Sub Topic for your question');
             return false;
         }
+        if (document.getElementById('question_type').selectedIndex == 0)
+        {
+            form_error = true;
+            alert('Please select an appropriate Question Type for your question');
+            return false;
+        }
+         
+
         $("#question").val($('#question').htmlarea('toHtmlString'));
         $("#option1").val($('#option1').htmlarea('toHtmlString'));
         $("#option2").val($('#option2').htmlarea('toHtmlString'));
@@ -181,12 +209,22 @@
                     </select>
                     </td>
                     <td>
-                    <select name="test_type" id="test_type" style="width:150px;">
+                    <select name="sub_topic" id="sub_topic" style="width:175px;">
+                        <option value="0">Select Sub Topic</option>
+                        {% for sub_topic in sub_topics %}
+                            <option value="{{sub_topic.id}}">{{sub_topic.sub_topic}}</option> 
+                        {% endfor %}
+                    </select>
+                    </td>
+                    <td>
+                        <select name="question_type" id="question_type" style="width:150px;">
                         <option value="0">Select Test</option>
                         <option value="1">Practice</option>
                         <option value="2">Model Exam</option>
-                    </select>                    
+                        <option value="3">Previous Exam</option>
+                    </select>  
                     </td>
+                    
                 </tr>
             </table>
             {% autoescape off %}

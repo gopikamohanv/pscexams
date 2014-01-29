@@ -68,6 +68,25 @@
                 error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
             });
         }
+        function topic_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/topic/ajax/subtopic/',
+                cache   : false,
+                data    : "topic=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#sub_topic").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+
         
         function formSubmit()
         {
@@ -96,12 +115,19 @@
                 alert('Please select an appropriate Topic for your question');
                 return false;
             }
-            if (document.getElementById('test_type').selectedIndex == 0)
+            if (document.getElementById('sub_topic').selectedIndex == 0)
             {
                 form_error = true;
-                alert('Please select an appropriate Test for your question');
+                alert('Please select an appropriate Sub Topic for your question');
                 return false;
             }
+            if (document.getElementById('question_type').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Question Type for your question');
+                return false;
+            }
+            
             
             $("#question").val($('#question').htmlarea('toHtmlString'));
             $("#option1").val($('#option1').htmlarea('toHtmlString'));
@@ -162,17 +188,24 @@
                     </select>
                     </td>
                     <td id="td_topic">
-                    <select name="topic" id="topic" style="width:175px;">
+                    <select name="topic" id="topic" onChange="topic_changed(this.value)" style="width:175px;">
                         <option value="0">Select Topic</option>
                     </select>
                     </td>
-                    <td>
-                    <select name="test_type" id="test_type" style="width:150px;">
-                        <option value="0">Select Test</option>
-                        <option value="1">Practice</option>
-                        <option value="2">Model Exam</option>
-                    </select>                    
+                    <td id="td_sub_topic">
+                    <select name="sub_topic" id="sub_topic" style="width:175px;">
+                        <option value="0">Select Sub Topic</option>
+                    </select>
                     </td>
+                    <td id="td_question_type">
+                    <select name="question_type" id="question_type" style="width:175px;">
+                        <option value="0">Select Question Type</option>
+                        <option value="1">Practice Test</option>
+                        <option value="2">Model Test</option>
+                        <option value="3">Previous year Questions</option>
+                    </select>
+                    </td>
+                   
                 </tr>
             </table>
             <table>

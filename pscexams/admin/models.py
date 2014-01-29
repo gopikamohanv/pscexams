@@ -3,7 +3,7 @@ from django.contrib.auth.models import *
 
 
 class State(models.Model):
-	state = models.CharField(max_length=30)
+	state = models.CharField(max_length=255)
 
 	def __unicode__(self):
 		return self.state
@@ -14,8 +14,8 @@ class Exam(models.Model):
 	exam = models.CharField(max_length=255)
 	image = models.CharField(max_length=255, null=True, blank=True)
 
-	def __unicode__(self):
-		return self.state.state + '->' + str(self.exam)
+	#def __unicode__(self):
+	#	return self.state.state + '->' + str(self.exam)
 
 
 class Subject(models.Model):
@@ -23,8 +23,8 @@ class Subject(models.Model):
 	exam = models.ForeignKey(Exam)
 	subject = models.CharField(max_length=255)
 
-	def __unicode__(self):
-		return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
+	#def __unicode__(self):
+	#	return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
 
 class SubjectDescription(models.Model):
 	subject = models.OneToOneField(Subject)
@@ -40,8 +40,16 @@ class Topic(models.Model):
 	subject = models.ForeignKey(Subject)
 	topic = models.CharField(max_length=255)
 
-	def __unicode__(self):
-		return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
+	#def __unicode__(self):
+	#	return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
+
+class SubTopic(models.Model):
+	state = models.ForeignKey(State)
+	exam = models.ForeignKey(Exam)
+	subject = models.ForeignKey(Subject)
+	topic = models.ForeignKey(Topic)
+	sub_topic = models.CharField(max_length=255)
+	descripition = models.TextField()
 
 
 class Question(models.Model):
@@ -55,8 +63,8 @@ class Question(models.Model):
     tutor = models.ForeignKey(User, related_name='question_tutor')
     publisher = models.ForeignKey(User, related_name='question_publisher', null=True, blank=True)
     is_published = models.BooleanField()
-    topic = models.ForeignKey(Topic)
-    mode = models.CharField(max_length=2)
+    sub_topic = models.ForeignKey(SubTopic)
+    question_type = models.CharField(max_length=2)
     created_date = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(null=True, blank=True)
     is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object

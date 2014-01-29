@@ -51,8 +51,8 @@ def student_exam_topic(request, pk):
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	topic = get_object_or_404(Topic, pk=pk)
 	response.update({'topic':topic})
-	questions = Question.objects.filter(topic=topic)
-	if questions.count() < 2:
+	questions = Question.objects.filter(topic=topic).order_by('pk')
+	if questions.count() < 20:
 		pass
 	else:
 		response.update({'questions':questions})

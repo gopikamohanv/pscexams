@@ -74,15 +74,21 @@ def tutor_questions_add(request):
     else:
         form_error = True
 
-    #TODO: Create a Config class for tutor and put difficulty levels in that class
-    if 'test_type' in request.POST and request.POST['test_type']:
-        test_type = request.POST['test_type']
-        if test_type == '0':
+    if 'sub_topic' in request.POST and request.POST['sub_topic']:
+        sub_topic = request.POST['sub_topic']
+        if sub_topic == '0':
             form_error = True
     else:
         form_error = True
 
+    if 'question_type' in request.POST and request.POST['question_type']:
+        question_type = request.POST['question_type']
+        if question_type == '0':
+            form_error = True
+    else:
+        form_error = True
 
+   
     if 'question' in request.POST and request.POST['question']:
         question = request.POST['question']
     else:
@@ -128,7 +134,7 @@ def tutor_questions_add(request):
     # We will make this a library in the future
     data_error = False
     try:
-        topic_obj = Topic.objects.get(id=topic)
+        sub_topic_obj = SubTopic.objects.get(id=sub_topic)
     except:
         data_error = True
 
@@ -148,8 +154,8 @@ def tutor_questions_add(request):
     question_obj.explanation = explanation
     question_obj.tutor = request.user
     question_obj.is_published = False
-    question_obj.topic = topic_obj
-    question_obj.mode = test_type
+    question_obj.sub_topic = sub_topic_obj
+    question_obj.question_type = question_type
     question_obj.is_in_use = True
     # TODO: Add a try catch statement here
     try:
@@ -199,12 +205,14 @@ def tutor_questions_edit(request):
     	except:
         	return Http404()
         response.update({'question_obj':question_obj})
-        exams = Exam.objects.filter(state=question_obj.topic.state)
-        subjects = Subject.objects.filter(exam=question_obj.topic.exam)
-        topics = Topic.objects.filter(subject=question_obj.topic.subject)
+        exams = Exam.objects.filter(state=question_obj.sub_topic.state)
+        subjects = Subject.objects.filter(exam=question_obj.sub_topic.exam)
+        topics = Topic.objects.filter(subject=question_obj.sub_topic.subject)
+        sub_topics = SubTopic.objects.filter(topic=question_obj.sub_topic.topic)
         response.update({'exams':exams})
         response.update({'subjects':subjects})
         response.update({'topics':topics})
+        response.update({'sub_topics':sub_topics})
         return render_to_response('tutor_questions_edit.html', response)
 
 
@@ -254,13 +262,21 @@ def tutor_questions_edit(request):
     	else:
     		form_error = True
 
-    	if 'test_type' in request.POST and request.POST['test_type']:
-    		test_type = request.POST['test_type']
-    		if test_type == '0':
-    			form_error = True
-    	else:
-    		form_error = True
+        if 'sub_topic' in request.POST and request.POST['sub_topic']:
+            sub_topic = request.POST['sub_topic']
+            if sub_topic == '0':
+                form_error = True
+        else:
+            form_error = True
 
+        if 'question_type' in request.POST and request.POST['question_type']:
+            question_type = request.POST['question_type']
+            if question_type == '0':
+                form_error = True
+        else:
+            form_error = True
+
+    	
     	if 'question' in request.POST and request.POST['question']:
     		question = request.POST['question']
     	else:
@@ -303,7 +319,7 @@ def tutor_questions_edit(request):
         data_error = False
 
         try:
-            topic_obj = Topic.objects.get(id=topic)
+            sub_topic_obj = SubTopic.objects.get(id=sub_topic)
         except:
             data_error = True
 
@@ -321,8 +337,8 @@ def tutor_questions_edit(request):
         question_obj.explanation = explanation
         question_obj.tutor = request.user
         question_obj.is_published = False
-        question_obj.topic = topic_obj
-        question_obj.mode = test_type
+        question_obj.sub_topic = sub_topic_obj
+        question_obj.question_type = question_type
         question_obj.is_in_use = True
 
 
@@ -337,12 +353,14 @@ def tutor_questions_edit(request):
         states = State.objects.all()
         response.update({'states':states})
         response.update({'question_obj':question_obj})
-        exams = Exam.objects.filter(state=question_obj.topic.state)
-        subjects = Subject.objects.filter(exam=question_obj.topic.exam)
-        topics = Topic.objects.filter(subject=question_obj.topic.subject)
+        exams = Exam.objects.filter(state=question_obj.sub_topic.state)
+        subjects = Subject.objects.filter(exam=question_obj.sub_topic.exam)
+        topics = Topic.objects.filter(subject=question_obj.sub_topic.subject)
+        sub_topics = SubTopic.objects.filter(topic=question_obj.sub_topic.topic)
         response.update({'exams':exams})
         response.update({'subjects':subjects})
         response.update({'topics':topics})
+        response.update({'sub_topics':sub_topics})
         return render_to_response('tutor_questions_edit.html', response)
 
 

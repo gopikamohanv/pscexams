@@ -30,9 +30,13 @@
     <script>
       $(document).ready(function() {
         {% if form %}
-          $('#state').val('{{form.state.value}}').attr('selected',true);;
+          goToByScroll('freeRegister');
+          $('#state').val('{{form.state.value}}').attr('selected',true);
         {% endif %}  
       });
+      function goToByScroll(id){
+          $('html,body,div').animate({scrollTop: $("#"+id).offset().top}, 'slow');
+      }
     </script>
 
     

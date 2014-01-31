@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block left_content %}
+<div class="col-md-12">
+  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Available Topics</strong></h5>
+  <ul>
+	{% for topic in sub_topic.topic.subject.topic_set.all %}
+		<li class="text-muted list-unstyled"><a href="/student/exam/subject/{{topic.subject.pk}}/?topic={{topic.pk}}">{{topic.topic}}</a></li>
+	{% endfor %}
+	</ul>
+  <hr>
+</div>   
+{% endblock %}
+
+{% block content %}
+	<div class="col-md-12">
+		<h4><strong class="text-muted">{{sub_topic.sub_topic}}</strong></h4>
+		<hr>
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li><a href="/student/exam/{{sub_topic.exam.pk}}/">{{sub_topic.exam.exam}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/">{{sub_topic.subject.subject}}</a></li>
+		  <li>{{sub_topic.sub_topic}}</li>
+		</ol>
+		{% if locked %}
+			<div class="alert alert-info">
+				<strong>You have to score full marks in Test {{test}} to attend further tests.</strong>
+			</div>
+		{% endif %}
+
+		<div class="col-md-8">
+			{% for test in tests %}
+				<a href="/student/exam/topic/{{sub_topic.pk}}/{{test}}/"><h4><strong class="text-muted">Test {{test}}</strong></h4></a>
+			{% empty %}
+			<div class="alert alert-info">
+				<strong>We are updating tests.....</strong>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="col-md-4">
+			<h4><strong class="text-muted">Related Topics</strong></h4>
+			<hr>
+			{% for subtopic in sub_topic.topic.subtopic_set.all %}
+				<strong class="text-muted"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></strong> <br>
+			{% endfor %}
+		</div>
+		
+
+
+	</div>	
+{% endblock %}

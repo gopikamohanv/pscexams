@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import *
 from django.contrib.auth.models import User
 from pscexams.user_type import UserType
-from pscexams.admin.models import *
+from pscexams.admin.models import SubTopic, State, Question
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -29,8 +29,21 @@ class MockTestData(models.Model):
     question = models.ForeignKey(Question)
     answer = models.CharField(max_length=2)
     answered = models.BooleanField()
-    
+
+class ExamTest(models.Model):
+    user = models.ForeignKey(UserProfile)
+    exam_topic = models.ForeignKey(SubTopic)
+    test_num = models.IntegerField()
+
 class MockTestType(models.Model):
     mock_test_type = models.CharField(max_length=4)
     mock_test = models.ForeignKey(MockTest)
     exam = models.CharField(max_length=255, null=True, blank=True)
+
+def getLastExam(self, subtopic):
+    try:
+        exam = ExamTest.objects.get(user__user=self, exam_topic=subtopic)
+    except:
+        pass
+    else:
+        return exam.test_num

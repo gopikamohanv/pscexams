@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="col-md-4">
-			<h4><strong class="text-muted">Related Topics</strong></h4>
+			<h4><strong class="text-muted">Related SubTopics</strong></h4>
 			<hr>
 			{% for subtopic in sub_topic.topic.subtopic_set.all %}
 				<strong class="text-muted"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></strong> <br>

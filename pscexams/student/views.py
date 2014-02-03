@@ -105,7 +105,7 @@ def student_exam_submit(request, pk):
 		raise Http404()
 
 	if request.method == 'GET':
-		return HttpResponseRedirect('/student/exam/'+ str(pk)+ '/')
+		return HttpResponseRedirect('/student/exam/topic/tests/' + pk + '/')
 
 	if request.method == "POST":
 		if 'limit' in request.POST and request.POST['limit']:
@@ -210,6 +210,12 @@ def student_exam_submit(request, pk):
 
 		mock_test_type.mock_test = test
 		mock_test_type.exam = pk
+
+		try:
+			sub_topic = SubTopic.objects.get(pk=pk)
+			response.update({'sub_topic':sub_topic})
+		except:
+			pass
 
 		if int(wrong_answers) == 0:
 			try:

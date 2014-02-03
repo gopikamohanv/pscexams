@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
+{% block left_content %}
+<div class="col-md-12">
+  <h5><img src="/static/images/new-icon.png"><strong class="text-muted">Related Subtopics</strong></h5>
+  <ul>
+  {% for subtopic in sub_topic.topic.subtopic_set.all %}
+    <li class="text-muted list-unstyled"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></li>
+  {% endfor %}
+  </ul>
+  <hr>
+</div>   
+{% endblock %}
+
 {% block content %}
 	<div class="col-md-12">
     <h4><strong class="text-muted">{{sub_topic.sub_topic}}</strong></h4>

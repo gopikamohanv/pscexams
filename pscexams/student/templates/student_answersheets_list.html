@@ -1,5 +1,33 @@
 {% extends 'base.html' %}
 
+{% block left_content %}
+	<div class="col-md-12">
+	  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Whats New?</strong></h5>
+	  <ul>
+	    <li class="text-muted list-unstyled">MCQs Added for LGS EXAM</li>
+	    <li class="text-muted list-unstyled">MCQs Added for LGS EXAM</li>
+	  </ul>
+	  <hr>
+	</div>
+
+	<div class="col-md-12">
+	  <h5><img src="/static/images/bar-chart-icon.png" ><strong class="text-muted">My Rank</strong></h5>
+	  <ul>
+	    <li class="text-muted list-unstyled">LGS - 9/25</li>
+	    <li class="text-muted list-unstyled">LGS - 9/25</li>
+	  </ul>
+	  <hr>
+	</div>
+	          
+	<div class="col-md-12">
+	  <h5><img src="/static/images/activity.png"> <strong class="text-muted">Recent Activities</strong></h5>
+	  <li class="text-muted">Attended LD Exam</li>
+	  <li class="text-muted">Attended LD Exam</li>
+	  <li class="text-muted">Attended LD Exam</li>
+	  <hr>
+	</div>
+{% endblock %}
+
 {% block content %}
 	<div class="col-md-12">
 		{% for answersheet in user.mocktest_set.all %}

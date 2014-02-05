@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block left_content %}
+<div class="col-md-12">
+  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Available Exams</strong></h5>
+  <ul>
+	{% for exam in subject.exam.state.exam_set.all %}
+		<li class="text-muted list-unstyled"><a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a></li>
+	{% endfor %}
+	</ul>
+  <hr>
+</div>   
+{% endblock %}
+
+{% block content %}
+	<div class="col-md-12">
+		<h4><strong class="text-muted">{{subject.subject}}</strong></h4>
+		<hr>		
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li><a href="/student/exam/{{subject.exam.pk}}/">{{subject.exam.exam}}</a></li>
+		  <li>{{subject.subject}}</li>
+		</ol>
+		<div class="panel-group col-md-8" id="accordion">
+			{% for topic in subject.topic_set.all %}
+		  <div class="panel panel-default">
+		    <div class="panel-heading">
+		      <h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion" href="#{{topic.pk}}" style="text-decoration:none;">
+		          <h4><img src="/static/images/topic.png"> {{topic.topic}}</h4>
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="{{topic.pk}}" class="panel-collapse collapse {% if topic.pk == topic_id %}in{% endif %}">
+		      <div class="panel-body">
+		        {% for subtopic in topic.subtopic_set.all %}
+		        	<h5><strong class="text-muted"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></strong></h5>
+		        	<p align="justify">
+		        		{{subtopic.descripition}}
+		        		<hr>
+		        	</p>
+		        {% empty %}
+		        	<div class="alert alert-info"><strong>We are updating data...</strong></div>
+		        {% endfor %}
+		      </div>
+		    </div>
+		  </div>
+		  {% endfor %}
+		</div>
+
+		<div class="col-md-4">
+			<h4><strong class="text-muted">Related Subjects</strong></h4>
+			<hr>
+			{% for subject in subject.exam.subject_set.all %}
+				<strong class="text-muted"><a href="/student/exam/subject/{{subject.pk}}/">{{subject.subject}}</a></strong> <br>
+			{% endfor %}
+		</div>
+
+	</div>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+	goToByScroll('{{topic_id}}');
+</script>
+{% endblock %}

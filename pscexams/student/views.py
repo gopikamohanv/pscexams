@@ -5,8 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
-from pscexams.admin.models import Exam, Question
-from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType
+from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic
+from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType, ExamTest
 
 def student_check(user):
 	try:
@@ -33,23 +33,79 @@ def student_exam(request, pk):
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	exam = get_object_or_404(Exam, pk=pk)
 	response.update({'exam':exam})
+	return render_to_response('student_subjects.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_exam_subject(request, pk):
+	response = {}
 	response.update({'user':UserProfile.objects.get(user=request.user)})
-	questions = Question.objects.filter(topic__exam=exam)
-	if questions.count() < 2:
+	subject = get_object_or_404(Subject, pk=pk)
+	response.update({'subject':subject})
+	if 'topic' in request.GET and request.GET['topic']:
+		response.update({'topic_id':int(request.GET['topic'])})
+	return render_to_response('student_topics.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_exam_topic_tests(request, pk):
+	response = {}
+	response.update({'user':UserProfile.objects.get(user=request.user)})
+	sub_topic = get_object_or_404(SubTopic, pk=pk)
+	tests = Question.objects.filter(sub_topic=sub_topic).count() / 10
+	tests = range(1, tests+1)
+	response.update({'sub_topic':sub_topic})
+	response.update({'tests':tests})
+	if 'locked' in request.GET and request.GET['locked']:
+		response.update({'locked':True})
+	if 'test' in request.GET and request.GET['test']:
+		response.update({'test':request.GET['test']})	 
+	return render_to_response('student_topic_tests.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_exam_topic(request, pk, test):
+	response = {}
+	test = int(test)
+	user = UserProfile.objects.get(user=request.user)
+	response.update({'user':user})
+	sub_topic = get_object_or_404(SubTopic, pk=pk)
+	response.update({'sub_topic':sub_topic})
+
+	if test > 1:
+		try:
+			exam = ExamTest.objects.get(user=user, exam_topic=sub_topic)
+		except:
+			return HttpResponseRedirect('/student/exam/topic/tests/1/?locked=true&test=1')	
+		else:
+			if not exam.test_num == test -1:
+				return HttpResponseRedirect('/student/exam/topic/tests/1/?locked=true&test=' + str(exam.test_num + 1))	
+
+	page = int(test) - 1
+	questions = Question.objects.filter(sub_topic=sub_topic).order_by('pk')[(page*10):(page*10)+10]
+	if questions.count() < 10:
 		pass
 	else:
 		response.update({'questions':questions})
+	response.update({'test':test})
 	response.update({'exam_type':ExamType.types['Exam']})
 	return render_to_response('student_exam.html', response)
+
 
 @login_required
 @user_passes_test(student_check)
 def student_exam_submit(request, pk):
 	response = {}
-	response.update({'user':UserProfile.objects.get(user=request.user)})
+	user = UserProfile.objects.get(user=request.user)
+	response.update({'user':user})
+
+	try:
+		sub_topic = get_object_or_404(SubTopic, pk=pk)
+	except:
+		raise Http404()
 
 	if request.method == 'GET':
-		return HttpResponseRedirect('/student/exam/'+ str(pk)+ '/')
+		return HttpResponseRedirect('/student/exam/topic/tests/' + pk + '/')
 
 	if request.method == "POST":
 		if 'limit' in request.POST and request.POST['limit']:
@@ -60,6 +116,12 @@ def student_exam_submit(request, pk):
 
 		if 'exam_type' in request.POST and request.POST['exam_type']:
 			exam_type = request.POST['exam_type']
+		else:
+			response.update({'form_error':True})
+			return render_to_response('student_exam_complete.html', response)
+
+		if 'test' in request.POST and request.POST['test']:
+			test_num = int(request.POST['test'])
 		else:
 			response.update({'form_error':True})
 			return render_to_response('student_exam_complete.html', response)
@@ -129,9 +191,9 @@ def student_exam_submit(request, pk):
 			i = i + 1
 
 		# Update the score
-		total_score = int(q_limit) * 5
+		total_score = int(q_limit) * 10
 		wrong_answers = int(q_limit) - int(correct_answers)
-		score = (int(correct_answers) * 5) - (int(wrong_answers))
+		score = (int(correct_answers) * 10) - (int(wrong_answers))
 		test.correct_answers = correct_answers
 		test.score = score
 		test.save()
@@ -149,8 +211,22 @@ def student_exam_submit(request, pk):
 		mock_test_type.mock_test = test
 		mock_test_type.exam = pk
 
+		try:
+			sub_topic = SubTopic.objects.get(pk=pk)
+			response.update({'sub_topic':sub_topic})
+		except:
+			pass
 
-		response.update({'score':correct_answers})
+		if int(wrong_answers) == 0:
+			try:
+				exam = ExamTest.objects.get(user=user, exam_topic=sub_topic)
+			except:
+				ExamTest.objects.create(user=user, exam_topic=sub_topic, test_num=test_num)
+			else:
+				exam.test_num = test_num
+				exam.save()
+
+		response.update({'score':score})
 		response.update({'total_score':total_score})
 		response.update({'test':test})
 		response.update({'success':True})
@@ -172,6 +248,6 @@ def student_answersheet(request, pk):
 	test_data = get_object_or_404(MockTest, pk=pk)
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	response.update({'test_data':test_data})
-	response.update({'total_score': test_data.mocktestdata_set.count() * 5})
+	response.update({'total_score': test_data.mocktestdata_set.count() * 10})
 	return render_to_response('student_answersheet.html', response)
 

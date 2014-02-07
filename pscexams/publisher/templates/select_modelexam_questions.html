@@ -1,0 +1,57 @@
+{% include "publisher_header.html" %}   
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jqueryui/ui-lightness/jquery-ui-1.7.2.custom.css" />
+<script type="text/javascript" src="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/scripts/jHtmlArea-0.7.0.js"></script>
+<link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jHtmlArea.css" />
+
+
+<script type="text/javascript">
+    function modelexam_changed(option)
+    {
+    	
+        if (option == 0)
+        {
+            return;
+        }
+        $.ajax({
+            type    : 'GET',
+            url     : '/publisher/modelexam/ajax/question/',
+            cache   : false,
+            data    : "exam=" + option,
+            success : function(data,textStatus)
+            {
+                $("#modelexams_table").html(data);
+            },
+            error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+        });
+    }
+</script>
+<div class="row" style="margin-top:50px;margin-left:10px;">
+	<label style="font-size:20px;">Exam:</label>
+	<select name="exam" id="exam" onChange="modelexam_changed(this.value)" style="width:220px;">
+	    <option value="0">Select Exams</option>
+	    {% for exam in exams %}
+            <option value="{{exam.id}}">{{exam.exam}}</option> 
+        {% endfor %}
+	</select>
+</div>
+
+<div class="CSSTableGenerator" >
+  <table id="modelexams_table">
+    <tr>
+      <td>No</td>
+      <td>Test</td>
+      <td>Action</td>
+      <td>View</td>
+      <td>Status</td>
+      <td>Edit</td>
+    </tr>
+    
+  </table>
+</div>
+<br><br><br>
+{% include "tutor_footer.html" %}    

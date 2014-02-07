@@ -1,0 +1,128 @@
+
+{% include "publisher_header.html" %}     
+
+<script type='text/javascript'> 
+  function validate()
+    {
+      $("#name_message").html("");
+      $("#username_message").html("");
+      $("#password_message").html("");
+      $("#conpassword_message").html("");
+      $("#email_message").html("");
+      $("#mobile_message").html("");
+      $("#state_message").html("");
+      $("#warn_message").html("");
+      if( document.form.exam.value == '' && document.form.title.value == '' &&  document.form.max_question.value == ''&&document.form.max_time.value == ''){
+          $("#warn_message").css('color','red');
+          $("#warn_message").html("Must fill required feilds");
+          return false;    
+      }else{
+
+        if( document.form.exam.value == '0' )
+        {
+          $("#exam_message").css('color','red');
+          $("#exam_message").html("Select Exam");
+          return false;
+        }
+        
+        if( document.form.title.value == '' )
+        {
+          $("#title_message").css('color','red');
+          $("#title_message").html("Title is required");
+          return false;
+        }
+   
+        if( document.form.max_question.value == '' )
+        {
+          $("#question_message").css('color','red');
+          $("#question_message").html("No of Questions are required");
+          return false;
+        }
+
+        if( document.form.max_time.value == '' )
+        {
+          $("#time_message").css('color','red');
+          $("#time_message").html("Time is required");
+          return false;
+        }
+
+      }     
+      return true;
+    }
+  </script>
+
+  <form method='POST' class="bs-example form-horizontal" name="form" id="regform" action="/publisher/create/modelexam/" onSubmit="return validate()"> 
+         
+     
+      <div id ="warn_message"></div>
+      {%if success%}
+       <div class="alert alert-dismissable alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button><strong>Model Exam Created Successfully </strong></p>
+        </div>
+      {%endif%}
+      {% if form_error %}
+        <div class="alert alert-dismissable alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>{{error_text}}</strong> 
+        </div>
+      {% endif %}
+      <table>
+        <tr>
+          <td style="width:100px;">
+            <label>Exam:</label>
+          </td>
+          <td>
+            <select id="exam" class="selectpicker" name="exam" style="width:200px;">
+              <option value="0">Select Exam</option>
+                {% for exam in exams %}
+                    <option value="{{exam.id}}">{{exam.exam}}</option> 
+                {% endfor %}
+            </select>
+            <p id="exam_message"></p>
+          </td>
+        </tr>  
+
+        <tr>
+          <td>
+            <label>Title:</label>
+          </td>       
+          <td>
+            <input type='textbox' name='title' style="width:200px;">
+            <p id="title_message"></p>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label>No of Questions:</label>
+          </td>      
+          <td>
+            <input type="text" name="max_question" style="width:200px;">
+            <p id="question_message"></p>
+          </td> 
+        </tr>
+
+        <tr>
+          <td>
+            <label>Time:</label>
+          </td>
+          <td>
+            <input type='text' name='max_time' style="width:200px;">
+            <p id="time_message"></p>
+          </td>  
+        </tr>
+
+        <tr>
+					<td>
+
+					</td>
+					<td>
+						<br><br><input type="submit" value="Create" id="btn" class="btn btn-success" />
+					</td>&nbsp;
+        </tr>
+
+      </table>
+  	</form>
+	<br> 
+
+{% include "tutor_footer.html" %}

@@ -1,0 +1,31 @@
+ <table id="modelexams_table">
+    <tr>
+      <td>No</td>
+      <td>Test</td>
+      <td>Action</td>
+      <td>View</td>
+      <td>Status</td>
+      <td>Edit</td>
+    </tr>
+    {% for modelexam in modelexams %}
+      <tr>
+        <td style="width:50px; text-align:center;">{{ forloop.counter }}</td>
+        <td style="width:300px; text-align:center;">{{modelexam.title}}</td>
+        <td style="width:200px; text-align:center;">
+            <a href="/publisher/add/modelexam/questions/?test={{modelexam.id}}&exam={{modelexam.exam.id}}"> Add Questions </a>
+        </td>
+        <td style="width:100px; text-align:center;">
+            <a href"#"> View </a>
+        </td>
+        {% if test.is_published %}
+        	<td style="width:100px; text-align:center;"><a href="#"><font color="red">Unpublish</font></a></td>
+      	{% else %}
+        	<td style="width:100px; text-align:center;"><a href="#"><font color="green">Publish</font></a></td>
+      	{% endif %}
+      	<td style="width:100px; text-align:center;">
+            <a href="#"> Edit </a>
+        </td>
+       
+      </tr>
+    {%endfor%}
+  </table>

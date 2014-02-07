@@ -1,0 +1,108 @@
+{% include "publisher_header.html" %}  
+<div class="row">
+  <div class="col-lg-12">
+
+    <script language='JavaScript'>
+      checked = false;
+      function checkedAll () {
+        if (checked == false){checked = true}else{checked = false}
+        for (var i = 0; i < document.getElementById('questions_form').elements.length; i++) {
+          document.getElementById('questions_form').elements[i].checked = checked;
+        }
+      }
+    </script>
+
+    <script type="text/javascript">
+      function subject_changed(option)
+          {
+              if (option == 0)
+              {
+                  return;
+              }
+              $.ajax({
+                  type    : 'GET',
+                  url     : '/subject/ajax/topic/',
+                  cache   : false,
+                  data    : "subject=" + option,
+                  success : function(data,textStatus)
+                  {
+                      $("#topic").html(data);
+                  },
+                  error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+              });
+          }
+          function topic_changed(option)
+          {
+              if (option == 0)
+              {
+                  return;
+              }
+              $.ajax({
+                  type    : 'GET',
+                  url     : '/topic/ajax/subtopic/',
+                  cache   : false,
+                  data    : "topic=" + option,
+                  success : function(data,textStatus)
+                  {
+                      $("#sub_topic").html(data);
+                  },
+                  error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+              });
+          }
+          function subtopic_changed(option)
+          {
+              if (option == 0)
+              {
+                  return;
+              }
+              $.ajax({
+                  type    : 'GET',
+                  url     : '/publisher/subtopic/ajax/add/question/',
+                  cache   : false,
+                  data    : "sub_topic=" + option,
+                  success : function(data,textStatus)
+                  {
+                      $("#question_add_table").html(data);
+                  },
+                  error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+              });
+          }
+        </script>
+
+        {% if question_saved %}
+          <div class="alert alert-dismissable alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Model Exam Questions was saved successfully.</strong> 
+          </div>
+        {% endif %}
+
+        <div class="row" style="margin-top:50px;margin-left:10px;">
+          <label style="font-size:20px;">Subject:</label>
+          <select name="subject" id="subject" onChange="subject_changed(this.value)" style="width:220px;">
+            <option value="0">Select Subject</option>
+            {% for subject in subjects %}
+              <option value="{{subject.id}}">{{subject.subject}}</option> 
+            {% endfor %}
+          </select>
+
+          <label style="font-size:20px;">Topic:</label>
+          <select name="topic" id="topic" onChange="topic_changed(this.value)" style="width:220px;">
+            <option value="0">Select Topic</option>
+          </select>
+
+          <label style="font-size:20px;">Sub Topic:</label>
+          <select name="sub_topic" id="sub_topic" onChange="subtopic_changed(this.value)" style="width:220px;">
+            <option value="0">Select Sub Topic</option>
+          </select>
+
+        </div>
+
+        <form action="/publisher/add/modelexam/questions/" method="POST" id="questions_form" style="margin-top:50px;">{% csrf_token %}
+        	<div id="question_add_table">
+           
+          </div>
+          <input type="hidden" name="test" value="{{test}}">
+        
+        </form>
+    <br><br>
+{% include "tutor_footer.html" %}  

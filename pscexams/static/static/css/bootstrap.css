@@ -5468,6 +5468,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .label-success {
   background-color: #43ac6a;
+  border-radius: 100px;
 }
 
 .label-success[href]:hover,
@@ -7965,7 +7966,7 @@ nav #login-content {
   top: 50px;
   right: 0;
   z-index: 999;    
-  background: transparent;  
+  background: white;  
   padding: 15px;
   -moz-box-shadow: 0 2px 2px -1px rgba(0,0,0,.9);
   -webkit-box-shadow: 0 2px 2px -1px rgba(0,0,0,.9);

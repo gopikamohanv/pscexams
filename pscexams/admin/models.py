@@ -26,6 +26,13 @@ class Subject(models.Model):
 	#def __unicode__(self):
 	#	return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
 
+class SubjectDescription(models.Model):
+	subject = models.OneToOneField(Subject)
+	image = models.CharField(max_length=255, null=True, blank=True)
+	description = models.TextField()
+
+	def __unicode__(self):
+		return str(self.subject)
 
 class Topic(models.Model):
 	state = models.ForeignKey(State)

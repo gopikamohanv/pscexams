@@ -1,19 +1,38 @@
 {% extends 'base.html' %}
 
+{% block left_content %}
+<div class="col-md-12">
+  <h5><img src="/static/images/new-icon.png"><strong class="text-muted">Related Subtopics</strong></h5>
+  <ul>
+  {% for subtopic in sub_topic.topic.subtopic_set.all %}
+    <li class="text-muted list-unstyled"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></li>
+  {% endfor %}
+  </ul>
+  <hr>
+</div>   
+{% endblock %}
+
 {% block content %}
 	<div class="col-md-12">
-		<div class="jumbotron">
-			Welcome {{user.user.first_name}}
-		</div>
+    <h4><strong class="text-muted">{{sub_topic.sub_topic}}</strong></h4>
+    <hr>
+    <ol class="breadcrumb">
+      <li><a href="/home/">Kerala PSC</a></li>
+      <li><a href="/student/exam/{{sub_topic.exam.pk}}/">{{sub_topic.exam.exam}}</a></li>
+      <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/">{{sub_topic.subject.subject}}</a></li>
+      <li><a href="/student/exam/topic/tests/{{sub_topic.pk}}/">{{sub_topic.sub_topic}}</a></li>
+      <li>Test {{test}}</li>
+    </ol>
 		<div class="col-lg-12">
 			{% if questions %}
-			<form action="/student/exam/{{exam.pk}}/submit/" method="POST">
+			<form action="/student/exam/{{sub_topic.pk}}/submit/" method="POST">
 				<div style="display:none;">
         	{% for question in questions %}
           	<input type="hidden" name="q_{{forloop.counter}}" value="{{question.id}}" />
         	{% endfor %}
      	 	</div>
 			<table class="col-md-10"> 
+          {% autoescape off %}
           {% for question in questions %}     
           <tr>
               <td><div><span class="question_labels">
@@ -38,11 +57,13 @@
           </fieldset>
           </tr>
           {% endfor %}    
+          {% endautoescape %}
           <tr>
           	<td>
           		<div style="text-align:center;">
               	<input type="hidden" name="limit" value="{{questions.count}}">
               	<input type="hidden" name="exam_type" value="{{exam_type}}">
+                <input type="hidden" name="test" value="{{test}}">
               	<input type="submit" class="btn btn-success btn-lg" value="Finish Test" />
               </div>
             </td>
@@ -51,7 +72,7 @@
     	</form>
       {% else %}
       <div class="alert alert-info">
-      	<h3>We are updating questions.</h3>
+      	<strong>We are updating questions.</strong>
       </div>
       {% endif %}
    	</div>

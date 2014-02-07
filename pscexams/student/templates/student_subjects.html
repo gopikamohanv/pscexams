@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block left_content %}
+<div class="col-md-12">
+  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Available Exams</strong></h5>
+  <ul>
+	{% for exam in exam.state.exam_set.all %}
+		<li class="text-muted list-unstyled"><a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a></li>
+	{% endfor %}
+	</ul>
+  <hr>
+</div>   
+{% endblock %}
+
+{% block content %}
+	<div class="col-md-12">
+		<h4><strong class="text-muted">{{exam.exam}}</strong></h4>
+		<hr>
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li>{{exam.exam}}</li>
+		</ol>
+		<div class="col-md-9">
+			{% for subject in exam.subject_set.all %}
+				<div class="col-md-4">
+					<a href="/student/exam/subject/{{subject.pk}}/"><h5><img src="/static/images/test.png"> <strong class="text-muted">{{subject.subject}}</strong></h4></a>
+					<p class="text-muted">dshkj hdkjhd sjkf hd kjd sfh sd hfhsdjfhdsjf k dfj jsd fjhd s fkjds jf sjdf hjksd fjskdfhkdsh kjfdsjkfdh kfj ds f dsfsdh f </p>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="col-md-3" style="border-left:1px solid #ccc;">
+			<div class="col-md-12">
+				<h5><img src="/static/images/tests-icon.png" alt=""> <strong class="text-muted">Model Exams</strong></h5>
+				<ul>
+          <li class="text-muted list-unstyled">LGS</li>
+          <li class="text-muted list-unstyled">LD</li>
+        </ul>
+			</div>
+			<hr>
+			<div class="col-md-12">
+				<h5><img src="/static/images/tests-icon.png" alt=""> <strong class="text-muted">Previous Year Questions</strong></h5>
+				<ul>
+          <li class="text-muted list-unstyled">2013</li>
+          <li class="text-muted list-unstyled">2012</li>
+        </ul>
+			</div>
+			<hr>
+		</div>
+	</div>	
+{% endblock %}

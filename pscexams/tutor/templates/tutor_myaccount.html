@@ -1,0 +1,21 @@
+{% include "tutor_header.html" %}
+
+<h2>My Activity</h2>        
+      <table style="width:100%;font-weight:bold;">      
+           
+        <tr>
+            <td>Questions Typed Today</td>
+            <td>{{questions_added_today}}</td>
+        </tr>
+        <tr>
+            <td>Questions Typed This Month</td>
+            <td>{{questions_added_this_month}}</td>
+        </tr>
+        <tr>
+            <td>Total Questions Typed</td>
+            <td>{{total_questions_added}}</td>
+        </tr> 
+                                                                                                                                                                                                                                                                                      
+      </table>        
+
+{% include "tutor_footer.html" %}

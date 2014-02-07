@@ -33,9 +33,19 @@ urlpatterns = patterns('',
     (r'^smartindia/$',smartindia),
     (r'^keralapsc/$',keralapsc),
     (r'^topic/ajax/subtopic/$',topic_ajax_subtopic),
+    (r'^subtopic/ajax/question/$',subtopic_ajax_question),
+    (r'^tutor/myaccount/$',tutor_myaccount),
+    (r'^about/previous/year/question/$',about_previous_year_question),
+    (r'^about/modelexams/$',about_model_exams),
+    (r'^about/tipsandtricks/$',about_tipsandtricks),
+    (r'^about/readandlearn/$',about_readandlearn),
+    (r'^about/new/$',about_new),
 
    
     # Student Urls
     url(r'^student/', include('pscexams.student.urls')),
+    url(r'^publisher/', include('pscexams.publisher.urls')),
+    url(r'^siteadmin/', include('pscexams.admin.urls')),
+
 
 )

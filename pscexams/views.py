@@ -18,6 +18,8 @@ from pscexams.forms import FreeRegistration
 def index(request):
 	response = {}
 	states = State.objects.all()
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 	response.update({'states':states})
 	return render_to_response('index.html', response)
 
@@ -96,12 +98,20 @@ def home(request):
 	response.update({'user':request.user})
 
 	if user_profile.user_type == UserType.types['Tutor']:
+		states = State.objects.all()
+		response.update({'states':states})
 		questions = Question.objects.filter(tutor=request.user)
 		response.update({'questions':questions})
 		return render_to_response('tutor_home.html',response)
 
 	if user_profile.user_type == UserType.types['Student']:
-		return HttpResponseRedirect('/student/dashboard/')    
+		return HttpResponseRedirect('/student/dashboard/')
+
+	if user_profile.user_type == UserType.types['Publisher']:
+		return HttpResponseRedirect('/publisher/dashboard/')
+
+	if user_profile.user_type == UserType.types['Admin']:
+		return HttpResponseRedirect('/siteadmin/dashboard/')   
 
 
 #save new user details
@@ -140,26 +150,13 @@ def registration_add(request):
         
         
             
-        user_obj=User() 
-        user_obj.username=username
-        user_obj.email=email
+        user_obj=User(username=username, first_name=name, email=email, is_active=False)
         user_obj.set_password(password)
-        user_obj.is_active=True 
         user_obj.save();
+        userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 4, state=State.objects.get(id=state), mobile_no=mobile_no)      
         try:
-            userprofiles_obj=UserProfile()      
-        except:
-            raise Http404("")
-        
-        userprofiles_obj.user=User.objects.get(id=user_obj.id)
-        userprofiles_obj.name=name  
-        userprofiles_obj.email=email
-        userprofiles_obj.state=State.objects.get(id=state)    
-        userprofiles_obj.mobile=mobile_no
-        userprofiles_obj.user_type = 4
-        try:
-            userprofiles_obj.save();
-            response.update({'success':True})
+        	userprofiles_obj.save();
+        	response.update({'success':True})
         except:
             raise Http404()
         
@@ -172,7 +169,7 @@ def state_ajax_exam(request):
 	if 'state' in request.GET and request.GET['state']:
 		state = request.GET['state']
 		exams = Exam.objects.filter(state=state)
-		response = '<option value=\"0\">Select Exams</option>'
+		response = '<option value=\"0\">Select Exam</option>'
 		for exam in exams:
 			response += '<option value=\"'
 			response += str(exam.id)
@@ -237,6 +234,20 @@ def topic_ajax_subtopic(request):
 		return HttpResponse('Error# No State Specified')
 
 
+# Ajax for tutor question search
+# /subtopic/ajax/add/question/
+def subtopic_ajax_question(request):
+	response = {}
+	if 'sub_topic' in request.GET and request.GET['sub_topic']:
+		sub_topic = request.GET['sub_topic']
+	try:
+		questions = Question.objects.filter(tutor=request.user, sub_topic=sub_topic)
+		response.update({'questions':questions})
+	except:
+		response.update({'no_questions':True})
+	return render_to_response('ajax_questions.html', response)
+
+
 # Free Registration
 def register(request):
 	response = {}
@@ -278,4 +289,34 @@ def register(request):
 
 	response.update({'form':form})
 	return render_to_response('index.html', response)
+
+# For About Previous year Questions
+#/about/previous/year/question/ 
+def about_previous_year_question(request):
+    response = {}
+    return render_to_response('about_previous_year_question.html')
+
+# For About Model exams
+#/about/modelexams/ 
+def about_model_exams(request):
+    response = {}
+    return render_to_response('about_modelexams.html')
+
+# For About Tips and Tricks
+#/about/tipsandtricks/ 
+def about_tipsandtricks(request):
+    response = {}
+    return render_to_response('about_tipsandtricks.html')
+
+# For About Read and Learn
+#/about/readandlearn/ 
+def about_readandlearn(request):
+    response = {}
+    return render_to_response('about_readandlearn.html')
+
+# For About New Exams
+#/about/readandlearn/ 
+def about_new(request):
+    response = {}
+    return render_to_response('about_new.html')
 

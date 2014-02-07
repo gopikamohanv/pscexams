@@ -58,10 +58,33 @@ class Question(models.Model):
     is_published = models.BooleanField()
     sub_topic = models.ForeignKey(SubTopic)
     question_type = models.CharField(max_length=2)
-    created_date = models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(null=True, blank=True)
     published_date = models.DateTimeField(null=True, blank=True)
     is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
     last_modified = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.question
+
+
+class ModelExam(models.Model):
+	title = models.CharField(max_length=250)
+	exam = models.ForeignKey(Exam)
+	max_question = models.CharField(max_length=5)
+	max_time = models.CharField(max_length=5, null=True, blank=True)
+	is_published = models.BooleanField(default=False)
+
+	def __unicode__(self):
+		return self.title
+
+class ModelExamQuestion(models.Model):
+	modelexam = models.ForeignKey(ModelExam)
+	question = models.ForeignKey(Question)
+
+
+class ExamDescription(models.Model):
+	exam = models.ForeignKey(Exam)
+	description = models.CharField(max_length=255)
+
+	def __unicode__(self):
+		return self.exam.exam

@@ -1,0 +1,30 @@
+
+    <div id="question_add_table">
+     {% autoescape off %} 
+       <b>Select all:</b> <input type='checkbox' name='checkall' onclick='checkedAll();'><br><br>
+       {% for question in questions %}
+          <table class="table table-striped table-bordered table-hover" style="font-size:15px;">
+            <tbody>
+              <tr class="active">
+                <td colspan = "5"><input type="checkbox" name="question_{{forloop.counter}}" value="{{question.pk}}" class="list_questions"> {{forloop.counter}}.{{question.question}}</td>
+              </tr>
+              <tr>
+                <td>1.{{question.option1}}</td>
+                <td>2.{{question.option2}}</td>
+                <td>3.{{question.option3}}</td>
+                <td>4.{{question.option4}}</td>
+                <td>Ans:{{question.answer}}</td>
+              </tr>
+              <tr>
+                <td colspan = "5">{{question.explanation}}</td>
+              </tr>
+            </tbody>
+          </table>
+           </div>
+         <br>
+       {% endfor %}
+      <input type="hidden" name="count" value="{{count}}">
+      <center><input type="submit" class="btn btn-success" value="Submit"></center><br><br>
+    {% endautoescape %}
+ 
+    

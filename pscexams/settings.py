@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'pscexams.student',
     'pscexams.admin',
     'pscexams.tutor',
+    'pscexams.publisher',
     
 )
 

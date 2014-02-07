@@ -1,0 +1,58 @@
+{% include "admin_header.html" %}
+
+<script>
+    $(document).ready(function()
+    {
+        $("#page_links_0").css({"padding":"5px 2px 5px 2px","border":"3px solid"});
+        /* PUBLISH PAGES*/
+        if (4 == 0)
+        {
+            $("#first").hide();
+            $("#to_first").hide();
+            $("#last").hide();
+            $("#to_last").hide();
+        }
+        if( 4 == 4)
+        {
+            $("#first").hide();
+            $("#to_first").hide();
+        }
+        if( 4 == 5 + 1) 
+        {
+            $("#last").hide();
+            $("#to_last").hide();
+        }
+    });
+</script>
+<div style="text-align:right;margin-top:50px;">
+Total No. of Users:{{user_count}}<br>
+Active Users:{{activeuser_count}}
+</div>
+<div class="CSSTableGenerator" >
+    <table>
+        <tr>
+            <td>No</td>
+            <td>User Status</td>
+            <td>Name</td>
+            <td>Actions</td>
+        </tr>
+        {% for user_detail in user_details %}
+        <tr>
+        <td style="width:100px;text-align:center;">{{ forloop.counter }}</td>
+        <td style="width:100px;text-align:center;"><img src="/static/images/unpublished.png"></td>
+        <td style="width:300px;text-align:center;">
+            {{user_detail.user.first_name}}
+        </td>
+        <td style="width:100px;text-align:center;"><a href="#"><img src="/static/images/trash.png"></a>
+           </td></td>
+        </tr>
+        {%endfor%}
+    </table>
+    </div><br><br>
+
+
+
+
+{% include "admin_footer.html" %}
+
+

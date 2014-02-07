@@ -1,181 +1,90 @@
 {% include "header.html" %}
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="col-lg-8">
-              <p><strong><h4 class="text-info">Kerala P.S.C Last Grade Servant</h4></strong></p>
-              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
-              <hr>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="col-lg-8">
+        <div class="row"><div class="col-lg-1"> <img src="/static/images/new.gif"></div><p><strong><h4 class="text-info">Kerala P.S.C Last Grade Servant</h4></strong></p></div>
+        <p class="text-muted" align="justify"> Kerala P.S.C has introduced a new category for the candidates called Kerala P.S.C Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website. 
+          <a target="_blank" href='/about/new/'>
+            <span class="label label-success">Read more</span>
+          </a>
+        </p>
+        <hr>
 
-              <p><strong><h4 class="text-info">Previous Year Question</h4></strong></p>
-              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
-              <hr>
+     <div class="row"><div class="col-lg-1"> <img src="/static/images/previous.png" style="width:75px;height:75px;"></div><p><strong><h4 class="text-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Previous Year Question</h4></strong></p></div>
+        <p class="text-muted" align="justify"> pscexams.com provide the candidates for the upcoming PSC Exams with all the previous year question papers of various category exams, conducted by the PSC, along with answer keys and their solutions.
+          <a target="_blank" href='/about/previous/year/question/'>
+            <span class="label label-success">Read more</span>
+          </a>
+        </p>
+        <hr>
 
-              <p><strong><h4 class="text-info">Model Exams</h4></strong></p>
-              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
-              <hr>
+        <div class="row"><div class="col-lg-1"> <img src="/static/images/modelexam.jpg" style="width:75px;height:75px;"></div><p><strong><h4 class="text-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Model Exams</h4></strong></p></div>
+        <p class="text-muted" align="justify"> pscexams.com provide the candidates with all the question papers of the previous model exams, conducted by the Kerala PSC, along with answer keys. ere we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better.
+          <a target="_blank" href='/about/modelexams/'>
+            <span class="label label-success">Read more</span>
+          </a>
+        </p>
+        <hr>
 
-              <p><strong><h4 class="text-info">Tips and Tricks</h4></strong></p>
-              <p class="text-muted"> Kerala P.S.C has introduced a new a new catergori for the candidates called Kerala P.Sc Last grade Servants. Candidates who have the minimal qualification of secondry level education can apply for the post. All the application will be accepted only through the one time registration facility approved by the Kerala P.S.C website.</p>
-              <hr>
+        <div class="row"><div class="col-lg-1"> <img src="/static/images/tricks.png" style="width:75px;height:75px;"></div><p><strong><h4 class="text-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tips and Tricks</h4></strong></p></div>
+        <p class="text-muted" align="justify"> Time management is yet another critical detail that is looked into while attending PSC Exams. Here we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better.
+          <a target="_blank" href='/about/tipsandtricks/'>
+            <span class="label label-success">Read more</span>
+          </a>
+        </p>
+        <hr>
 
-              <p><strong><h4 class="text-info">Read and Learn</h4></strong></p>
-              <p class="text-muted"> Reading to Learn is one of the world's most powerful literacy programs. It is designed to enable all learners at all levels of education to read at levels grade and area of study. Apply this to your PCS preparations too. Here we sets out hand picked material and question banks, time-proven exam strategies, exam analyses and simulated tests to give you a hands-on real time test experience.We strive to ensure that you do not miss out on anything that you need on your way to success.</p>
-              <hr>
+         <div class="row"><div class="col-lg-1"> <img src="/static/images/read.png" style="width:75px;height:75px;"></div><p><strong><h4 class="text-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read and Learn</h4></strong></p></div>
+        <p class="text-muted" align="justify"> Reading to Learn is one of the world's most powerful literacy programs. t is designed to enable all learners at all levels of education to read at levels grade and area of study. 
+          <a target="_blank" href='/about/readandlearn/'>
+            <span class="label label-success">Read more</span>
+          </a>
+        </p>
+        <hr>
 
-            </div>
+      </div>
 
-            {%if no_user%}
-              <div class="col-lg-4">
-                <div class="alert alert-dismissable alert-danger">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <strong>No Such User</strong>
-                </div>
-              </div>
-            {%endif%}
-
-            {%if inactive%}
-              <div class="col-lg-4">
-                <div class="alert alert-dismissable alert-danger">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <strong>Inactive User</strong>
-                </div>
-              </div>
-            {%endif%}
-
-            {% if user_error %}
-              <div class="col-lg-4">
-                <div class="alert alert-dismissable alert-danger">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <strong>Username already exists.</strong>
-                </div>
-              </div>
-            {% endif %}
-
-            <div class="col-lg-4">
-              <div class="well">
-              <form class="bs-example form-horizontal" action="/register/" method="POST">
-                <fieldset>
-                  <legend>Free Sign up</legend>
-
-                  {% if form.name.errors %}
-                  <div class="form-group has-error">
-                    <label for="name" class="col-lg-2 control-label">Name</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="name" id="name" placeholder="Name">
-                      <span class="help-block">{% for error in form.name.errors %}{{error}}{% endfor %}</span>
-                    </div>
-                  </div>
-                  {% else %}
-
-                  <div class="form-group">
-                    <label for="name" class="col-lg-2 control-label">Name</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="{% if form.name.value %}{{form.name.value}}{% endif %}">
-                    </div>
-                  </div>
-                  {% endif %}
-
-                  {% if form.username.errors %}
-                  <div class="form-group has-error">
-                    <label for="username" class="col-lg-2 control-label">Username</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="username" id="username" placeholder="Username">
-                      <span class="help-block">{% for error in form.username.errors %}{{error}}{% endfor %}</span>
-                    </div>
-                  </div>
-                  {% else %}
-                  <div class="form-group">
-                    <label for="username" class="col-lg-2 control-label">Username</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="{% if form.username.value %}{{form.username.value}}{% endif %}">
-                    </div>
-                  </div>
-                  {% endif %}
-
-                  {% if form.password.errors %}
-                  <div class="form-group has-error">
-                    <label for="password" class="col-lg-2 control-label">Password</label>
-                    <div class="col-lg-10">
-                      <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                      <span class="help-block">{% for error in form.password.errors %}{{error}}{% endfor %}</span>
-                    </div>
-                  </div>
-                  {% else %}
-                  <div class="form-group">
-                    <label for="password" class="col-lg-2 control-label">Password</label>
-                    <div class="col-lg-10">
-                      <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                    </div>
-                  </div>
-                  {% endif %}
-
-                  {% if form.mobile.errors %}
-                  <div class="form-group has-error">
-                    <label for="mobile" class="col-lg-2 control-label">Mobile</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile">
-                      <span class="help-block">{% for error in form.mobile.errors %}{{error}}{% endfor %}</span>
-                    </div>
-                  </div>
-                  {% else %}
-                  <div class="form-group">
-                    <label for="mobile" class="col-lg-2 control-label">Mobile</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="{% if form.mobile.value %}{{form.mobile.value}}{% endif %}">
-                    </div>
-                  </div>
-                  {% endif %}
-
-                  {% if form.state.errors %}
-                  <div class="form-group has-error">  
-                    <label for="state" class="col-lg-2 control-label">State</label>
-                    <div class="col-lg-10">
-                      <select name="state" id="state" class="form-control">
-                        {% for state in states %}
-                        <option value="{{state.pk}}">{{state.state}}</option>
-                        {% endfor %}
-                      </select>
-                      <span class="help-block">{% for error in form.state.errors %}{{error}}{% endfor %}</span>
-                    </div>
-                  </div>
-                  {% else %}
-                  <div class="form-group">  
-                    <label for="state" class="col-lg-2 control-label">State</label>
-                    <div class="col-lg-10">
-                      <select name="state" id="state" class="form-control">
-                        {% for state in states %}
-                        <option value="{{state.pk}}">{{state.state}}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                  </div>
-                  {% endif %}
-
-                   <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                      <button type="reset" class="btn btn-default">Cancel</button> 
-                      <button type="submit" class="btn btn-primary">Submit</button> 
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-
-            <div class="well">
-              <fieldset>
-                  <legend>Exams</legend>
-                  <a href="#"> Secretariate Assistant</a><br><hr>
-                  <a href="#"> Deputy Collector</a><br><hr>
-                  <a href="#"> Last grade Cleck</a><br><hr>
-                  <a href="#"> Office Assistant</a><br><hr>
-                  <a href="#"> Village Extension Officer</a><br><hr>
-                  <a href="#"> Bank P O</a><br>
-              </fieldset>
-              
-            </div>
+      {%if no_user%}
+        <div class="col-lg-4">
+          <div class="alert alert-dismissable alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>No Such User</strong>
           </div>
         </div>
-     
+      {%endif%}
+
+      {%if inactive%}
+        <div class="col-lg-4">
+          <div class="alert alert-dismissable alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Inactive User</strong>
+          </div>
+        </div>
+      {%endif%}
+
+      {% if user_error %}
+        <div class="col-lg-4">
+          <div class="alert alert-dismissable alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Username already exists.</strong>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="col-lg-4">
+        {% include "free_signup.html" %}
+        <div class="well">
+          <fieldset>
+              <legend>Exams</legend>
+              {% for exam in exams %}
+                <a href="#">{{exam.exam}}</a><br><hr>
+              {% endfor %}
+          </fieldset>
+          
+        </div>
+      </div>
     </div>
+ 
+</div>
     
 {% include "footer.html" %}

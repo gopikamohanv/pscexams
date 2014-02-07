@@ -5,14 +5,13 @@ from django.contrib.auth import *
 from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.contrib import auth
+import datetime 
 
 from pscexams.user_type import UserType
 from pscexams.student.models import *
 from pscexams.admin.models import *
-
-
-# Pagination limit
-PAGE_LIMIT = 3
+import time
+from datetime import date,timedelta
 
 
 # Add a new question for the tutor
@@ -143,6 +142,7 @@ def tutor_questions_add(request):
         response.update({'error_text':'Error occured while saving your question. If this problem repeats, please contact the Smart World Technical team'})
         return render_to_response('tutor_question_add.html', response)
 
+  
     # Create a new object and save the damn question
     question_obj = Question()
     question_obj.question = question
@@ -153,6 +153,7 @@ def tutor_questions_add(request):
     question_obj.answer = answer_in_option
     question_obj.explanation = explanation
     question_obj.tutor = request.user
+    question_obj.created_date = datetime.datetime.today()
     question_obj.is_published = False
     question_obj.sub_topic = sub_topic_obj
     question_obj.question_type = question_type
@@ -336,6 +337,7 @@ def tutor_questions_edit(request):
         question_obj.answer = answer_in_option
         question_obj.explanation = explanation
         question_obj.tutor = request.user
+        question_obj.created_date = datetime.datetime.today()
         question_obj.is_published = False
         question_obj.sub_topic = sub_topic_obj
         question_obj.question_type = question_type
@@ -364,47 +366,35 @@ def tutor_questions_edit(request):
         return render_to_response('tutor_questions_edit.html', response)
 
 
-# For Pagination
-#/questions/browse/
-def question_browse(request, page):
-	response = {}
-	response.update(csrf(request))
-	response.update({'user':request.user})
-	
+# Edit and Save Tutor Profile
+# /tutor/myaccount/
+def tutor_myaccount(request):
+    response = {}
+    response.update(csrf(request))
+    
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(DefaultUrl.login_page)
 
-	if 'page' in request.GET and request.GET['page']:
-		page = int(request.GET['page'])
-		response.update({'current_page':page})
-	else:
-		raise Http404()
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        raise Http500
+    if user_profile.user_type != UserType.types['Tutor']:
+        return HttpResponseRedirect(DefaultUrl.login_url)
 
-	questions = Question.objects.filter(tutor=request.user)
+    response.update({'user':request.user})
 
-	counter = page * 3
-	pages = int(math.ceil(float(questions.count())/20)) 
-	if page > pages:
-		raise Http404()
+    now = datetime.datetime.now() 
+    #date = now.strftime("%Y-%m-%d")
 
-	last = pages - 1
-	if pages <= 5:
-		pages = range(0,pages)
-		count = 0
-	else:
-		if page <= 2:
-			pages = range(0,5)
-			count = 4
-		else:
-			if page == last or page == last - 1 :
-				pages = range(page - 2 , pages)
-				count = last + 1
-			else:
-				pages = range(page - 2, page + 3)
-				count = page + 3
+    
+    questions_added_today = Question.objects.filter(tutor=request.user, created_date__day=now.day, created_date__month=now.month, created_date__year=now.year)
+    #return HttpResponse(questions_added_today)
+    response.update({'questions_added_today':questions_added_today})
+    questions_added_this_month = Question.objects.filter(tutor=request.user, created_date__month=now.month, created_date__year=now.year).count()
+    response.update({'questions_added_this_month':questions_added_this_month})
+    total_questions_added = Question.objects.filter(tutor=request.user).count()
+    response.update({'total_questions_added':total_questions_added})
+    return render_to_response('tutor_myaccount.html',response)
 
-	response.update({'counter':counter})
-	response.update({'count':count})
-	response.update({'pages':pages})
-	response.update({'last':last})
 
-	response.update({'questions':questions[(page*3):(page*3)+3]})
-	return render_to_response('tutor_home.html',response)   

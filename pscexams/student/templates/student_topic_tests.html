@@ -20,6 +20,7 @@
 		  <li><a href="/home/">Kerala PSC</a></li>
 		  <li><a href="/student/exam/{{sub_topic.exam.pk}}/">{{sub_topic.exam.exam}}</a></li>
 		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/">{{sub_topic.subject.subject}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/?topic={{sub_topic.topic.pk}}">{{sub_topic.topic.topic}}</a></li>
 		  <li>{{sub_topic.sub_topic}}</li>
 		</ol>
 		{% if locked %}

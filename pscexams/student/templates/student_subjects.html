@@ -1,50 +1,55 @@
 {% extends 'base.html' %}
 
-{% block left_content %}
-<div class="col-md-12">
-  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Available Exams</strong></h5>
-  <ul>
-	{% for exam in exam.state.exam_set.all %}
-		<li class="text-muted list-unstyled"><a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a></li>
-	{% endfor %}
-	</ul>
-  <hr>
-</div>   
-{% endblock %}
-
 {% block content %}
 	<div class="col-md-12">
-		<h4><strong class="text-muted">{{exam.exam}}</strong></h4>
-		<hr>
+		<h3><strong class="text-muted">{{exam.exam}}</strong></h3>
 		<ol class="breadcrumb">
 		  <li><a href="/home/">Kerala PSC</a></li>
 		  <li>{{exam.exam}}</li>
 		</ol>
-		<div class="col-md-9">
+		<div class="col-md-12">
 			{% for subject in exam.subject_set.all %}
 				<div class="col-md-4">
-					<a href="/student/exam/subject/{{subject.pk}}/"><h5><img src="/static/images/test.png"> <strong class="text-muted">{{subject.subject}}</strong></h4></a>
-					<p class="text-muted">dshkj hdkjhd sjkf hd kjd sfh sd hfhsdjfhdsjf k dfj jsd fjhd s fkjds jf sjdf hjksd fjskdfhkdsh kjfdsjkfdh kfj ds f dsfsdh f </p>
+					<a href="/student/exam/subject/{{subject.pk}}/"><h4><img src="{{subject.get_subject_image}}"> <strong class="text-info">{{subject.subject}}</strong></h4></a>
+					<p class="text-muted"><strong>{{subject.get_subject_description}}</strong></p>
 				</div>
 			{% endfor %}
 		</div>
-		<div class="col-md-3" style="border-left:1px solid #ccc;">
-			<div class="col-md-12">
-				<h5><img src="/static/images/tests-icon.png" alt=""> <strong class="text-muted">Model Exams</strong></h5>
-				<ul>
-          <li class="text-muted list-unstyled">LGS</li>
-          <li class="text-muted list-unstyled">LD</li>
-        </ul>
-			</div>
-			<hr>
-			<div class="col-md-12">
-				<h5><img src="/static/images/tests-icon.png" alt=""> <strong class="text-muted">Previous Year Questions</strong></h5>
-				<ul>
-          <li class="text-muted list-unstyled">2013</li>
-          <li class="text-muted list-unstyled">2012</li>
-        </ul>
-			</div>
-			<hr>
-		</div>
 	</div>	
 {% endblock %}
+
+{% block right_content %}
+<div class="col-md-12"><br>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Model Exams</strong></h3>
+        </div>
+        <div class="panel-body">
+        	<a href="">Model Exam1</a><br>
+			<a href="">Model Exam1</a><br>
+			<a href="">Model Exam1</a>
+        </div>
+    </div>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/previous_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Previous Year Questions</strong></h3>
+        </div>
+        <div class="panel-body">
+        	<a href="">2012</a><br>
+			<a href="">2010</a><br>
+			<a href="">2009</a>
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/tests-icon.png" alt=""> <strong>Related Exams</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for exam in exam.state.exam_set.all %}
+				<a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a>
+			{% endfor %}
+        </div>
+    </div>
+</div>   
+{% endblock %}
+

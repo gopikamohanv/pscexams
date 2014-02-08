@@ -1,33 +1,21 @@
 {% extends 'base.html' %}
 
-{% block left_content %}
-<div class="col-md-12">
-  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Available Exams</strong></h5>
-  <ul>
-	{% for exam in subject.exam.state.exam_set.all %}
-		<li class="text-muted list-unstyled"><a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a></li>
-	{% endfor %}
-	</ul>
-  <hr>
-</div>   
-{% endblock %}
-
 {% block content %}
 	<div class="col-md-12">
-		<h4><strong class="text-muted">{{subject.subject}}</strong></h4>
-		<hr>		
+		<br>
+		<h3><strong class="text-info">{{subject.subject}}</strong></h3>		
 		<ol class="breadcrumb">
 		  <li><a href="/home/">Kerala PSC</a></li>
 		  <li><a href="/student/exam/{{subject.exam.pk}}/">{{subject.exam.exam}}</a></li>
 		  <li>{{subject.subject}}</li>
 		</ol>
 		<div class="panel-group col-md-8" id="accordion">
-			{% for topic in subject.topic_set.all %}
+		{% for topic in subject.topic_set.all %}
 		  <div class="panel panel-default">
 		    <div class="panel-heading">
 		      <h4 class="panel-title">
 		        <a data-toggle="collapse" data-parent="#accordion" href="#{{topic.pk}}" style="text-decoration:none;">
-		          <h4><img src="/static/images/topic.png"> {{topic.topic}}</h4>
+		          <h4></strong>{{topic.topic}}</strong></h4>
 		        </a>
 		      </h4>
 		    </div>
@@ -37,7 +25,6 @@
 		        	<h5><strong class="text-muted"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></strong></h5>
 		        	<p align="justify">
 		        		{{subtopic.descripition}}
-		        		<hr>
 		        	</p>
 		        {% empty %}
 		        	<div class="alert alert-info"><strong>We are updating data...</strong></div>
@@ -47,17 +34,56 @@
 		  </div>
 		  {% endfor %}
 		</div>
-
-		<div class="col-md-4">
-			<h4><strong class="text-muted">Related Subjects</strong></h4>
-			<hr>
-			{% for subject in subject.exam.subject_set.all %}
-				<strong class="text-muted"><a href="/student/exam/subject/{{subject.pk}}/">{{subject.subject}}</a></strong> <br>
-			{% endfor %}
-		</div>
-
 	</div>
 {% endblock %}
+
+{% block right_content %}
+<div class="col-md-12">
+	<br>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Related Subjects</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for subject in subject.exam.subject_set.all %}
+				<a href="/student/exam/subject/{{subject.pk}}/">{{subject.subject}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/tricks.png" width="50x;" heigh="45px;" alt=""> <strong>Tips & Tricks</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for topic in subject.topic_set.all %}
+				<a href="">{{topic.topic}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/read.png" width="50x;" heigh="45px;" alt=""> <strong>Read & Learn</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for topic in subject.topic_set.all %}
+				<a href="">{{topic.topic}}</a> <br>
+			{% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/read.png" width="50x;" heigh="45px;" alt=""><strong>Available Exams</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for exam in subject.exam.state.exam_set.all %}
+				<a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+</div>   
+{% endblock %}
+
+
 
 {% block custom_js %}
 <script>

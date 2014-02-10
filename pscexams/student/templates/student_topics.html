@@ -9,7 +9,7 @@
 		  <li><a href="/student/exam/{{subject.exam.pk}}/">{{subject.exam.exam}}</a></li>
 		  <li>{{subject.subject}}</li>
 		</ol>
-		<div class="panel-group col-md-8" id="accordion">
+		<div class="panel-group col-md-12" id="accordion">
 		{% for topic in subject.topic_set.all %}
 		  <div class="panel panel-default">
 		    <div class="panel-heading">

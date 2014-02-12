@@ -9,7 +9,7 @@ from django.contrib.auth import logout as auth_logout
 
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
-from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic
+from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion
 from pscexams.forms import FreeRegistration
 
 
@@ -98,10 +98,6 @@ def home(request):
 	response.update({'user':request.user})
 
 	if user_profile.user_type == UserType.types['Tutor']:
-		states = State.objects.all()
-		response.update({'states':states})
-		questions = Question.objects.filter(tutor=request.user)
-		response.update({'questions':questions})
 		return render_to_response('tutor_home.html',response)
 
 	if user_profile.user_type == UserType.types['Student']:
@@ -246,6 +242,19 @@ def subtopic_ajax_question(request):
 	except:
 		response.update({'no_questions':True})
 	return render_to_response('ajax_questions.html', response)
+
+# Ajax for tutor subtopic search
+# /subtopic/ajax/oneword/	
+def subtopic_ajax_oneword(request):
+	response = {}
+	if 'sub_topic' in request.GET and request.GET['sub_topic']:
+		sub_topic = request.GET['sub_topic']
+	try:
+		onewords = OnewordQuestion.objects.filter(tutor=request.user, sub_topic=sub_topic)
+		response.update({'onewords':onewords})
+	except:
+		response.update({'no_questions':True})		
+	return render_to_response('ajax_onewords.html', response)
 
 
 # Free Registration

@@ -9,9 +9,15 @@
 		</ol>
 		<div class="col-md-12">
 			{% for subject in exam.subject_set.all %}
-				<div class="col-md-4">
-					<a href="/student/exam/subject/{{subject.pk}}/"><h4><img src="{{subject.get_subject_image}}"> <strong class="text-info">{{subject.subject}}</strong></h4></a>
-					<p class="text-muted"><strong>{{subject.get_subject_description}}</strong></p>
+				<div class="col-md-12">
+					<div class="col-md-2">
+						<img src="{{subject.get_subject_image}}"> 
+					</div>
+					<div class="col-md-10">
+						<a href="/student/exam/subject/{{subject.pk}}/"><h4><strong class="text-info">{{subject.subject}}</strong></h4></a>
+						<p>{{subject.get_subject_description}}</p>
+						<hr>
+					</div>
 				</div>
 			{% endfor %}
 		</div>
@@ -19,6 +25,8 @@
 {% endblock %}
 
 {% block right_content %}
+<br>
+<br>
 <div class="col-md-12"><br>
 	<div class="panel panel-success">
     	<div class="panel-heading">

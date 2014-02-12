@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<h3><strong class="text-info">{{sub_topic.sub_topic}}</strong></h3>
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li><a href="/student/exam/{{sub_topic.exam.pk}}/">{{sub_topic.exam.exam}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/">{{sub_topic.subject.subject}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/?topic={{sub_topic.topic.pk}}">{{sub_topic.topic.topic}}</a></li>
+		  <li>{{sub_topic.sub_topic}}</li>
+		</ol>
+		{% for oneword in onewords %}
+			<div class="panel panel-default">
+            	<div class="panel-heading"><h4><strong>{{oneword.question}}</strong></h4></div>
+           		<div class="panel-body">
+                	<h5><strong class="text-success">{{oneword.answer}}</strong></h5>
+                	<h5><strong class="text-muted">{{oneword.explanation}}</strong></h5>
+              	</div>
+            </div>
+        {% empty %}
+        	<div class="alert alert-warning"><h5><strong>We are updating contents...</strong></h5></div>    
+		{% endfor %}	
+	</div>	
+{% endblock %}
+
+{% block right_content %}
+<br>
+<br>
+<div class="col-md-12"><br>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Related topics</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for sub_topic in sub_topics %}
+        		<a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">{{sub_topic.sub_topic}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+</div>   
+{% endblock %}
+

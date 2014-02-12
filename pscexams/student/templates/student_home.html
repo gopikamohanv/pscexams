@@ -7,7 +7,7 @@
 		{% for exam in exams %}
 			<div class="col-md-6">
 				<a href="/student/exam/{{exam.pk}}/"><h4><img src="{{exam.image}}"> <strong class="text-info">{{exam.exam}}</strong></h4></a>
-				<p class="text-muted"><strong>{{exam.get_exam_description}}</strong></p>
+				<p>{{exam.get_exam_description}}</p>
 			</div>
 		{% endfor %}
 	</div>	

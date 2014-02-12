@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 		(r'^exam/(?P<pk>\w+)/submit/$', pscexams.student.views.student_exam_submit),
 		(r'^answersheets/list/$', pscexams.student.views.student_answersheets_list),
 		(r'^answersheet/(?P<pk>\w+)/$', pscexams.student.views.student_answersheet),
+		(r'^onewords/(?P<pk>\w+)/$', pscexams.student.views.student_onewords),
 )

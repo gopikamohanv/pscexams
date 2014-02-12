@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
-from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic
+from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic, OnewordQuestion
 from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType, ExamTest
 
 def student_check(user):
@@ -61,7 +61,8 @@ def student_exam_topic_tests(request, pk):
 	if 'test' in request.GET and request.GET['test']:
 		response.update({'test':request.GET['test']})
 	mocktest_data = MockTestData.objects.filter(question__sub_topic=sub_topic).order_by('-pk')[:5]
-	response.update({'mocktest_data':mocktest_data})		 
+	response.update({'mocktest_data':mocktest_data})
+	response.update({'sub_topic':sub_topic})		 
 	return render_to_response('student_topic_tests.html', response)
 
 @login_required
@@ -252,4 +253,27 @@ def student_answersheet(request, pk):
 	response.update({'test':test_data})
 	response.update({'total_score': test_data.mocktestdata_set.count()})
 	return render_to_response('student_answersheet.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_onewords(request,pk):
+	response = {}
+	topic = get_object_or_404(Topic, pk=pk)
+	response.update({'topic':topic})
+	response.update({'sub_topics': SubTopic.objects.filter(topic=topic)})
+	if 'sub_topic' in request.GET and request.GET['sub_topic']:
+		sub_topic = request.GET['sub_topic']
+	else:
+		response.update({'form_error': True})
+		return render_to_response('student_onewords.html', response)
+	sub_topic_obj = get_object_or_404(SubTopic,pk=sub_topic)
+	response.update({'sub_topic':sub_topic_obj})			
+	onewords = OnewordQuestion.objects.filter(sub_topic=sub_topic)
+	response.update({'onewords':onewords})			
+	return render_to_response('student_onewords.html', response)
+
+
+
+
+
 

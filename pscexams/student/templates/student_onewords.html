@@ -10,6 +10,7 @@
 		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/?topic={{sub_topic.topic.pk}}">{{sub_topic.topic.topic}}</a></li>
 		  <li>{{sub_topic.sub_topic}}</li>
 		</ol>
+		{% autoescape off %}
 		{% for oneword in onewords %}
 			<div class="panel panel-default">
             	<div class="panel-heading"><h4><strong>{{oneword.question}}</strong></h4></div>
@@ -20,7 +21,8 @@
             </div>
         {% empty %}
         	<div class="alert alert-warning"><h5><strong>We are updating contents...</strong></h5></div>    
-		{% endfor %}	
+		{% endfor %}
+		{% endautoescape %}	
 	</div>	
 {% endblock %}
 

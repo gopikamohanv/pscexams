@@ -59,7 +59,9 @@ def student_exam_topic_tests(request, pk):
 	if 'locked' in request.GET and request.GET['locked']:
 		response.update({'locked':True})
 	if 'test' in request.GET and request.GET['test']:
-		response.update({'test':request.GET['test']})	 
+		response.update({'test':request.GET['test']})
+	mocktest_data = MockTestData.objects.filter(question__sub_topic=sub_topic).order_by('-pk')[:5]
+	response.update({'mocktest_data':mocktest_data})		 
 	return render_to_response('student_topic_tests.html', response)
 
 @login_required
@@ -191,9 +193,9 @@ def student_exam_submit(request, pk):
 			i = i + 1
 
 		# Update the score
-		total_score = int(q_limit) * 10
+		total_score = int(q_limit)
 		wrong_answers = int(q_limit) - int(correct_answers)
-		score = (int(correct_answers) * 10) - (int(wrong_answers))
+		score = (int(q_limit)) - (int(wrong_answers))
 		test.correct_answers = correct_answers
 		test.score = score
 		test.save()
@@ -247,7 +249,7 @@ def student_answersheet(request, pk):
 	response = {}
 	test_data = get_object_or_404(MockTest, pk=pk)
 	response.update({'user':UserProfile.objects.get(user=request.user)})
-	response.update({'test_data':test_data})
-	response.update({'total_score': test_data.mocktestdata_set.count() * 10})
+	response.update({'test':test_data})
+	response.update({'total_score': test_data.mocktestdata_set.count()})
 	return render_to_response('student_answersheet.html', response)
 

@@ -1,42 +1,46 @@
 {% extends 'base.html' %}
 
-{% block left_content %}
-	<div class="col-md-12">
-	  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Whats New?</strong></h5>
-	  <ul>
-	    <li class="text-muted list-unstyled">MCQs Added for LGS EXAM</li>
-	    <li class="text-muted list-unstyled">MCQs Added for LGS EXAM</li>
-	  </ul>
-	  <hr>
-	</div>
-
-	<div class="col-md-12">
-	  <h5><img src="/static/images/bar-chart-icon.png" ><strong class="text-muted">My Rank</strong></h5>
-	  <ul>
-	    <li class="text-muted list-unstyled">LGS - 9/25</li>
-	    <li class="text-muted list-unstyled">LGS - 9/25</li>
-	  </ul>
-	  <hr>
-	</div>
-	          
-	<div class="col-md-12">
-	  <h5><img src="/static/images/activity.png"> <strong class="text-muted">Recent Activities</strong></h5>
-	  <li class="text-muted">Attended LD Exam</li>
-	  <li class="text-muted">Attended LD Exam</li>
-	  <li class="text-muted">Attended LD Exam</li>
-	  <hr>
-	</div>
-{% endblock %}
-
 {% block content %}
 	<div class="col-md-12">
-			<h4><strong class="text-muted">Kerala PSC Exams</strong></h4>
+			<h3><strong class="text-muted">Kerala PSC Exams</strong></h3>
 			<hr>
 		{% for exam in exams %}
-			<div class="col-md-4">
-				<a href="/student/exam/{{exam.pk}}/"><h5><img src="/static/images/test.png"> <strong class="text-muted">{{exam.exam}}</strong></h4></a>
-				<p class="text-muted">dshkj hdkjhd sjkf hd kjd sfh sd hfhsdjfhdsjf k dfj jsd fjhd s fkjds jf sjdf hjksd fjskdfhkdsh kjfdsjkfdh kfj ds f dsfsdh f </p>
+			<div class="col-md-6">
+				<a href="/student/exam/{{exam.pk}}/"><h4><img src="{{exam.image}}"> <strong class="text-info">{{exam.exam}}</strong></h4></a>
+				<p class="text-muted"><strong>{{exam.get_exam_description}}</strong></p>
 			</div>
 		{% endfor %}
 	</div>	
 {% endblock %}
+
+{% block right_content %}
+	<div class="col-md-12">
+	  <h4><img src="/static/images/new-icon.png"><strong class="text-info"> Whats New?</strong></h4 >
+	 	<a href="">LDC Model Exams</a> <label class="label label-success">2</label><br>
+	   	<a href="">Tests in Last Grade</a> <label class="label label-warning">5</label>
+	  <hr>
+	</div>
+	<div class="col-md-12">
+	  <h4><img src="/static/images/news_psc.png" width="50x;" heigh="45px;"><strong class="text-info"> Latest News</strong></h4 >
+	  	<a href="http://www.keralapsc.gov.in/index.php?option=com_content&view=article&id=3328:notification-2014&catid=1:general" target="_blank">Notifications in kpsc</a>
+	  	<br>
+	  	<a href="http://www.keralapsc.gov.in/index.php?option=com_content&view=article&id=3244:short-list-2014&catid=103:shortlist" target="_blank">Shortlists in recent exams</a>
+	  	<br>
+	  	<a href="http://www.keralapsc.gov.in/index.php?option=com_content&view=article&id=3243:rank-list-2014&catid=102:ranklist" target="_blank">Ranklists in recent exams</a>
+	  <hr>
+	</div>
+	<div class="col-md-12">
+	  <h4><img src="/static/images/Performance-icon.png" width="50x;" heigh="45px;"><strong class="text-info">My Performance</strong></h4>
+	  	{% for exam in exams %}
+	  		<a href="">{{exam.exam}}</a>
+	  	{% endfor %}			
+	  <hr>
+	</div>
+	          
+	<div class="col-md-12">
+	  <h4><img src="/static/images/activity-icon.png" width="50x;" heigh="45px;"> <strong class="text-info">Recent Activities</strong></h4>
+	  <h5 class="text-muted"><strong> Last login : 2 Days ago</strong></h5>
+	  <hr>
+	</div>
+{% endblock %}
+

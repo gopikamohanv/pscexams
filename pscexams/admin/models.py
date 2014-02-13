@@ -16,6 +16,14 @@ class Exam(models.Model):
 
 	#def __unicode__(self):
 	#	return self.state.state + '->' + str(self.exam)
+	def get_exam_description(self):
+		try:
+			description = ExamDescription.objects.get(exam=self.pk)
+		except:
+			pass
+		else:
+			return description.description	
+
 
 
 class Subject(models.Model):
@@ -25,6 +33,21 @@ class Subject(models.Model):
 
 	#def __unicode__(self):
 	#	return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
+
+	def get_subject_description(self):
+		try:
+			description = SubjectDescription.objects.get(subject=self.pk)
+		except:
+			pass
+		else:
+			return description.description
+	def get_subject_image(self):
+		try:
+			image = SubjectDescription.objects.get(subject=self.pk)
+		except:
+			pass
+		else:
+			return image.image		
 
 class SubjectDescription(models.Model):
 	subject = models.OneToOneField(Subject)
@@ -92,6 +115,28 @@ class ModelExamQuestion(models.Model):
 class ExamDescription(models.Model):
 	exam = models.ForeignKey(Exam)
 	description = models.CharField(max_length=255)
+
+	def __unicode__(self):
+		return self.exam.exam
+
+
+class ModelExamQuestionPaper(models.Model):
+	modelexam = models.ForeignKey(ModelExam)
+	question_path = models.CharField(max_length=250, null=True)
+	answer_path = models.CharField(max_length=250, null=True)
+	question_url = models.CharField(max_length=255, null=True)
+	answer_url = models.CharField(max_length=255, null=True)
+
+	def __unicode__(self):
+		return self.modelexam.title
+
+class PreviousYearQuestionPaper(models.Model):
+	exam = models.ForeignKey(Exam)
+	name = models.CharField(max_length=255, null=True)
+	question_path = models.CharField(max_length=250, null=True)
+	answer_path = models.CharField(max_length=250, null=True)
+	question_url = models.CharField(max_length=255, null=True)
+	answer_url = models.CharField(max_length=255, null=True)
 
 	def __unicode__(self):
 		return self.exam.exam

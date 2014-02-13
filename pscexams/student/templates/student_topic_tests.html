@@ -37,16 +37,6 @@
 {% block right_content %}
 <div class="col-md-12">
 	<br>
-	<div class="panel panel-success">
-    	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/MetroUI-Other-Task-icon.png" width="50x;" heigh="45px;" alt=""> <strong>Recent Answer Sheets</strong></h3>
-        </div>
-        <div class="panel-body">
-        	{% for mocktest_datum in mocktest_data %}
-				<a href="/student/answersheet/{{mocktest_datum.mock_test.pk}}/">{{mocktest_datum.mock_test.test_date}}</a><br>
-			{% endfor %}
-        </div>
-    </div>
     <div class="panel panel-success">
     	<div class="panel-heading">
         	<h3 class="panel-title"><img src="/static/images/binary-tree-icon.png" width="50x;" heigh="45px;" alt=""> <strong>Related Topics</strong></h3>
@@ -54,6 +44,24 @@
         <div class="panel-body">
         	{% for topic in sub_topic.topic.subject.topic_set.all %}
 				<a href="/student/exam/subject/{{topic.subject.pk}}/?topic={{topic.pk}}">{{topic.topic}}</a></br>
+			{% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/read_and_learn_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Read & Learn</strong></h3>
+        </div>
+        <div class="panel-body">
+			<a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">{{sub_topic.sub_topic}}</a></br>
+		</div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/MetroUI-Other-Task-icon.png" width="50x;" heigh="45px;" alt=""> <strong>Recent Answer Sheets</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for mocktest_datum in mocktest_data %}
+				<a href="/student/answersheet/{{mocktest_datum.mock_test.pk}}/">{{mocktest_datum.mock_test.test_date}}</a><br>
 			{% endfor %}
         </div>
     </div>

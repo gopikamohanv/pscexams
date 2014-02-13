@@ -31,20 +31,13 @@
                 <li><a href="/student/answersheets/list/">Answersheets</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
+                <li><a href=""><img src="/static/images/Administrator-icon.png" width="40px;" height="30px;"> Hi, {{user.user.username}}</a></li>
                 <li><a href="#"> My Account</a></li>
                 <li><a href="/logout/"> Sign Out</a></li>
               </ul>
             </div>
           </div>
       </div>
-      <div class="row">
-        <div class="col-lg-9">
-        </div>
-        <div class="col-lg-3">
-          <p class="text-muted"><img src="/static/images/Administrator-icon.png"> Welcome {{user.user.username}} </p><hr> 
-        </div>  
-      </div>
-      <br>
       <div class="row">
         <div class="col-md-9">
           {% block content %}{% endblock %}

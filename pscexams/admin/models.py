@@ -140,3 +140,19 @@ class PreviousYearQuestionPaper(models.Model):
 
 	def __unicode__(self):
 		return self.exam.exam
+
+
+class OnewordQuestion(models.Model):
+	question = models.TextField()
+	answer = models.TextField()
+	explanation = models.TextField(null=True)
+	sub_topic = models.ForeignKey(SubTopic)
+	tutor = models.ForeignKey(User, related_name='oneword_tutor')
+	publisher = models.ForeignKey(User, related_name='oneword_publisher', null=True, blank=True)
+	is_published = models.BooleanField()
+	sub_topic = models.ForeignKey(SubTopic)
+	question_type = models.CharField(max_length=2, null=True)
+	created_date = models.DateTimeField(null=True, blank=True)
+	published_date = models.DateTimeField(null=True, blank=True)
+	is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
+	last_modified = models.DateTimeField(auto_now=True)

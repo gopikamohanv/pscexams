@@ -326,3 +326,79 @@ def admin_upload_previousyearquestion(request):
 	
 	if request.method == 'GET':
 		return render_to_response('previousyear_questionpaper.html', response)
+
+	if request.method == ' POST':
+		if 'exam' in request.POST and request.POST['exam']:
+			exam = request.POST['exam']
+
+		if 'title' in request.POST and request.POST['title']:
+			title = request.POST['title']
+
+		try:
+			exam_obj = Exam.objects.get(id=exam)
+		except:
+			raise Http404()
+
+		if 'question_url' in request.FILES and request.FILES:
+			question_url = request.FILES['question_url']
+			question_file = request.FILES['question_url'].name
+			question_file_extension = os.path.splitext(question_file)[1]
+			new_question_file = str(exam_obj.pk) + 'ques' + str(datetime.datetime.now().strftime("%b%d%Y%H%M%S"))
+
+			try:
+				f1 = open('/tmp/'+ new_question_file + question_file_extension,'wb+')
+				for chunk in question_url.chunks():
+					f1.write(chunk)
+				f1.close()
+			except:
+				raise Http404()
+
+			try:
+				conn = S3Connection('AKIAJTA3FH3TQEMQ25HA', 'YLBDeel7NLEOoM+leAXWy7hby3m4Dh4kU1g4CaUF') # DO NOT LOOSE THIS KEY!!!!!
+				bucket = conn.create_bucket('questionpapers.smartindia')
+				k = Key(bucket)
+				k.key = new_question_file + question_file_extension
+				k.set_contents_from_filename('/tmp/' + new_question_file + question_file_extension)
+				k.set_acl('public-read')
+			except:
+				raise Http404()
+
+		if 'answer_url' in request.FILES and request.FILES:
+			answer_url = request.FILES['answer_url']
+			answer_file = request.FILES['answer_url'].name
+			answer_file_extension = os.path.splitext(answer_file)[1]
+			new_answer_file = str(exam_obj.pk) + 'ans' + str(datetime.datetime.now().strftime("%b%d%Y%H%M%S"))
+
+			try:
+				f2 = open('/tmp/'+ new_answer_file + answer_file_extension,'wb+')
+				for chunk in answer_url.chunks():
+					f2.write(chunk)
+				f2.close()
+			except:
+				raise Http404()
+
+			try:
+				conn = S3Connection('AKIAJTA3FH3TQEMQ25HA', 'YLBDeel7NLEOoM+leAXWy7hby3m4Dh4kU1g4CaUF') # DO NOT LOOSE THIS KEY!!!!!
+				bucket = conn.create_bucket('questionpapers.smartindia')
+				k = Key(bucket)
+				k.key = new_answer_file + answer_file_extension
+				k.set_contents_from_filename('/tmp/' + new_answer_file + answer_file_extension)
+				k.set_acl('public-read')
+			except:
+				raise Http404()
+
+		try:
+			previousyear_question_paper = PreviousYearQuestionPaper()
+			previousyear_question_paper.exam = exam_obj
+			previousyear_question_paper.name = title
+			previousyear_question_paper.question_path = '/tmp/' + new_question_file + question_file_extension
+			previousyear_question_paper.answer_path = '/tmp/'+ new_answer_file + answer_file_extension
+			previousyear_question_paper.question_url = 'https://s3.amazonaws.com/questionpapers.smartindia/' + new_question_file + question_file_extension
+			previousyear_question_paper.answer_url = 'https://s3.amazonaws.com/questionpapers.smartindia/' + new_answer_file + answer_file_extension
+			previousyear_question_paper.save()
+			response.update({'saved':True})
+		except:
+			raise Http404()
+
+		return render_to_response('previousyear_questionpaper.html',response)
+			

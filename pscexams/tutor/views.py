@@ -684,8 +684,8 @@ def tutor_oneword_edit(request):
 @user_passes_test(tutor_check)
 def tutor_add_tips_and_tricks(request):
     response = {}
-    sub_topics = SubTopic.objects.all()
-    response.update({'sub_topics':sub_topics})
+    states = State.objects.all()
+    response.update({'states':states})
 
     if request.method == 'GET':
         return render_to_response('add_tips_and_tricks.html', response)

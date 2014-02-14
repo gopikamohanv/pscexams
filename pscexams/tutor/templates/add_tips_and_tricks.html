@@ -1,0 +1,82 @@
+{% include "tutor_header.html" %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jqueryui/ui-lightness/jquery-ui-1.7.2.custom.css" />
+<script type="text/javascript" src="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/scripts/jHtmlArea-0.7.0.js"></script>
+<link rel="stylesheet" type="text/css" href="http://uploads.siresources.in.s3.amazonaws.com/cdn/js/jhtmlarea/style/jHtmlArea.css" />
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".jHtmlArea").htmlarea();
+    });
+</script>
+
+<div class="row">
+	<div class="col-lg-8">
+	  <div class="well">
+	    <form class="bs-example form-horizontal" action="/tutor/add/tipsandtricks/" method="POST">
+	      <fieldset>
+	        <legend>Add Tips and Tricks</legend>
+
+	        {% if saved %}
+		        <div class="alert alert-dismissable alert-success">
+		          <button type="button" class="close" data-dismiss="alert">&times;</button>
+		          <strong>Tips and Tricks was successfully.</strong> 
+		        </div>
+      		{% endif %}
+
+      		{% if save_error %}
+		        <div class="alert alert-dismissable alert-danger">
+		          <button type="button" class="close" data-dismiss="alert">&times;</button>
+		          <strong>Error in saving data.</strong> 
+		        </div>
+		      {% endif %}
+
+		      {% if form_error %}
+		        <div class="alert alert-dismissable alert-danger">
+		          <button type="button" class="close" data-dismiss="alert">&times;</button>
+		          <strong>You must fill all fields.</strong> 
+		        </div>
+		      {% endif %}
+
+	        <div class="form-group">
+            <label for="state" class="col-lg-2 control-label">State</label>
+            <div class="col-lg-9">
+              <select name="sub_topic" id="sub_topic" class="form-control">
+              	<option value="0">Select Sub Topic</option>
+                {% for sub_topic in sub_topics %}
+                <option value="{{sub_topic.pk}}">{{sub_topic.sub_topic}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="title" class="col-lg-2 control-label">Title</label>
+            <div class="col-lg-9">
+              <input type="text" class="form-control" name="title" id="title">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="col-lg-2 control-label">Description</label>
+            <div class="col-lg-9">
+              <textarea name="description" id="description" class="jHtmlArea" rows="15" cols="56"></textarea>
+            </div>
+          </div>
+
+         	
+          <br>
+        	<div class="form-group">
+	        	<div class="col-lg-10 col-lg-offset-2">
+	            <button type="submit" class="btn btn-primary">Submit</button> 
+	        	</div>
+      		</div>
+
+        </fieldset>
+	    </form>
+	  </div>
+	</div>
+</div>
+
+{% include "tutor_footer.html" %}

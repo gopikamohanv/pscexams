@@ -108,7 +108,6 @@ def publisher_add_modelexam_questions(request):
 
 		subjects = Subject.objects.filter(exam=exam)
 		response.update({'subjects':subjects})
-		#return HttpResponse(subjects)
 		response.update({'test':test})
 		return render_to_response('add_questions.html', response)
 
@@ -141,11 +140,11 @@ def publisher_add_modelexam_questions(request):
                 	pass
 
                 if not modelexam_question:
-	                modelexam_question = ModelExamQuestion()
-	                modelexam_question.modelexam = test_obj
-	                modelexam_question.question = qn_obj
+	                modelexam_questions = ModelExamQuestion()
+	                modelexam_questions.modelexam = test_obj
+	                modelexam_questions.question = qn_obj
 	                try:
-	                    modelexam_question.save()
+	                    modelexam_questions.save()
 	                except:
 	                    response.update({'save_error':True})
             else:

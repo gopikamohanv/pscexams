@@ -405,17 +405,17 @@ def tutor_myaccount(request):
 
     response.update({'user':request.user})
 
-    now = datetime.datetime.now() 
+    now = datetime.datetime.today().replace(microsecond=0) 
     #date = now.strftime("%Y-%m-%d")
-
+    #return HttpResponse(now)
     
     questions_added_today = Question.objects.filter(tutor=request.user, created_date__day=now.day, created_date__month=now.month, created_date__year=now.year)
-    #return HttpResponse(questions_added_today)
     response.update({'questions_added_today':questions_added_today})
     questions_added_this_month = Question.objects.filter(tutor=request.user, created_date__month=now.month, created_date__year=now.year).count()
     response.update({'questions_added_this_month':questions_added_this_month})
     total_questions_added = Question.objects.filter(tutor=request.user).count()
     response.update({'total_questions_added':total_questions_added})
+
     return render_to_response('tutor_myaccount.html',response)
 
 # Read and Learn content
@@ -676,12 +676,3 @@ def tutor_oneword_edit(request):
         response.update({'topics':topics})
         response.update({'sub_topics':sub_topics})
         return render_to_response('tutor_oneword_edit.html', response)
-        
-
-
-
-
-
-                   
-
-

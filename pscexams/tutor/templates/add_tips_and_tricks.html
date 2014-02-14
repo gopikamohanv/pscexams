@@ -11,6 +11,81 @@
     });
 </script>
 
+<script type="text/javascript">
+        function state_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/state/ajax/exam/',
+                cache   : false,
+                data    : "state=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#exam").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+        function exam_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/exam/ajax/subject/',
+                cache   : false,
+                data    : "exam=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#subject").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+        function subject_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/subject/ajax/topic/',
+                cache   : false,
+                data    : "subject=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#topic").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+        function topic_changed(option)
+        {
+            if (option == 0)
+            {
+                return;
+            }
+            $.ajax({
+                type    : 'GET',
+                url     : '/topic/ajax/subtopic/',
+                cache   : false,
+                data    : "topic=" + option,
+                success : function(data,textStatus)
+                {
+                    $("#sub_topic").html(data);
+                },
+                error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+        }
+    </script>
+
 <div class="row">
 	<div class="col-lg-8">
 	  <div class="well">
@@ -39,17 +114,61 @@
 		        </div>
 		      {% endif %}
 
+
 	        <div class="form-group">
-            <label for="state" class="col-lg-2 control-label">State</label>
-            <div class="col-lg-9">
-              <select name="sub_topic" id="sub_topic" class="form-control">
-              	<option value="0">Select Sub Topic</option>
-                {% for sub_topic in sub_topics %}
-                <option value="{{sub_topic.pk}}">{{sub_topic.sub_topic}}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
+            	<label for="state" class="col-lg-2 control-label">State</label>
+	            <div class="col-lg-9">
+	              <select name="state" id="state" class="form-control" onChange="state_changed(this.value)">
+	              	<option value="0">Select State</option>
+	                {% for state in states %}
+	                <option value="{{state.pk}}">{{state.state}}</option>
+	                {% endfor %}
+	              </select>
+	            </div>
+          	</div>
+
+
+	        <div class="form-group">
+            	<label for="exam" class="col-lg-2 control-label">Exam</label>
+	            <div class="col-lg-9">
+	              <select name="exam" id="exam" class="form-control" onChange="exam_changed(this.value)">
+	              	<option value="0">Select Exam</option>
+	                
+	              </select>
+	            </div>
+          	</div>
+
+
+	        <div class="form-group">
+            	<label for="subject" class="col-lg-2 control-label">Subject</label>
+	            <div class="col-lg-9">
+	              <select name="subject" id="subject" class="form-control" onChange="subject_changed(this.value)">
+	              	<option value="0">Select Subject</option>
+	                
+	              </select>
+	            </div>
+          	</div>
+
+
+	        <div class="form-group">
+            	<label for="topic" class="col-lg-2 control-label">Topic</label>
+	            <div class="col-lg-9">
+	              <select name="topic" id="topic" class="form-control" onChange="topic_changed(this.value)">
+	              	<option value="0">Select Topic</option>
+	                
+	              </select>
+	            </div>
+          	</div>
+
+	        <div class="form-group">
+            	<label for="state" class="col-lg-2 control-label">Sub Topic</label>
+	            <div class="col-lg-9">
+	              <select name="sub_topic" id="sub_topic" class="form-control">
+	              	<option value="0">Select Sub Topic</option>
+	                
+	              </select>
+	            </div>
+          	</div>
 
           <div class="form-group">
             <label for="title" class="col-lg-2 control-label">Title</label>

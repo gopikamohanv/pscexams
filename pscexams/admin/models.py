@@ -161,7 +161,7 @@ class OnewordQuestion(models.Model):
 class TipsandTricks(models.Model):
 	sub_topic = models.ForeignKey(SubTopic)
 	title = models.CharField(max_length=100)
-	description = models.CharField(max_length=250,null=True)
+	description = models.TextField()
 	tutor = models.ForeignKey(User)
 	is_published = models.BooleanField()
 	created_date = models.DateTimeField(null=True, blank=True)

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
-from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic, OnewordQuestion
+from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic, OnewordQuestion, TipsandTricks
 from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType, ExamTest
 
 def student_check(user):
@@ -271,6 +271,27 @@ def student_onewords(request,pk):
 	onewords = OnewordQuestion.objects.filter(sub_topic=sub_topic)
 	response.update({'onewords':onewords})			
 	return render_to_response('student_onewords.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_tips_topics(request,pk):
+	response = {}
+	topic = get_object_or_404(Topic, pk=pk)
+	response.update({'topic':topic})
+	if 'sub_topic' in request.GET and request.GET['sub_topic']:
+		sub_topic = request.GET['sub_topic']
+	else:
+		response.update({'form_error': True}) 
+		return render_to_response('tips_topics.html', response)
+	sub_topic_obj = get_object_or_404(SubTopic,pk=sub_topic)
+	response.update({'sub_topic':sub_topic_obj})
+	tips = TipsandTricks.objects.filter(sub_topic=sub_topic_obj)
+	if tips:
+		response.update({'tips': tips})
+	else:
+		response.update({'no_tips':True})		
+	return render_to_response('tips_topics.html', response)
+
 
 
 

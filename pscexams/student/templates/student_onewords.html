@@ -40,6 +40,15 @@
 			{% endfor %}
         </div>
     </div>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><strong>{{sub_topic.sub_topic}}</strong></h3>
+        </div>
+        <div class="panel-body">
+        	<a href="/student/exam/topic/tests/{{sub_topic.pk}}/">Practice Tests</a><br>
+			<a href="/student/tips/topics/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">Tips & Tricks</a><br>
+        </div>
+    </div>
 </div>   
 {% endblock %}
 

@@ -55,38 +55,7 @@
               error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
           });
         }
-      function onMessageClick(action, user_id)
-        {
-          var message = "";
-          var ajax_url = "";
-          if (action == 1){
-            message = prompt("Enter your message")
-            ajax_url = "/siteadmin/ajax/sendemail/";
-          }
-          else{
-            message = prompt("Enter your message (please remeber sending sms costs money, but email is free)")
-            ajax_url = "/siteadmin/ajax/sendsms/";
-          }
-            // TODO: Add a better error response
-          if (message == '' || message == null)
-            return;
-          $.ajax({
-            type    : 'POST',
-            url     : ajax_url,
-            cache   : false,
-            data    : "user_id=" + user_id + "&message=" + message,
-            success : function(data,textStatus)
-            {
-              if (data == "Success"){
-                        
-              }
-              else{
-                alert('Sorry, cannot send your message. If this problem repeats, please contact the Siresources technical team');
-              }
-            },
-            error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
-        });
-      }
+      
       function getParticularUser()
         {
           var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;

@@ -1,5 +1,5 @@
 from django.http import HttpResponse,HttpResponseRedirect,Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import *
 from django.contrib.auth.models import User
@@ -405,17 +405,17 @@ def tutor_myaccount(request):
 
     response.update({'user':request.user})
 
-    now = datetime.datetime.now() 
+    now = datetime.datetime.today().replace(microsecond=0) 
     #date = now.strftime("%Y-%m-%d")
-
+    #return HttpResponse(now)
     
     questions_added_today = Question.objects.filter(tutor=request.user, created_date__day=now.day, created_date__month=now.month, created_date__year=now.year)
-    #return HttpResponse(questions_added_today)
     response.update({'questions_added_today':questions_added_today})
     questions_added_this_month = Question.objects.filter(tutor=request.user, created_date__month=now.month, created_date__year=now.year).count()
     response.update({'questions_added_this_month':questions_added_this_month})
     total_questions_added = Question.objects.filter(tutor=request.user).count()
     response.update({'total_questions_added':total_questions_added})
+
     return render_to_response('tutor_myaccount.html',response)
 
 # Read and Learn content
@@ -676,12 +676,54 @@ def tutor_oneword_edit(request):
         response.update({'topics':topics})
         response.update({'sub_topics':sub_topics})
         return render_to_response('tutor_oneword_edit.html', response)
-        
 
 
+# Edit for Oneword Question
+# /tutor/tipsandtricks/
+@login_required
+@user_passes_test(tutor_check)
+def tutor_add_tips_and_tricks(request):
+    response = {}
+    states = State.objects.all()
+    response.update({'states':states})
 
+    if request.method == 'GET':
+        return render_to_response('add_tips_and_tricks.html', response)
 
+    if request.method == 'POST':
+        form_error = False
 
-                   
+        if 'sub_topic' in request.POST and request.POST['sub_topic']:
+            sub_topic = request.POST['sub_topic']
+        else:
+            form_error = True
 
+        if 'title' in request.POST and request.POST['title']:
+            title = request.POST['title']
+        else:
+            form_error = True
 
+        if 'description' in request.POST and request.POST['description']:
+            description = request.POST['description']
+        else:
+            form_error = True
+
+        if form_error:
+            response.update({'form_error':form_error})
+            return render_to_response('add_tips_and_tricks.html', response) 
+
+        tipsandtricks = TipsandTricks()
+        tipsandtricks.sub_topic = SubTopic.objects.get(id=sub_topic)
+        tipsandtricks.title = title
+        tipsandtricks.description = description
+        tipsandtricks.tutor = request.user
+        tipsandtricks.created_date = datetime.datetime.today()
+        tipsandtricks.is_published = False
+        tipsandtricks.is_in_use = True
+        try:
+            tipsandtricks.save()
+            response.update({'saved':True})
+        except:
+            response.update({'save_error':True})
+
+        return render_to_response('add_tips_and_tricks.html', response)

@@ -70,7 +70,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pscexams',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root123',
     }
 }
 

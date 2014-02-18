@@ -1,0 +1,234 @@
+{% include "admin_header.html" %}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+<script type="text/javascript" src="https://s3.amazonaws.com/uploads.siresources.in/cdn/js/tablecloth/tablecloth.js"></script>
+   
+  {% if usertype_selected %}
+    <script type="text/javascript">
+      $(document).ready(function()
+      {
+        $('#user_type').val('{{selected_usertype}}');
+      });
+    </script>
+  {% endif %}
+  
+  <script type="text/javascript">
+    $(document).ready(function()
+      {        
+        $("a[rel='popup_link']").colorbox({transition:'fade', width:"45%", height:"60%", iframe:true});
+        $("a[rel='workreport_link']").colorbox({transition:'fade', width:"80%", height:"90%", iframe:true});
+      });
+  </script>
+  {% csrf_token %}
+  <script type="text/javascript">
+    function onActivateClick(action, user_id)
+      {
+        var is_ok = false;
+        var ajax_url = "";
+        if (action == 1){
+          is_ok = confirm("Are you sure to Activate this user?")
+          ajax_url = "/siteadmin/users/ajax/activate/";
+        }
+        else{
+          is_ok = confirm("Are you sure to De-activate this user?")
+          ajax_url = "/siteadmin/users/ajax/deactivate/";
+        }
+        if (is_ok == false)
+          return;
+        $.ajax({
+          type    : 'POST',
+          url     : ajax_url,
+          cache   : false,
+          data    : "user_id=" + user_id,
+          success : function(data,textStatus)
+          {
+            if (data == "Success"){
+              if(action == 1)
+                $("#td_status_" + user_id).html('<img alt="Active" title="Active" src="https://s3.amazonaws.com/uploads.siresources.in/cdn/images/home/active_user.png" />');
+                else
+                  $("#td_status_" + user_id).html('<img alt="In Active" title="In Active" src="https://s3.amazonaws.com/uploads.siresources.in/cdn/images/home/inactive_user.png" />');
+              }
+              else{
+                alert('Sorry, cannot activate the user. If this problem repeats, please contact the Siresources technical team');
+              }
+              },
+              error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+          });
+        }
+      function onMessageClick(action, user_id)
+        {
+          var message = "";
+          var ajax_url = "";
+          if (action == 1){
+            message = prompt("Enter your message")
+            ajax_url = "/siteadmin/ajax/sendemail/";
+          }
+          else{
+            message = prompt("Enter your message (please remeber sending sms costs money, but email is free)")
+            ajax_url = "/siteadmin/ajax/sendsms/";
+          }
+            // TODO: Add a better error response
+          if (message == '' || message == null)
+            return;
+          $.ajax({
+            type    : 'POST',
+            url     : ajax_url,
+            cache   : false,
+            data    : "user_id=" + user_id + "&message=" + message,
+            success : function(data,textStatus)
+            {
+              if (data == "Success"){
+                        
+              }
+              else{
+                alert('Sorry, cannot send your message. If this problem repeats, please contact the Siresources technical team');
+              }
+            },
+            error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+        });
+      }
+      function getParticularUser()
+        {
+          var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          var particular_user = document.getElementById("particular_user").value;
+          /*if (particular_user == "" || !filter.test(document.getElementById('particular_user').value))
+          {
+              alert("Please enter an email id to search");
+              return false;
+          }*/
+          document.getElementById("particular_user_button").value = "Please Wait";
+            $.ajax({
+              type    : 'GET',
+              url     : '/siteadmin/ajax/users/search/',
+              cache   : false,
+              data    : "email=" + particular_user,
+              success : function(data,textStatus)
+              {
+                document.getElementById("particular_user_button").value = "Search";
+                if (data != "False"){
+                  $("#users_table").html(data);
+                  $("a[rel='popup_link']").colorbox({transition:'fade', width:"45%", height:"60%", iframe:true});
+                  $("a[rel='workreport_link']").colorbox({transition:'fade', width:"80%", height:"90%", iframe:true});
+                }
+                else{
+                  alert('Oops, the user you are looking for not found. Check the email and try again');
+                }
+              },
+              error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+            document.getElementById("particular_user_button").value = "Search";
+        }
+        function ajax_load_more()
+        {
+          var user_type = document.getElementById("user_type").value;
+          var next_rows = document.getElementById("next_rows").value;
+          document.getElementById("load_more_users").value = "Please Wait";
+          $.ajax({
+            type    : 'GET',
+            url     : '/siteadmin/users/ajax/browse/',
+            cache   : false,
+            data    : "user_type=" + user_type + "&next_rows=" + next_rows,
+            success : function(data,textStatus)
+            {
+              document.getElementById("load_more_users").value = "Load More";
+              if (data != "Null")
+              {
+                $("#users_table").append(data);
+                tablecloth();
+                document.getElementById('next_rows').value = parseInt(next_rows) + 20;
+                $("a[rel='popup_link']").colorbox({transition:'fade', width:"45%", height:"60%", iframe:true});
+                $("a[rel='workreport_link']").colorbox({transition:'fade', width:"80%", height:"90%", iframe:true});
+              }
+                else
+                {
+                  $("#load_more_users").hide();
+                }
+            },
+            error   : function(data,textStatus) {
+              alert("Error connecting to PSC Exam Servers. Please check your internet connection and try again.");
+              document.getElementById("load_more_users").value = "Load More";
+              }
+          });
+        }
+        function onUserTypeStatusChange()
+        {
+          document.getElementById("next_rows").next_rows = "20";
+          document.forms["user_type_form"].submit();
+        }
+</script>
+<div style="text-align:center;margin-top:50px;">
+<h2>Registered Users</h2>
+</div>
+<div style="text-align:right;margin-top:50px;">
+  Total No. of Users:{{user_count}}<br>
+  Active Users:{{activeuser_count}}
+</div><br>
+<div style="display:none;">
+  <input id="next_rows" type="hidden" value="20" />
+</div>
+<table style="background-color:#F0F7FF;hover:#E1EDFD;">
+  <tr>
+    <form id="user_type_form" method="GET" action="/siteadmin/dashboard/">
+      <td>
+        <b>User Type</b>
+      </td>
+      <td>
+        <select id="user_type" name="user_type" onChange='onUserTypeStatusChange();'>
+          <option value="0">All Users</option>
+          {% for key, value in usertypes.items %}
+              <option value="{{value}}">{{key}}</option>
+          {% endfor %}
+        </select></td>
+      </form>
+      
+      <td style="width:700px;"> </td>
+      <td style="text-align:left;">
+          <input type="text" name="particular_user" id="particular_user" />
+          <input id="particular_user_button" class="btn btn-success" type="button" value="Search" onClick="getParticularUser()"/>
+      </td>
+      </tr>
+  </table>
+</form>
+<div style="display:none;">
+  <input id="next_rows" type="hidden" value="0" />
+</div>
+ <div style="display:none;"><input id="next_rows" type="hidden" value="0" /></div>
+<div class="CSSTableGenerator" >
+  <table id="users_table">
+    <tr>      
+      <td>User Status</td>
+      <td>Name</td>
+      <td>Actions</td>
+    </tr>
+    {% for users in users %}
+    <tr>      
+      <td style="width:100px;text-align:center;">
+        {% if users.user.is_active %}
+          <img src="/static/images/published.png">
+        {% else %}
+          <img src="/static/images/unpublished.png">{% endif %}
+      </td>
+      <td style="width:300px;text-align:left;">
+        {{users.user.username}}
+      </td>
+      <td style="width:100px;text-align:center;"><a href="#"><img src="/static/images/trash.png"></a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td>
+        <p style="color:red;">There are no such type of users!!!</p>
+      </td>
+    <tr>
+    {%endfor%}
+
+  </table>
+    </div><br>
+     <div align="center"><input class="load-more" id="load_more_users" type="button" value="Load More" onClick="ajax_load_more();"/></div><br><br>
+
+
+
+
+{% include "admin_footer.html" %}
+
+

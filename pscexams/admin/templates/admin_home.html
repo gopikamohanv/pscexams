@@ -1,58 +1,22 @@
 {% include "admin_header.html" %}
-
-<script>
-    $(document).ready(function()
-    {
-        $("#page_links_0").css({"padding":"5px 2px 5px 2px","border":"3px solid"});
-        /* PUBLISH PAGES*/
-        if (4 == 0)
-        {
-            $("#first").hide();
-            $("#to_first").hide();
-            $("#last").hide();
-            $("#to_last").hide();
-        }
-        if( 4 == 4)
-        {
-            $("#first").hide();
-            $("#to_first").hide();
-        }
-        if( 4 == 5 + 1) 
-        {
-            $("#last").hide();
-            $("#to_last").hide();
-        }
-    });
-</script>
-<div style="text-align:right;margin-top:50px;">
-Total No. of Users:{{user_count}}<br>
-Active Users:{{activeuser_count}}
+<div style="text-align:center;margin-top:50px;">
+    <h4>
+        <b>Welcome to the world of pscexams</b>
+    </h4>
 </div>
-<div class="CSSTableGenerator" >
-    <table>
-        <tr>
-            <td>No</td>
-            <td>User Status</td>
-            <td>Name</td>
-            <td>Actions</td>
-        </tr>
-        {% for user_detail in user_details %}
-        <tr>
-        <td style="width:100px;text-align:center;">{{ forloop.counter }}</td>
-        <td style="width:100px;text-align:center;"><img src="/static/images/unpublished.png"></td>
-        <td style="width:300px;text-align:center;">
-            {{user_detail.user.first_name}}
-        </td>
-        <td style="width:100px;text-align:center;"><a href="#"><img src="/static/images/trash.png"></a>
-           </td></td>
-        </tr>
-        {%endfor%}
-    </table>
-    </div><br><br>
-
+<div class="row">
+  <div class="col-lg-12">        
+      <div class="row">
+            <div class="col-lg-1">
+              <img src="/static/images/users.gif" style="width:75px;height:75px;">
+            </div>
+            <p><strong><h4 class="text-info">Users</h4></strong></p>
+          </div>
+        <p class="text-muted"> include write up for users</p>
+        <hr>
+        </div></div>
 
 
 
 {% include "admin_footer.html" %}
-
 

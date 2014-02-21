@@ -1,0 +1,18 @@
+            <tr>      
+                <td>User Status</td>
+                <td>Name</td>
+                <td>Actions</td>
+            </tr>
+           <tr>      
+      <td style="width:100px;text-align:center;">
+        {% if user.user.is_active %}
+          <img src="/static/images/published.png">
+        {% else %}
+          <img src="/static/images/unpublished.png">{% endif %}
+      </td>
+      <td style="width:300px;text-align:left;">
+        {{user.user.username}}
+      </td>
+      <td style="width:100px;text-align:center;"><a href="#"><img src="/static/images/trash.png"></a>
+      </td>
+    </tr>

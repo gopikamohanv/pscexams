@@ -13,4 +13,6 @@ urlpatterns = patterns('',
 		(r'^answersheet/(?P<pk>\w+)/$', pscexams.student.views.student_answersheet),
 		(r'^onewords/(?P<pk>\w+)/$', pscexams.student.views.student_onewords),
 		(r'^tips/topics/(?P<pk>\w+)/$', pscexams.student.views.student_tips_topics),
+		(r'^question/new/(?P<pk>\w+)/$', pscexams.student.views.student_question_new),
+		(r'^trick/new/(?P<pk>\w+)/$', pscexams.student.views.student_trick_new),
 )

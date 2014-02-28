@@ -86,8 +86,9 @@ def student_exam_topic(request, pk, test):
 		except:
 			return HttpResponseRedirect('/student/exam/topic/tests/'+ str(pk) +'/?locked=true&test=1')	
 		else:
-			if not exam.test_num == test -1:
-				return HttpResponseRedirect('/student/exam/topic/tests/'+ str(pk) +  '/?locked=true&test=' + str(exam.test_num + 1))	
+			if test > exam.test_num:
+				if not test == exam.test_num + 1:
+					return HttpResponseRedirect('/student/exam/topic/tests/'+ str(pk) +  '/?locked=true&test=' + str(exam.test_num + 1))	
 
 	page = int(test) - 1
 	questions = Question.objects.filter(sub_topic=sub_topic).order_by('pk')[(page*10):(page*10)+10]

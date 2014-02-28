@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
-from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic, OnewordQuestion
+from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic, OnewordQuestion, TipsandTricks
 from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType, ExamTest
 
 def student_check(user):
@@ -24,12 +24,15 @@ def student_dashboard(request):
 	response = {}
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	response.update({'exams':Exam.objects.all()})
+	response.update({'oneword':OnewordQuestion.objects.all().order_by('-pk')[:3]})
+	response.update({'tricks':TipsandTricks.objects.all().order_by('-pk')[:2]})
 	return render_to_response('student_home.html', response)
 
 @login_required
 @user_passes_test(student_check)
 def student_exam(request, pk):
 	response = {}
+	response.update({'exams':Exam.objects.all()})
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	exam = get_object_or_404(Exam, pk=pk)
 	response.update({'exam':exam})
@@ -39,6 +42,7 @@ def student_exam(request, pk):
 @user_passes_test(student_check)
 def student_exam_subject(request, pk):
 	response = {}
+	response.update({'exams':Exam.objects.all()})
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	subject = get_object_or_404(Subject, pk=pk)
 	response.update({'subject':subject})
@@ -69,6 +73,7 @@ def student_exam_topic_tests(request, pk):
 @user_passes_test(student_check)
 def student_exam_topic(request, pk, test):
 	response = {}
+	response.update({'exams':Exam.objects.all()})
 	test = int(test)
 	user = UserProfile.objects.get(user=request.user)
 	response.update({'user':user})
@@ -248,6 +253,7 @@ def student_answersheets_list(request):
 @user_passes_test(student_check)
 def student_answersheet(request, pk):
 	response = {}
+	response.update({'exams':Exam.objects.all()})
 	test_data = get_object_or_404(MockTest, pk=pk)
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	response.update({'test':test_data})
@@ -259,6 +265,7 @@ def student_answersheet(request, pk):
 def student_onewords(request,pk):
 	response = {}
 	topic = get_object_or_404(Topic, pk=pk)
+	response.update({'exams':Exam.objects.all()})
 	response.update({'topic':topic})
 	response.update({'sub_topics': SubTopic.objects.filter(topic=topic)})
 	if 'sub_topic' in request.GET and request.GET['sub_topic']:
@@ -271,6 +278,63 @@ def student_onewords(request,pk):
 	onewords = OnewordQuestion.objects.filter(sub_topic=sub_topic)
 	response.update({'onewords':onewords})			
 	return render_to_response('student_onewords.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_tips_topics(request,pk):
+	response = {}
+	response.update({'exams':Exam.objects.all()})
+	topic = get_object_or_404(Topic, pk=pk)
+	response.update({'topic':topic})
+	if 'sub_topic' in request.GET and request.GET['sub_topic']:
+		sub_topic = request.GET['sub_topic']
+	else:
+		response.update({'form_error': True}) 
+		return render_to_response('tips_topics.html', response)
+	sub_topic_obj = get_object_or_404(SubTopic,pk=sub_topic)
+	response.update({'sub_topic':sub_topic_obj})
+	tips = TipsandTricks.objects.filter(sub_topic=sub_topic_obj)
+	if tips:
+		response.update({'tips': tips})
+	else:
+		response.update({'no_tips':True})		
+	return render_to_response('tips_topics.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_question_new(request, pk):
+	response = {}
+	response.update({'exams':Exam.objects.all()})
+	sub_topic = get_object_or_404(SubTopic, pk=pk)
+	response.update({'sub_topic':sub_topic})
+	if 'id' in request.GET and request.GET['id']:
+		oneword_id = request.GET['id']
+	else:
+		response.update({'form_error':True})
+		return render_to_response('new_oneword.html', response)	
+	response.update({'oneword': OnewordQuestion.objects.get(id=oneword_id)})
+	response.update({'onewords': OnewordQuestion.objects.filter(sub_topic=sub_topic).order_by('?')[:8]})
+	return render_to_response('new_oneword.html', response)
+
+@login_required
+@user_passes_test(student_check)
+def student_trick_new(request, pk):
+	response = {}
+	response.update({'exams':Exam.objects.all()})
+	sub_topic = get_object_or_404(SubTopic, pk=pk)
+	response.update({'sub_topic':sub_topic})
+
+	if 'id' in request.GET and request.GET['id']:
+		trick_id = request.GET['id']
+	else:
+		response.update({'form_error': True})
+		return render_to_response('new_trick.html', response)
+	response.update({'trick': TipsandTricks.objects.get(id=trick_id)})
+	response.update({'tricks': TipsandTricks.objects.filter(sub_topic=sub_topic).order_by('?')[:5]})
+	return render_to_response('new_tricks.html', response)	
+
+
+
 
 
 

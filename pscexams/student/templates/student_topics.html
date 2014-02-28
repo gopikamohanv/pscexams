@@ -21,6 +21,7 @@
 		    </div>
 		    <div id="{{topic.pk}}" class="panel-collapse collapse {% if topic.pk == topic_id %}in{% endif %}">
 		      <div class="panel-body">
+		      	{% autoescape off %}
 		        {% for subtopic in topic.subtopic_set.all %}
 		        	<h5><strong class="text-muted"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></strong></h5>
 		        	<p align="justify">
@@ -29,6 +30,7 @@
 		        {% empty %}
 		        	<div class="alert alert-info"><strong>We are updating data...</strong></div>
 		        {% endfor %}
+		        {% endautoescape %}
 		      </div>
 		    </div>
 		  </div>
@@ -47,26 +49,6 @@
         <div class="panel-body">
         	{% for subject in subject.exam.subject_set.all %}
 				<a href="/student/exam/subject/{{subject.pk}}/">{{subject.subject}}</a><br>
-			{% endfor %}
-        </div>
-    </div>
-    <div class="panel panel-success">
-    	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/tricks.png" width="50x;" heigh="45px;" alt=""> <strong>Tips & Tricks</strong></h3>
-        </div>
-        <div class="panel-body">
-        	{% for topic in subject.topic_set.all %}
-				<a href="">{{topic.topic}}</a><br>
-			{% endfor %}
-        </div>
-    </div>
-    <div class="panel panel-success">
-    	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/read.png" width="50x;" heigh="45px;" alt=""> <strong>Read & Learn</strong></h3>
-        </div>
-        <div class="panel-body">
-        	{% for topic in subject.topic_set.all %}
-				<a href="">{{topic.topic}}</a> <br>
 			{% endfor %}
         </div>
     </div>

@@ -11,7 +11,6 @@
 		  <li>{{sub_topic.sub_topic}}</li>
 		</ol>
 		{% autoescape off %}
-		{% for oneword in onewords %}
 			<div class="panel panel-default">
             	<div class="panel-heading"><h4><strong>{{oneword.question}}</strong></h4></div>
            		<div class="panel-body">
@@ -19,10 +18,8 @@
                 	<h5><strong class="text-muted">{{oneword.explanation}}</strong></h5>
               	</div>
             </div>
-        {% empty %}
-        	<div class="alert alert-warning"><h5><strong>We are updating contents...</strong></h5></div>    
-		{% endfor %}
 		{% endautoescape %}	
+        <a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}"><button class="btn btn-success">Show more in {{sub_topic.sub_topic}}</button></a>
 	</div>	
 {% endblock %}
 
@@ -32,12 +29,14 @@
 <div class="col-md-12"><br>
 	<div class="panel panel-success">
     	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Related topics</strong></h3>
+        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>New Questions</strong></h3> 
         </div>
         <div class="panel-body">
-        	{% for sub_topic in sub_topics %}
-        		<a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">{{sub_topic.sub_topic}}</a><br>
-			{% endfor %}
+        	{% autoescape off %}
+            {% for oneword in onewords %}
+                <a href="/student/question/new/{{oneword.sub_topic.pk}}/?id={{oneword.pk}}">{{oneword.question}}</a><br>
+            {% endfor %}
+            {% endautoescape %}   
         </div>
     </div>
 	<div class="panel panel-success">

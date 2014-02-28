@@ -11,6 +11,18 @@
     });
 </script>  
 
+<script>
+  $(document).ready(function()
+  {
+       $('#state').val('{{oneword.sub_topic.state.id}}');
+       $('#exam').val('{{oneword.sub_topic.exam.id}}');
+       $('#subject').val('{{oneword.sub_topic.subject.id}}');
+       $('#topic').val('{{oneword.sub_topic.topic.id}}');
+       $('#sub_topic').val('{{oneword.sub_topic.id}}');
+       $(".jHtmlArea").htmlarea();
+  });
+</script>
+
 <script type="text/javascript">
   function state_changed(option)
   {

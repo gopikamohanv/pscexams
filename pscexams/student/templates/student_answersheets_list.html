@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
-{% block left_content %}
+{% block content %}
+	<div class="col-md-12">
+		{% for answersheet in user.mocktest_set.all %}
+			<div class="row">
+				<div class="alert alert-info col-md-4">
+					<h4><a href="/student/answersheet/{{answersheet.pk}}/">{{answersheet.test_date}}<a></h4>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
+
+{% block right_content %}
 	<div class="col-md-12">
 	  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Whats New?</strong></h5>
 	  <ul>
@@ -25,17 +37,5 @@
 	  <li class="text-muted">Attended LD Exam</li>
 	  <li class="text-muted">Attended LD Exam</li>
 	  <hr>
-	</div>
-{% endblock %}
-
-{% block content %}
-	<div class="col-md-12">
-		{% for answersheet in user.mocktest_set.all %}
-			<div class="row">
-				<div class="alert alert-info col-md-4">
-					<h4><a href="/student/answersheet/{{answersheet.pk}}/">{{answersheet.test_date}}<a></h4>
-				</div>
-			</div>
-		{% endfor %}
 	</div>
 {% endblock %}

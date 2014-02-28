@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     (r'^state/ajax/exam/$',state_ajax_exam),
     (r'^exam/ajax/subject/$',exam_ajax_subject),
     (r'^subject/ajax/topic/$',subject_ajax_topic),
+    (r'^subtopic/ajax/oneword/$',subtopic_ajax_oneword),
     (r'^tutor/questions/edit/$', tutor_questions_edit),
     (r'^logout/$', logout_view),
     (r'^register/$', register),
@@ -46,6 +47,7 @@ urlpatterns = patterns('',
     url(r'^student/', include('pscexams.student.urls')),
     url(r'^publisher/', include('pscexams.publisher.urls')),
     url(r'^siteadmin/', include('pscexams.admin.urls')),
+    url(r'^tutor/', include('pscexams.tutor.urls')),
 
 
 )

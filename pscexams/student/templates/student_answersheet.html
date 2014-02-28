@@ -1,6 +1,85 @@
 {% extends 'base.html' %}
 
-{% block left_content %}
+
+{% block content %}
+	<div class="col-md-12">
+		<div class="alert alert-success">
+				<h4><strong><img src="https://s3.amazonaws.com/uploads.smartindia/score-icon2.png">Your score is {{test.score}}/{{total_score}}.</strong></h4>
+		</div>
+		<table class="table table-bordered table-hover" style="font-size:15px;">
+		    {% autoescape off %}
+		    {% for test_datum in test.mocktestdata_set.all %}
+		    <tr>
+            <th class="success">Question {{forloop.counter}}</th>
+            <th class="success" id="question_{{forloop.counter}}">
+                {% if test_datum.question.question %}
+                    {{test_datum.question.question}}
+                {% else %}
+                    <b>Sorry, this question was deleted.</b>
+                {% endif %}
+            </th>
+        <tr>
+            <td>Correct Answer</td>
+            <td id="correct_answer_{{forloop.counter}}">
+                {% if test_datum.question.answer == "1" %}
+                    {{test_datum.question.option1}}
+                {% endif%}
+                {% if test_datum.question.answer == "2" %}
+                    {{test_datum.question.option2}}
+                {% endif%} 
+                {% if test_datum.question.answer == "3" %}
+                    {{test_datum.question.option3}}
+                {% endif%}
+                {% if test_datum.question.answer == "4" %}
+                    {{test_datum.question.option4}}
+                {% endif%}
+            </td>        
+        </tr>       
+        <tr>
+            <td>Explanation</td>
+            <td id="explanation_{{forloop.counter}}">
+                {{test_datum.question.explanation}}
+            </td>
+        </tr>
+        <tr>
+            <td>Your Answer</td>
+            <td id="answer_{{forloop.counter}}">
+                {% if test_datum.answer == "1" %}
+                    {{test_datum.question.option1}}
+                {% endif%}
+                {% if test_datum.answer == "2" %}
+                    {{test_datum.question.option2}}
+                {% endif%}
+                {% if test_datum.answer == "3" %}
+                    {{test_datum.question.option3}}
+                {% endif%}
+                {% if test_datum.answer == "4" %}
+                    {{test_datum.question.option4}}
+                {% endif%}
+                {% if test_datum.answer == "0" %}
+                    Not Answered
+                {% endif %}
+                {% if test_datum.question.question %}
+                    {% if not test_datum.answered %}
+                        <img src="https://s3.amazonaws.com/cdn.smartindia/images/home/unanswered.png" />
+                    {% endif %}
+                    {% if test_datum.question.answer == test_datum.answer %}
+                        <img src="https://s3.amazonaws.com/cdn.smartindia/images/home/right.png" />
+                    {% endif %}
+                    {% if test_datum.answered and test_datum.question.answer != test_datum.answer%}
+                        <img src="https://s3.amazonaws.com/cdn.smartindia/images/home/wrong.png" />
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+		{% endfor %}
+		{% endautoescape %}
+		</table>
+	</div>
+{% endblock %}
+
+
+{% block right_content %}
 <div class="col-md-12">
   <h5><img src="/static/images/new-icon.png"><strong class="text-muted">Your Answersheets</strong></h5>
   <ul>
@@ -10,78 +89,4 @@
   </ul>
   <hr>
 </div>   
-{% endblock %}
-
-
-{% block content %}
-	<div class="col-md-12">
-		<div class="alert alert-success">
-				<h3>Your score is {{test_data.score}}/{{total_score}}.</h3>
-		</div>
-		<table class="table table-bordered table-hover">
-		  <thead>
-		    <tr>
-		      <th>No</th>
-		      <th>Question</th>
-		      <th>Answer</th>
-		      <th>Your Answer</th>
-		      <th>Explanation</th>
-		      <th>You Answered</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    {% autoescape off %}
-		    {% for test_datum in test_data.mocktestdata_set.all %}
-		    <tr>
-		      <td>{{forloop.counter}}</td>
-		      <td>{{test_datum.question.question}}</td>
-		      <td>
-		        {% if test_datum.question.answer == "1" %}
-		          {{test_datum.question.option1}}
-		        {% endif%}
-		        {% if test_datum.question.answer == "2" %}
-		          {{test_datum.question.option2}}
-		        {% endif%}
-		        {% if test_datum.question.answer == "3" %}
-		          {{test_datum.question.option3}}
-		        {% endif%}
-		        {% if test_datum.question.answer == "4" %}
-		          {{test_datum.question.option4}}
-		        {% endif%}
-		      </td>
-		      <td>
-		        {% if test_datum.answer == "1" %}
-		          {{test_datum.question.option1}}
-		        {% endif%}
-		        {% if test_datum.answer == "2" %}
-		          {{test_datum.question.option2}}
-		        {% endif%}
-		        {% if test_datum.answer == "3" %}
-		          {{test_datum.question.option3}}
-		        {% endif%}
-		        {% if test_datum.answer == "4" %}
-		          {{test_datum.question.option4}}
-		        {% endif%}
-		        {% if test_datum.answer == "0" %}
-		          Not Answered
-		        {% endif %}
-		      </td>
-		      <td>{{test_datum.question.explanation}}</td>
-		      <td>
-		        {% if not test_datum.answered %}
-		          <img src="https://s3.amazonaws.com/cdn.smartworld/images/home/unanswered.png" />
-		        {% endif %}
-		        {% if test_datum.question.answer == test_datum.answer %}
-		          <img src="https://s3.amazonaws.com/cdn.smartworld/images/home/right.png" />
-		        {% endif %}
-		        {% if test_datum.answered and test_datum.question.answer != test_datum.answer%}
-		          <img src="https://s3.amazonaws.com/cdn.smartworld/images/home/wrong.png" />
-		        {% endif %}
-		      </td>
-		    </tr>
-		    {% endfor %}
-		    {% endautoescape %}
-		  </tbody>
-		</table>
-	</div>
 {% endblock %}

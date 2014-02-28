@@ -118,3 +118,56 @@ class ExamDescription(models.Model):
 
 	def __unicode__(self):
 		return self.exam.exam
+
+
+class ModelExamQuestionPaper(models.Model):
+	modelexam = models.ForeignKey(ModelExam)
+	question_path = models.CharField(max_length=250, null=True)
+	answer_path = models.CharField(max_length=250, null=True)
+	question_url = models.CharField(max_length=255, null=True)
+	answer_url = models.CharField(max_length=255, null=True)
+
+	def __unicode__(self):
+		return self.modelexam.title
+
+class PreviousYearQuestionPaper(models.Model):
+	exam = models.ForeignKey(Exam)
+	name = models.CharField(max_length=255, null=True)
+	question_path = models.CharField(max_length=250, null=True)
+	answer_path = models.CharField(max_length=250, null=True)
+	question_url = models.CharField(max_length=255, null=True)
+	answer_url = models.CharField(max_length=255, null=True)
+
+	def __unicode__(self):
+		return self.exam.exam
+
+
+class OnewordQuestion(models.Model):
+	question = models.TextField()
+	answer = models.TextField()
+	explanation = models.TextField(null=True)
+	sub_topic = models.ForeignKey(SubTopic)
+	tutor = models.ForeignKey(User, related_name='oneword_tutor')
+	publisher = models.ForeignKey(User, related_name='oneword_publisher', null=True, blank=True)
+	is_published = models.BooleanField()
+	sub_topic = models.ForeignKey(SubTopic)
+	question_type = models.CharField(max_length=2, null=True)
+	created_date = models.DateTimeField(null=True, blank=True)
+	published_date = models.DateTimeField(null=True, blank=True)
+	is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
+	last_modified = models.DateTimeField(auto_now=True)
+
+
+class TipsandTricks(models.Model):
+	sub_topic = models.ForeignKey(SubTopic)
+	title = models.CharField(max_length=100)
+	description = models.TextField()
+	tutor = models.ForeignKey(User)
+	is_published = models.BooleanField()
+	created_date = models.DateTimeField(null=True, blank=True)
+	published_date = models.DateTimeField(null=True, blank=True)
+	is_in_use = models.BooleanField()
+	last_modified = models.DateTimeField(auto_now=True)
+
+	def __unicode__(self):
+		return self.title

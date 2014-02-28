@@ -11,8 +11,8 @@
 		  <li>{{sub_topic.sub_topic}}</li>
 		</ol>
 		{% if locked %}
-			<div class="alert alert-info">
-				<strong>You have to score full marks in Test {{test}} to attend further tests.</strong>
+			<div class="alert alert-warning">
+				<strong>You have to finish Test {{test}} with all right answers to unlock the remaining tests!.</strong>
 			</div>
 		{% endif %}
 		{% for test in tests %}
@@ -36,17 +36,43 @@
 
 {% block right_content %}
 <div class="col-md-12">
-	<h4><strong class="text-muted">Related SubTopics</strong></h4>
-			<hr>
-			{% for subtopic in sub_topic.topic.subtopic_set.all %}
-				<strong class="text-muted"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></strong> <br>
+	<br>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/read_and_learn_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Read & Learn</strong></h3>
+        </div>
+        <div class="panel-body">
+			<a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">{{sub_topic.sub_topic}}</a></br>
+		</div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/tricks.png" width="50x;" heigh="45px;" alt=""> <strong>Tips & Tricks</strong></h3>
+        </div>
+        <div class="panel-body">
+			<a href="/student/tips/topics/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">{{sub_topic.sub_topic}}</a></br>
+		</div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/binary-tree-icon.png" width="50x;" heigh="45px;" alt=""> <strong>Related Topics</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for topic in sub_topic.topic.subject.topic_set.all %}
+				<a href="/student/exam/subject/{{topic.subject.pk}}/?topic={{topic.pk}}">{{topic.topic}}</a></br>
 			{% endfor %}
-  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Available Topics</strong></h5>
-  <ul>
-	{% for topic in sub_topic.topic.subject.topic_set.all %}
-		<li class="text-muted list-unstyled"><a href="/student/exam/subject/{{topic.subject.pk}}/?topic={{topic.pk}}">{{topic.topic}}</a></li>
-	{% endfor %}
-	</ul>
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/MetroUI-Other-Task-icon.png" width="50x;" heigh="45px;" alt=""> <strong>Recent Answer Sheets</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for mocktest_datum in mocktest_data %}
+				<a href="/student/answersheet/{{mocktest_datum.mock_test.pk}}/">{{mocktest_datum.mock_test.test_date}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
   <hr>
 </div>   
 {% endblock %}

@@ -1,0 +1,35 @@
+
+    <tr>
+      <td>No</td>
+      <td>Status</td>
+      <td>Questions</td>
+      <td>Actions</td>
+    </tr>
+    {% for question in questions %}
+      <tr id="question_row_{{question.id}}">
+        {% autoescape off %}
+        <td style="width:50px; text-align:center;">{{ forloop.counter }}</td>
+        <td style="width:100px;text-align:center;" id="question_img_{{question.id}}">
+          {% if question.is_published %}                                                    
+            <a href="#"><img alt="Published" title="Published" src="/static/images/published.png" /></a>
+          {% else %}
+            <a href="#"><img alt="Unpublished" title="Unpublished" src="/static/images/unpublished.png" /></a>
+          {% endif %}
+        </td>
+        <td>
+            {{question.question}}
+        </td>
+        <td style="width:180px; text-align:center;">
+          <a href="/publisher/questions/edit/?id={{question.id}}">
+            <img src="/static/images/edit.png">
+          </a>&nbsp;
+          <a href="javascript:onPublishClick(1, {{question.id}})"><img alt="Publish" title="Publish" src="/static/images/activate.png" /></a>&nbsp;
+          <a href="javascript:onPublishClick(2, {{question.id}})"><img alt="Un-Publish" title="Un-Publish" src="/static/images/deactivate.png" /></a>&nbsp;
+          <a>
+            <img src="/static/images/trash.png">
+          </a>
+        </td>
+      </tr>
+      {% endautoescape %}
+    {%endfor%}
+

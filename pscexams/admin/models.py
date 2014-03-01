@@ -93,8 +93,8 @@ class Question(models.Model):
     is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
     last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return self.question
+    #def __unicode__(self):
+        #return self.question
 
 
 class ModelExam(models.Model):

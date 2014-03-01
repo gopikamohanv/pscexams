@@ -1,0 +1,34 @@
+
+  <table class="table table-striped table-hover" id="tips_and_tricks_table">
+    <tr>
+      <td>No</td>
+      <td>Status</td>
+      <td>Title</td>
+      <td>Actions</td>
+    </tr>
+    {% for tipsandtricks in tips_and_tricks %}
+      <tr>
+        <td style="width:50px; text-align:center;">{{ forloop.counter }}</td>
+        <td style="width:100px;text-align:center;">
+          {% if tipsandtricks.is_published %}                                                    
+            <a href="#"><img alt="Published" title="Published" src="/static/images/published.png" /></a>
+          {% else %}
+            <a href="#"><img alt="Unpublished" title="Unpublished" src="/static/images/unpublished.png" /></a>
+          {% endif %}
+        </td>
+        <td>
+            {{tipsandtricks.title}}
+        </td>
+        <td style="width:150px; text-align:center;">
+          <a href="/tutor/edit/tipsandtricks?id={{tipsandtricks.id}}">
+            <img src="/static/images/edit.png">
+          </a>&nbsp;&nbsp;&nbsp;
+          <a>
+            <img src="/static/images/trash.png">
+          </a>
+        </td>
+      </tr>
+    {%endfor%}
+  </table>
+</div>
+</div>

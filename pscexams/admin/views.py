@@ -406,6 +406,7 @@ def admin_upload_previousyearquestion(request):
 		return render_to_response('previousyear_questionpaper.html', response)
 
 	if request.method == ' POST':
+		return HttpResponse('fndsf')
 		if 'exam' in request.POST and request.POST['exam']:
 			exam = request.POST['exam']
 
@@ -479,4 +480,3 @@ def admin_upload_previousyearquestion(request):
 			raise Http404()
 
 		return render_to_response('previousyear_questionpaper.html',response)
-			

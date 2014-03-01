@@ -3,31 +3,21 @@
 {% block content %}
 	<div class="col-md-12">
 		<br>
-		<h3><strong class="text-info">{{sub_topic.sub_topic}}</strong></h3>		
+		<h3><strong class="text-info">{{tip.title}}</strong></h3>		
 		<ol class="breadcrumb">
 		  <li><a href="/home/">Kerala PSC</a></li>
-		  <li><a href="/student/exam/{{topic.subject.exam.pk}}/">{{sub_topic.topic.subject.exam.exam}}</a></li>
-		  <li><a href="/student/exam/subject/{{topic.subject.pk}}/">{{sub_topic.topic.subject.subject}}</a></li>
-		  <li><a href="/student/exam/subject/{{topic.subject.pk}}/">{{sub_topic.topic.topic}}</a></li>
-		  <li>{{sub_topic.sub_topic}}</li>
+		  <li><a href="/student/exam/{{sub_topic.topic.subject.exam.pk}}/">{{sub_topic.topic.subject.exam.exam}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.topic.subject.pk}}/">{{sub_topic.topic.subject.subject}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.topic.subject.pk}}/">{{sub_topic.topic.topic}}</a></li>
+		  <li><a href="/student/tips/topics/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">{{sub_topic.sub_topic}}</a></li>
 		</ol>
 		{% if no_tips %}
 			<div class="alert alert-warning">We are updating tips and tricks...</div>
 		{% else %}
-			<div class="panel-group col-md-12">
-			{% for tip in tips %}
-			  <div class="panel panel-default">
-			    <div class="panel-heading">
-			      <h4 class="text-info">
-			        <a href="/student/tips/view/{{tip.sub_topic.pk}}/?id={{tip.pk}}">
-			          <h4></strong>{{tip.title}}</strong></h4>
-			        </a>
-			      </h4>
-			    </div>
-			  </div>
-			  {% endfor %}
-			</div>
-		{% endif %}	
+			{% autoescape off %}
+				{{tip.description}}
+			{% endautoescape %}	
+		{% endif %}		
 	</div>
 {% endblock %}
 
@@ -39,8 +29,8 @@
         	<h3 class="panel-title"><img src="/static/images/tricks.png" width="50x;" heigh="45px;" alt=""> <strong>Related topics</strong></h3>
         </div>
         <div class="panel-body">
-        	{% for subtopic in topic.subtopic_set.all %}
-				<a href="/student/tips/topics/{{topic.subject.pk}}/?sub_topic={{subtopic.pk}}">{{subtopic.sub_topic}}</a><br>
+        	{% for tip in sub_topic.tipsandtricks_set.all %}
+				<a href="/student/tips/view/{{sub_topic.pk}}/?id={{tip.pk}}">{{tip.title}}</a><br>
 			{% endfor %}
         </div>
     </div>

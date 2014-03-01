@@ -47,3 +47,16 @@ def getLastExam(self, subtopic):
         pass
     else:
         return exam.test_num
+
+class ExamScore(models.Model):
+    user = models.ForeignKey(UserProfile)
+    sub_topic = models.ForeignKey(SubTopic)
+    test = models.ForeignKey(MockTest)
+
+
+
+
+
+
+
+

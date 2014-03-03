@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PSC Exams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.css" media="screen">
+    <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+    <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
+    <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.validate.js"></script>
+    <script type="text/javascript" src="https://s3.amazonaws.com/cdn.smartworld/js/cycleall/jquery.cycle.all.min.js"></script>
+    
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47708779-1', 'pscexams.com');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#slideshow').cycle({
+        fx:     'fade',
+        speed:  'slow',
+        timeout: 3000,
+        pager:  '#slider_nav',
+        pagerAnchorBuilder: function(idx, slide) {
+            // return sel string for existing anchor
+            return '#slider_nav li:eq(' + (idx) + ') a';
+        }
+    });
+});
+</script>
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="navbar navbar-inverse">
+          <div class="navbar-header">
+            <strong><a class="navbar-brand" href="/">PSC Exams</a></strong>
+          </div>
+          <div class="navbar-collapse collapse navbar-inverse-collapse">
+            <ul class="nav navbar-nav navbar-center">
+              <li><a href="/">Home</a></li>
+              <li><a href="/about/">About</a></li>
+              <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+              <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exams <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  {% for exam in exams %}
+                    <li><a href="#">{{exam.exam}}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+            </ul>
+            <nav>
+              <ul>
+                 <li id="signup"><button onclick="location.href='/registration/'" class="btn btn-success">Sign up</button>
+                </li>
+                <li id="login">
+                  <button id="login-trigger" href="#" class="btn btn-warning">Sign in <span>▼</span></button>
+                  <div id="login-content">
+                    <form action="/login/" method="post"> {% csrf_token %}
+                      <fieldset id="inputs">
+                        <input id="username" type="text" name="username" placeholder="Username" required>   
+                        <input id="password" type="password" name="password" placeholder="Password" required>
+                      </fieldset>
+                      <fieldset id="actions">
+                        <input type="submit" id="submit" value="Log in">
+                        <label><input type="checkbox" checked="checked"> Keep me signed in</label>
+                      </fieldset>
+                    </form>
+                  </div>                     
+                </li>  
+              </ul>
+            </nav>  
+          </div><!-- /.nav-collapse --> 
+      </div>
+  
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="col-lg-8">
+
+       {% block content %}
+          <div class="col-md-12">
+            <h3><strong class="text-muted">{{exam.exam}}</strong></h3>
+            <hr>
+
+            {% for subject in subjects %}
+              <div class="col-md-12">
+                <div class="col-md-2">
+                    <img src="{{subject.get_subject_image}}"> 
+                </div>
+                <div class="col-md-10">
+                    <a href="/about/subject/topics/?id={{subject.id}}"><h4><strong class="text-info">{{subject.subject}}</strong></h4></a>
+                      <p>{{subject.get_subject_description}}</p>
+                      <hr>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+            {% endblock %}
+
+      </div>  
+
+      
+<div class="col-lg-4">
+        {%if no_user%}
+          <div class="col-lg-12">
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>No Such User</strong>
+            </div>
+          </div>
+        {%endif%}
+
+        {%if inactive%}
+          <div class="col-lg-12">
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Inactive User</strong>
+            </div>
+          </div>
+        {%endif%}
+
+        {% if user_error %}
+          <div class="col-lg-12">
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Username already exists.</strong>
+            </div>
+          </div>
+        {% endif %}
+
+
+        <div class="col-lg-12">
+          {% include "free_signup.html" %}
+          
+        </div>
+      </div>
+</div>
+</div>    
+      </div>
+
+{% include "footer.html" %}

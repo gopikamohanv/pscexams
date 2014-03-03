@@ -1,4 +1,4 @@
-{% include "tutor_header.html" %}
+{% include "publisher_header.html" %}
     
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -172,7 +172,7 @@
         </div>
       {% endif %}
 
-        <form id="question_form" method="POST" action="/tutor/questions/edit/" onSubmit="return updateDivs(this);"> {% csrf_token %}
+        <form id="question_form" method="POST" action="/publisher/questions/edit/" onSubmit="return updateDivs(this);"> {% csrf_token %}
             <div style="display:none;"><input type="hidden" name="question_id" value="{{question_obj.id}}"></div>
             <table>
                 <tr>
@@ -201,7 +201,7 @@
                     </select>
                     </td>
                     <td id="td_topic">
-                    <select name="topic" id="topic" style="width:175px;" onChange="topic_changed(this.value)">
+                    <select name="topic" id="topic" onChange="topic_changed(this.value)" style="width:175px;">
                         <option value="0">Select Topic</option>
                         {% for topic in topics %}
                             <option value="{{topic.id}}">{{topic.topic}}</option> 
@@ -282,7 +282,12 @@
             </td></tr>
             </table>
         </form>
-        <p>Created on {{question_obj.created_date}}. Last updated on {{question_obj.last_modified}}</p>
+        <p> Typed by {{question_obj.tutor.first_name}} ({{question_obj.tutor.username}}) on {{question_obj.created_date}}. 
+            {% if question_obj.is_published %}
+                Last published by {{question_obj.publisher.first_name}} ({{question_obj.publisher.username}}) on {{question_obj.published_date}}.
+            {% else %}
+                This question is not published yet.
+            {% endif %}</p>
         <div class="clr"></div>
         <div class="bg"></div>
     </div>

@@ -93,8 +93,8 @@ class Question(models.Model):
     is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
     last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return self.question
+    #def __unicode__(self):
+        #return self.question
 
 
 class ModelExam(models.Model):
@@ -156,3 +156,18 @@ class OnewordQuestion(models.Model):
 	published_date = models.DateTimeField(null=True, blank=True)
 	is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
 	last_modified = models.DateTimeField(auto_now=True)
+
+
+class TipsandTricks(models.Model):
+	sub_topic = models.ForeignKey(SubTopic)
+	title = models.CharField(max_length=100)
+	description = models.TextField()
+	tutor = models.ForeignKey(User)
+	is_published = models.BooleanField()
+	created_date = models.DateTimeField(null=True, blank=True)
+	published_date = models.DateTimeField(null=True, blank=True)
+	is_in_use = models.BooleanField()
+	last_modified = models.DateTimeField(auto_now=True)
+
+	def __unicode__(self):
+		return self.title

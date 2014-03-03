@@ -1,4 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
+from django.contrib.auth import *
+from django.contrib.auth.models import User
+from django.core.context_processors import csrf
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -32,15 +37,88 @@ def admin_dashboard(request):
 	try:
 		user_profile = UserProfile.objects.get(user=request.user)
 	except:
-		raise Http500
-	user_details = UserProfile.objects.filter(user_type ='4')
+		raise Http500	
 	
-	user_count = user_details.count()
-	response.update({'user_details':user_details})
-	response.update({'user':request.user})
-	response.update({'user_count':user_count})
-	return render_to_response('admin_home.html', response)
+	response.update({'usertypes':UserType.types})
+	response.update({'user_count':UserProfile.objects.all().count()})
+	response.update({'activeuser_count':UserProfile.objects.filter(user__is_active = True).count()})
 
+	if 'user_type' in request.GET and request.GET['user_type'] != '0':
+		user_type = request.GET['user_type']
+		users = UserProfile.objects.filter(user_type=user_type).order_by('-pk')[:20]
+		response.update({'usertype_selected':True})
+		response.update({'selected_usertype':user_type})
+
+	else:
+		users = UserProfile.objects.all().order_by('-pk')[:20]
+	response.update({'users':users})
+	return render_to_response('user_details.html', response)
+
+
+# /siteadmin/users/ajax/browse/
+def siteadmin_user_ajax_browse(request):
+	
+	if not request.user.is_authenticated():
+		return HttpResponseRedirect(DefaultUrl.login_url)
+	try:
+		user_profile = UserProfile.objects.get(user=request.user)
+	except:
+		raise Http500
+
+	if user_profile.user_type != UserType.types['Admin']:
+		raise Http404()
+	get_error = False
+
+	if 'user_type' in request.GET and request.GET['user_type']:
+		user_type = request.GET['user_type']
+	else:
+		get_error = True
+
+	if 'next_rows' in request.GET and request.GET['next_rows']:
+		next_rows = request.GET['next_rows']
+	else:
+		get_error = True
+
+	if get_error:
+		raise Http404
+
+	next_row = int(next_rows)
+	end_row = next_row + 20
+
+	if user_type == '0':
+		users = UserProfile.objects.all().order_by('-pk')[next_row:end_row]
+	else:
+		users = UserProfile.objects.filter(user_type=user_type).order_by('-pk')[next_row:end_row]
+
+	if not users:
+		return HttpResponse('Null')
+	else:
+		return render_to_response('ajax_users.html', {'users':users})
+
+#/siteadmin/ajax/users/search/
+def siteadmin_ajax_users_search_username(request):
+    if not request.user.is_authenticated():
+        raise Http404        
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        raise Http500
+
+    if user_profile.user_type != UserType.types['Admin']:
+        raise Http404()
+        
+    if 'email' in request.GET and request.GET['email']:
+        email = request.GET['email']
+    else:
+        raise Http404()        
+    try:
+        user = UserProfile.objects.get(user__username=email)
+    except:
+        return HttpResponse("False")
+        
+    response = {}
+    response.update({'user':user})
+    return render_to_response('ajax_particular_user.html', response)
 
 @login_required
 @user_passes_test(admin_check)
@@ -303,7 +381,7 @@ def admin_upload_modelexamquestion(request):
 	    	except:
 	    		raise Http404()
 	    try:
-	    	model_question_paper = ModelExamQuestionPaper()
+	    	model_question_paper = ModelExamQuestionPaper()	    	
 	    	model_question_paper.modelexam = model_exam
 	    	model_question_paper.question_path = '/tmp/' + new_question_file + question_file_extension
 	    	model_question_paper.answer_path = '/tmp/'+ new_answer_file + answer_file_extension
@@ -326,3 +404,79 @@ def admin_upload_previousyearquestion(request):
 	
 	if request.method == 'GET':
 		return render_to_response('previousyear_questionpaper.html', response)
+
+	if request.method == ' POST':
+		return HttpResponse('fndsf')
+		if 'exam' in request.POST and request.POST['exam']:
+			exam = request.POST['exam']
+
+		if 'title' in request.POST and request.POST['title']:
+			title = request.POST['title']
+
+		try:
+			exam_obj = Exam.objects.get(id=exam)
+		except:
+			raise Http404()
+
+		if 'question_url' in request.FILES and request.FILES:
+			question_url = request.FILES['question_url']
+			question_file = request.FILES['question_url'].name
+			question_file_extension = os.path.splitext(question_file)[1]
+			new_question_file = str(exam_obj.pk) + 'ques' + str(datetime.datetime.now().strftime("%b%d%Y%H%M%S"))
+
+			try:
+				f1 = open('/tmp/'+ new_question_file + question_file_extension,'wb+')
+				for chunk in question_url.chunks():
+					f1.write(chunk)
+				f1.close()
+			except:
+				raise Http404()
+
+			try:
+				conn = S3Connection('AKIAJTA3FH3TQEMQ25HA', 'YLBDeel7NLEOoM+leAXWy7hby3m4Dh4kU1g4CaUF') # DO NOT LOOSE THIS KEY!!!!!
+				bucket = conn.create_bucket('questionpapers.smartindia')
+				k = Key(bucket)
+				k.key = new_question_file + question_file_extension
+				k.set_contents_from_filename('/tmp/' + new_question_file + question_file_extension)
+				k.set_acl('public-read')
+			except:
+				raise Http404()
+
+		if 'answer_url' in request.FILES and request.FILES:
+			answer_url = request.FILES['answer_url']
+			answer_file = request.FILES['answer_url'].name
+			answer_file_extension = os.path.splitext(answer_file)[1]
+			new_answer_file = str(exam_obj.pk) + 'ans' + str(datetime.datetime.now().strftime("%b%d%Y%H%M%S"))
+
+			try:
+				f2 = open('/tmp/'+ new_answer_file + answer_file_extension,'wb+')
+				for chunk in answer_url.chunks():
+					f2.write(chunk)
+				f2.close()
+			except:
+				raise Http404()
+
+			try:
+				conn = S3Connection('AKIAJTA3FH3TQEMQ25HA', 'YLBDeel7NLEOoM+leAXWy7hby3m4Dh4kU1g4CaUF') # DO NOT LOOSE THIS KEY!!!!!
+				bucket = conn.create_bucket('questionpapers.smartindia')
+				k = Key(bucket)
+				k.key = new_answer_file + answer_file_extension
+				k.set_contents_from_filename('/tmp/' + new_answer_file + answer_file_extension)
+				k.set_acl('public-read')
+			except:
+				raise Http404()
+
+		try:
+			previousyear_question_paper = PreviousYearQuestionPaper()
+			previousyear_question_paper.exam = exam_obj
+			previousyear_question_paper.name = title
+			previousyear_question_paper.question_path = '/tmp/' + new_question_file + question_file_extension
+			previousyear_question_paper.answer_path = '/tmp/'+ new_answer_file + answer_file_extension
+			previousyear_question_paper.question_url = 'https://s3.amazonaws.com/questionpapers.smartindia/' + new_question_file + question_file_extension
+			previousyear_question_paper.answer_url = 'https://s3.amazonaws.com/questionpapers.smartindia/' + new_answer_file + answer_file_extension
+			previousyear_question_paper.save()
+			response.update({'saved':True})
+		except:
+			raise Http404()
+
+		return render_to_response('previousyear_questionpaper.html',response)

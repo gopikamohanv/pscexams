@@ -243,6 +243,7 @@ def subtopic_ajax_question(request):
 		response.update({'no_questions':True})
 	return render_to_response('ajax_questions.html', response)
 
+
 # Ajax for tutor subtopic search
 # /subtopic/ajax/oneword/	
 def subtopic_ajax_oneword(request):
@@ -255,6 +256,9 @@ def subtopic_ajax_oneword(request):
 	except:
 		response.update({'no_questions':True})		
 	return render_to_response('ajax_onewords.html', response)
+
+
+#
 
 
 # Free Registration

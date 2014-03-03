@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<br>
+		<h4><strong class="text-info">My Performance</strong></h4>
+		<hr>
+		<h5><strong class="text-muted">{{exam.exam}}</strong></h5>
+		<div class="col-md-12">
+            {% if no_tests %}
+                <div class="alert alert-danger">You have never practiced in this exam!</div>
+            {% else %}    
+	           <canvas id="cvs" width="800" height="350"></canvas>
+            {% endif %}   
+	    </div>
+	</div>
+{% endblock %}
+
+{% block right_content %}
+<div class="col-md-12">
+	<br>
+     <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>Related Exams</strong></h3>
+        </div>
+        <div class="panel-body">
+            {% for exam in exams %}
+                <a href="/student/performance/{{exam.pk}}/">{{exam.exam}}</a><br>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><strong>{{exam.exam}}</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for subject in subjects %}
+				<a href="/student/exam/subject/{{subject.pk}}/">{{subject.subject}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+</div>   
+{% endblock %}
+
+
+
+{% block custom_js %}
+<script>
+	goToByScroll('{{topic_id}}');
+</script>
+<script src="/static/js/RGraph.common.core.js" ></script>
+<script src="/static/js/RGraph.common.dynamic.js" ></script>
+<script src="/static/js/RGraph.common.effects.js" ></script>
+<script src="/static/js/RGraph.line.js" ></script>
+<script>
+        var line = new RGraph.Line('cvs', [{% for score in scores %}{{score.test.score}},{% endfor %}])
+            .Set('labels', [{% for score in scores %}'Test {{forloop.counter}}',{% endfor %}])
+            .Set('colors', ['red'])
+            .Set('shadow', true)
+            .Set('shadow.offsetx', 4)
+            .Set('shadow.offsety', 4)
+            .Set('linewidth', 4)
+            .Set('yaxispos', 'left')
+            .Set('xaxispos', 'bottom')
+            .Set('hmargin', 10)
+        RGraph.Effects.Line.jQuery.Trace(line);
+    </script>
+{% endblock %}

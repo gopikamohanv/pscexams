@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<br>
+		<h3><strong class="text-info">{{sub_topic.sub_topic}}</strong></h3>		
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li><a href="/student/exam/{{topic.subject.exam.pk}}/">{{sub_topic.topic.subject.exam.exam}}</a></li>
+		  <li><a href="/student/exam/subject/{{topic.subject.pk}}/">{{sub_topic.topic.subject.subject}}</a></li>
+		  <li><a href="/student/exam/subject/{{topic.subject.pk}}/">{{sub_topic.topic.topic}}</a></li>
+		  <li>{{sub_topic.sub_topic}}</li>
+		</ol>
+		{% if no_tips %}
+			<div class="alert alert-warning">We are updating tips and tricks...</div>
+		{% else %}
+			<div class="panel-group col-md-12">
+			{% for tip in tips %}
+			  <div class="panel panel-default">
+			    <div class="panel-heading">
+			      <h4 class="text-info">
+			        <a href="/student/tips/view/{{tip.sub_topic.pk}}/?id={{tip.pk}}">
+			          <h4></strong>{{tip.title}}</strong></h4>
+			        </a>
+			      </h4>
+			    </div>
+			  </div>
+			  {% endfor %}
+			</div>
+		{% endif %}	
+	</div>
+{% endblock %}
+
+{% block right_content %}
+<div class="col-md-12">
+	<br>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/tricks.png" width="50x;" heigh="45px;" alt=""> <strong>Related topics</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for subtopic in topic.subtopic_set.all %}
+				<a href="/student/tips/topics/{{topic.subject.pk}}/?sub_topic={{subtopic.pk}}">{{subtopic.sub_topic}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><strong>{{sub_topic.sub_topic}}</strong></h3>
+        </div>
+        <div class="panel-body">
+        	<a href="/student/exam/topic/tests/{{sub_topic.pk}}/">Practice Tests</a><br>
+			<a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">Read & Learn</a><br>
+        </div>
+    </div>
+</div>   
+{% endblock %}
+
+
+
+{% block custom_js %}
+<script>
+	goToByScroll('{{topic_id}}');
+</script>
+{% endblock %}

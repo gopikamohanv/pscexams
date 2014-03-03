@@ -1,0 +1,22 @@
+{% for users in users %}
+    <tr>
+      
+      <td style="width:100px;text-align:center;">
+        {% if users.user.is_active %}
+          <img src="/static/images/published.png">
+        {% else %}
+          <img src="/static/images/unpublished.png">{% endif %}
+      </td>
+      <td style="width:300px;text-align:left;">
+        {{users.user.username}}
+      </td>
+      <td style="width:100px;text-align:center;"><a href="#"><img src="/static/images/trash.png"></a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td>
+        <p style="color:red;">There are no such type of users!!!</p>
+      </td>
+    <tr>
+    {%endfor%}

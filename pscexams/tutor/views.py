@@ -1,5 +1,5 @@
 from django.http import HttpResponse,HttpResponseRedirect,Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import *
 from django.contrib.auth.models import User
@@ -666,7 +666,7 @@ def tutor_oneword_edit(request):
 
         states = State.objects.all()
         response.update({'states':states})
-        response.update({'oneword_obj':oneword_obj})
+        response.update({'oneword':oneword_obj})
         exams = Exam.objects.filter(state=oneword_obj.sub_topic.state)
         subjects = Subject.objects.filter(exam=oneword_obj.sub_topic.exam)
         topics = Topic.objects.filter(subject=oneword_obj.sub_topic.subject)
@@ -676,3 +676,168 @@ def tutor_oneword_edit(request):
         response.update({'topics':topics})
         response.update({'sub_topics':sub_topics})
         return render_to_response('tutor_oneword_edit.html', response)
+
+
+# Add for Tips and Tricks
+# /tutor/tipsandtricks/
+@login_required
+@user_passes_test(tutor_check)
+def tutor_add_tips_and_tricks(request):
+    response = {}
+    states = State.objects.all()
+    response.update({'states':states})
+
+    if request.method == 'GET':
+        return render_to_response('add_tips_and_tricks.html', response)
+
+    if request.method == 'POST':
+        form_error = False
+
+        if 'sub_topic' in request.POST and request.POST['sub_topic']:
+            sub_topic = request.POST['sub_topic']
+        else:
+            form_error = True
+
+        if 'title' in request.POST and request.POST['title']:
+            title = request.POST['title']
+        else:
+            form_error = True
+
+        if 'description' in request.POST and request.POST['description']:
+            description = request.POST['description']
+        else:
+            form_error = True
+
+        if form_error:
+            response.update({'form_error':form_error})
+            return render_to_response('add_tips_and_tricks.html', response) 
+
+        tipsandtricks = TipsandTricks()
+        tipsandtricks.sub_topic = SubTopic.objects.get(id=sub_topic)
+        tipsandtricks.title = title
+        tipsandtricks.description = description
+        tipsandtricks.tutor = request.user
+        tipsandtricks.created_date = datetime.datetime.today()
+        tipsandtricks.is_published = False
+        tipsandtricks.is_in_use = True
+        try:
+            tipsandtricks.save()
+            response.update({'saved':True})
+        except:
+            response.update({'save_error':True})
+
+        return render_to_response('add_tips_and_tricks.html', response)
+
+
+
+# Edit for Tips and Tricks
+# /tutor/tipsandtricks/
+@login_required
+@user_passes_test(tutor_check)
+def tutor_list_tips_and_tricks(request):
+    response = {}
+    states = State.objects.all()
+    response.update({'states':states})
+    return render_to_response('list_tips_and_tricks.html', response)
+
+
+ #Ajax for tutor tips and tricks search
+# /subtopic/ajax/tipsandtricks/     
+def subtopic_ajax_tipsandtricks(request):
+    response = {}
+    if 'sub_topic' in request.GET and request.GET['sub_topic']:
+        sub_topic = request.GET['sub_topic']
+
+    try:
+        tips_and_tricks = TipsandTricks.objects.filter(tutor=request.user, sub_topic=sub_topic)
+        response.update({'tips_and_tricks':tips_and_tricks})
+    except:
+        response.update({'no_tipsandtricks':True})
+
+    return render_to_response('ajax_tipsandtricks.html', response)
+
+
+# Edit for Tips and Tricks
+# /tutor/edit/tipsandtricks/
+@login_required
+@user_passes_test(tutor_check)
+def tutor_edit_tips_and_tricks(request):
+    response = {}
+    states = State.objects.all()
+    response.update({'states':states})
+
+    if request.method == 'GET':
+        states = State.objects.all()
+        response.update({'states':states})
+        if 'id' in request.GET and request.GET['id']:
+            tipsandtricks_id = request.GET['id']
+        else:
+            response.update({'error':True})
+            return render_to_response('edit_tips_and_tricks.html', response)
+        try:
+            tipsandtricks = TipsandTricks.objects.get(id=tipsandtricks_id)
+        except:
+            return Http404()
+        response.update({'tipsandtricks':tipsandtricks})
+        exams = Exam.objects.filter(state=tipsandtricks.sub_topic.state)
+        subjects = Subject.objects.filter(exam=tipsandtricks.sub_topic.exam)
+        topics = Topic.objects.filter(subject=tipsandtricks.sub_topic.subject)
+        sub_topics = SubTopic.objects.filter(topic=tipsandtricks.sub_topic.topic)
+        response.update({'exams':exams})
+        response.update({'subjects':subjects})
+        response.update({'topics':topics})
+        response.update({'sub_topics':sub_topics})
+        return render_to_response('edit_tips_and_tricks.html', response)
+
+    if request.method == 'POST':
+        form_error = False
+
+        if 'tipsandtricks_id' in request.POST and request.POST['tipsandtricks_id']:
+            tipsandtricks_id = request.POST['tipsandtricks_id']
+        else:
+            form_error = True
+
+        if 'sub_topic' in request.POST and request.POST['sub_topic']:
+            sub_topic = request.POST['sub_topic']
+        else:
+            form_error = True
+
+        if 'title' in request.POST and request.POST['title']:
+            title = request.POST['title']
+        else:
+            form_error = True
+
+        if 'description' in request.POST and request.POST['description']:
+            description = request.POST['description']
+        else:
+            form_error = True
+
+        if form_error:
+            response.update({'form_error':form_error})
+            return render_to_response('edit_tips_and_tricks.html', response) 
+
+        tipsandtricks = TipsandTricks.objects.get(id=tipsandtricks_id)
+        tipsandtricks.sub_topic = SubTopic.objects.get(id=sub_topic)
+        tipsandtricks.title = title
+        tipsandtricks.description = description
+        tipsandtricks.tutor = request.user
+        tipsandtricks.last_modified = datetime.datetime.today()
+        tipsandtricks.is_published = False
+        tipsandtricks.is_in_use = True
+        try:
+            tipsandtricks.save()
+            response.update({'saved':True})
+        except:
+            response.update({'save_error':True})
+
+        response.update({'tipsandtricks':tipsandtricks})
+        exams = Exam.objects.filter(state=tipsandtricks.sub_topic.state)
+        subjects = Subject.objects.filter(exam=tipsandtricks.sub_topic.exam)
+        topics = Topic.objects.filter(subject=tipsandtricks.sub_topic.subject)
+        sub_topics = SubTopic.objects.filter(topic=tipsandtricks.sub_topic.topic)
+        response.update({'exams':exams})
+        response.update({'subjects':subjects})
+        response.update({'topics':topics})
+        response.update({'sub_topics':sub_topics})
+
+        return render_to_response('edit_tips_and_tricks.html', response)

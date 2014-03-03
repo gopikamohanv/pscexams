@@ -329,3 +329,53 @@ def about_new(request):
     response = {}
     return render_to_response('about_new.html')
 
+# For About Exam Categories
+def about_examcategory(request):
+	response = {}
+
+	if 'id' in request.GET and request.GET['id']:
+		exam_id = request.GET['id']
+
+	try:
+		exam = Exam.objects.get(id=exam_id)
+	except:
+		raise Http404()
+	subjects = Subject.objects.filter(exam=exam_id)
+	response.update({'subjects':subjects})
+	response.update({'exam':exam})
+	return render_to_response('about_examcategory.html',response)
+
+# For Topics in Subjects
+def about_subject_topics(request):
+	response = {}
+
+	if 'id' in request.GET and request.GET['id']:
+		subject_id = request.GET['id']
+
+	try:
+		subject = Subject.objects.get(id=subject_id)
+	except:
+		raise Http404()
+	topics = Topic.objects.filter(subject=subject)
+	response.update({'topics':topics})
+	response.update({'subject':subject})
+	return render_to_response('about_topic_in_subject.html',response)
+
+# For Sub-topics in topic
+def about_topic_subtopic(request):
+	response = {}
+
+	if 'id' in request.GET and request.GET['id']:
+		topic_id = request.GET['id']
+
+	try:
+		topic = Topic.objects.get(id=topic_id)
+	except:
+		raise Http404()
+	sub_topics = SubTopic.objects.filter(topic=topic)
+	response.update({'sub_topics':sub_topics})
+	response.update({'topic':topic})
+	return render_to_response('about_subtopic_in_topic.html',response)
+
+	
+

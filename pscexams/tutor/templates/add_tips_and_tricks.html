@@ -84,12 +84,49 @@
                 error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
             });
         }
+
+        function formSubmit()
+        {
+            form_error = false;
+            if (document.getElementById('state').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate State for your question');
+                return false;
+            }
+            if (document.getElementById('exam').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Exam for your question');
+                return false;
+            }
+            if (document.getElementById('subject').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Subject for your question');
+                return false;
+            }
+            if (document.getElementById('topic').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Topic for your question');
+                return false;
+            }
+            if (document.getElementById('sub_topic').selectedIndex == 0)
+            {
+                form_error = true;
+                alert('Please select an appropriate Sub Topic for your question');
+                return false;
+            }
+            
+            document.forms["tips_and_tricks"].submit();
+        }
     </script>
 
 <div class="row">
 	<div class="col-lg-8">
 	  <div class="well">
-	    <form class="bs-example form-horizontal" action="/tutor/add/tipsandtricks/" method="POST">
+	    <form class="bs-example form-horizontal" id="tips_and_tricks" action="/tutor/add/tipsandtricks/" method="POST">
 	      <fieldset>
 	        <legend>Add Tips and Tricks</legend>
 
@@ -188,7 +225,7 @@
           <br>
         	<div class="form-group">
 	        	<div class="col-lg-10 col-lg-offset-2">
-	            <button type="submit" class="btn btn-primary">Submit</button> 
+                    <input type="button" class="btn btn-primary" value="Submit" onClick="formSubmit();" />
 	        	</div>
       		</div>
 

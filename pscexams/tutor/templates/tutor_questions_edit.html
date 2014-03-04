@@ -201,7 +201,7 @@
                     </select>
                     </td>
                     <td id="td_topic">
-                    <select name="topic" id="topic" style="width:175px;">
+                    <select name="topic" id="topic" style="width:175px;" onChange="topic_changed(this.value)">
                         <option value="0">Select Topic</option>
                         {% for topic in topics %}
                             <option value="{{topic.id}}">{{topic.topic}}</option> 

@@ -14,8 +14,8 @@ class Exam(models.Model):
 	exam = models.CharField(max_length=255)
 	image = models.CharField(max_length=255, null=True, blank=True)
 
-	#def __unicode__(self):
-	#	return self.state.state + '->' + str(self.exam)
+	def __unicode__(self):
+		return self.state.state + '->' + str(self.exam)
 	def get_exam_description(self):
 		try:
 			description = ExamDescription.objects.get(exam=self.pk)
@@ -31,8 +31,8 @@ class Subject(models.Model):
 	exam = models.ForeignKey(Exam)
 	subject = models.CharField(max_length=255)
 
-	#def __unicode__(self):
-	#	return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
+	def __unicode__(self):
+		return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
 
 	def get_subject_description(self):
 		try:
@@ -63,8 +63,8 @@ class Topic(models.Model):
 	subject = models.ForeignKey(Subject)
 	topic = models.CharField(max_length=255)
 
-	#def __unicode__(self):
-	#	return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
+	def __unicode__(self):
+		return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
 
 class SubTopic(models.Model):
 	state = models.ForeignKey(State)
@@ -93,8 +93,8 @@ class Question(models.Model):
     is_in_use = models.BooleanField()     # When deleting, set this to false, not delete the object
     last_modified = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return self.question
+    #def __unicode__(self):
+        #return self.question
 
 
 class ModelExam(models.Model):

@@ -7,7 +7,6 @@
           <div class="col-lg-1">
             <img src="/static/images/promotion_new.png" >
           </div>
-       
           <div class="col-lg-11">
             <br>
             <a target="_blank" href='/about/new/'>
@@ -41,7 +40,7 @@
             <div class="col-lg-12">
               <p class="text-muted" align="justify">
               <strong>
-                pscexams.com provide the candidates for the upcoming PSC Exams with all the previous year question papers of various category exams, conducted by the PSC, along with answer keys and their solutions.
+                pscexams.com provides the candidates for the upcoming PSC Exams with all the previous year question papers for the various categories of exams, conducted by the PSC, along with answer keys and their solutions.
               </strong>
               <br>  
               <a target="_blank" href='/about/previous/year/question/'>
@@ -64,7 +63,7 @@
             <div class="col-lg-12">
               <p class="text-muted" align="justify">
               <strong>
-                pscexams.com provide the candidates with all the question papers of the previous model exams, conducted by the Kerala PSC, along with answer keys. ere we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better.
+                pscexams.com provides the candidates with all the question papers of the previous model exams, conducted by the Kerala PSC, along with answer keys. Here we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better.
               </strong>
               <br>   
               <a target="_blank" href='/about/modelexams/'>
@@ -110,7 +109,7 @@
             <div class="col-lg-12">
               <p class="text-muted" align="justify">
               <strong>
-                Reading to Learn is one of the world's most powerful literacy programs. t is designed to enable all learners at all levels of education to read at levels grade and area of study.
+                Reading to Learn is one of the world's most powerful literacy programs. It is designed to enable all learners at all levels of education to read at their levels, grades and areas of study.
               </strong>
               <br>   
               <a target="_blank" href='/about/readandlearn/'>
@@ -156,7 +155,9 @@
             <fieldset>
                 <legend><img src="/static/images/Ok-icon.png" width="50px;" height="40px;"> Exams</legend>
                 {% for exam in exams %}
-                  <a href="#">{{exam.exam}}</a><br><hr>
+                  <a href='/about/examcategory/?id={{exam.id}}'>
+            <h5 class="text-info"><strong>{{exam.exam}}</strong></h5><hr>
+          </a>
                 {% endfor %}
             </fieldset>
           </div>
@@ -165,3 +166,5 @@
 </div>
 </div>    
 {% include "footer.html" %}
+
+<!-- <a href="#"></a><br><hr> --!>

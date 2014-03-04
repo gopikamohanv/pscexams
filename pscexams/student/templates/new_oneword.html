@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<h3><strong class="text-info">{{sub_topic.sub_topic}}</strong></h3>
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li><a href="/student/exam/{{sub_topic.exam.pk}}/">{{sub_topic.exam.exam}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/">{{sub_topic.subject.subject}}</a></li>
+		  <li><a href="/student/exam/subject/{{sub_topic.subject.pk}}/?topic={{sub_topic.topic.pk}}">{{sub_topic.topic.topic}}</a></li>
+		  <li>{{sub_topic.sub_topic}}</li>
+		</ol>
+		{% autoescape off %}
+			<div class="panel panel-default">
+            	<div class="panel-heading"><h4><strong>{{oneword.question}}</strong></h4></div>
+           		<div class="panel-body">
+                	<h5><strong class="text-success">{{oneword.answer}}</strong></h5>
+                	<h5><strong class="text-muted">{{oneword.explanation}}</strong></h5>
+              	</div>
+            </div>
+		{% endautoescape %}	
+        <a href="/student/onewords/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}"><button class="btn btn-success">Show more in {{sub_topic.sub_topic}}</button></a>
+	</div>	
+{% endblock %}
+
+{% block right_content %}
+<br>
+<br>
+<div class="col-md-12"><br>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>New Questions</strong></h3> 
+        </div>
+        <div class="panel-body">
+        	{% autoescape off %}
+            {% for oneword in onewords %}
+                <a href="/student/question/new/{{oneword.sub_topic.pk}}/?id={{oneword.pk}}">{{oneword.question}}</a><br>
+            {% endfor %}
+            {% endautoescape %}   
+        </div>
+    </div>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><strong>{{sub_topic.sub_topic}}</strong></h3>
+        </div>
+        <div class="panel-body">
+        	<a href="/student/exam/topic/tests/{{sub_topic.pk}}/">Practice Tests</a><br>
+			<a href="/student/tips/topics/{{sub_topic.topic.pk}}/?sub_topic={{sub_topic.pk}}">Tips & Tricks</a><br>
+        </div>
+    </div>
+</div>   
+{% endblock %}
+

@@ -14,24 +14,15 @@
 		{% if no_tips %}
 			<div class="alert alert-warning">We are updating tips and tricks...</div>
 		{% else %}
-			<div class="panel-group col-md-12" id="accordion">
+			<div class="panel-group col-md-12">
 			{% for tip in tips %}
 			  <div class="panel panel-default">
 			    <div class="panel-heading">
-			      <h4 class="panel-title">
-			        <a data-toggle="collapse" data-parent="#accordion" href="#{{tip.pk}}" style="text-decoration:none;">
+			      <h4 class="text-info">
+			        <a href="/student/tips/view/{{tip.sub_topic.pk}}/?id={{tip.pk}}">
 			          <h4></strong>{{tip.title}}</strong></h4>
 			        </a>
 			      </h4>
-			    </div>
-			    <div id="{{tip.pk}}" class="panel-collapse collapse {% if tip.pk == tip_id %}in{% endif %}">
-			      <div class="panel-body">
-			      	{% autoescape off %}
-			        	<p align="justify">
-			        		{{tip.description}}
-			        	</p>
-			       	{% endautoescape %}
-			      </div>
 			    </div>
 			  </div>
 			  {% endfor %}

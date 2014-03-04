@@ -40,6 +40,7 @@ def admin_dashboard(request):
 		raise Http500	
 	
 	response.update({'usertypes':UserType.types})
+
 	response.update({'user_count':UserProfile.objects.all().count()})
 	response.update({'activeuser_count':UserProfile.objects.filter(user__is_active = True).count()})
 
@@ -70,9 +71,9 @@ def siteadmin_user_ajax_browse(request):
 	get_error = False
 
 	if 'user_type' in request.GET and request.GET['user_type']:
-		user_type = request.GET['user_type']
+		user_type = request.GET['user_type']		
 	else:
-		get_error = True
+		get_error = True	
 
 	if 'next_rows' in request.GET and request.GET['next_rows']:
 		next_rows = request.GET['next_rows']
@@ -83,9 +84,9 @@ def siteadmin_user_ajax_browse(request):
 		raise Http404
 
 	next_row = int(next_rows)
-	end_row = next_row + 20
+	end_row = next_row + 20	
 
-	if user_type == '0':
+	if user_type == "undefined":
 		users = UserProfile.objects.all().order_by('-pk')[next_row:end_row]
 	else:
 		users = UserProfile.objects.filter(user_type=user_type).order_by('-pk')[next_row:end_row]
@@ -120,6 +121,17 @@ def siteadmin_ajax_users_search_username(request):
     response.update({'user':user})
     return render_to_response('ajax_particular_user.html', response)
 
+
+@login_required
+@user_passes_test(admin_check)
+def user_workdetails(request):
+	response = {}
+	if 'user_id' in request.GET and request.GET['user_id']:
+		user_id = request.GET['user_id']
+	else:
+		raise Http404()
+		
+	return HttpResponse(user_id)        
 @login_required
 @user_passes_test(admin_check)
 def admin_add_exam(request):

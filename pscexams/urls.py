@@ -41,6 +41,14 @@ urlpatterns = patterns('',
     (r'^about/tipsandtricks/$',about_tipsandtricks),
     (r'^about/readandlearn/$',about_readandlearn),
     (r'^about/new/$',about_new),
+    (r'^about/examcategory/$',about_examcategory),
+    (r'^about/subject/topics/$',about_subject_topics),
+    (r'^about/topic/subtopic/$',about_topic_subtopic),
+    
+    
+    
+    
+
 
    
     # Student Urls

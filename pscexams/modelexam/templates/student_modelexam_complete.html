@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<div class="col-lg-12">
+			{% if form_error %}
+			<div class="alert alert-danger">
+				<h3>An error occured pls try again</h3>
+			</div>
+			{% endif %}
+			{% if success %}
+			<div class="col-lg-12 alert alert-success">
+				<div class="col-lg-12">
+					<div class="col-lg-8">
+						<h4><strong><img src="https://s3.amazonaws.com/uploads.smartindia/score-icon2.png">You have scored {{score}}/{{total_score}}.</strong></h4>
+					</div>
+					<div class="col-lg-4">	
+						<br>
+						<h4><strong><img src="/static/images/Clock-icon.png">{{minutes}} Mins {{seconds}} Secs</strong></h4>
+					</div>
+				</div>		
+			</div>
+			{% endif %}
+			
+			<table class="table table-bordered table-hover"  style="font-size:15px;">
+			    {% autoescape off %}
+			    {% for test_datum in test.mocktestdata_set.all %}
+			    <tr>
+            		<th class="success">Question {{forloop.counter}}</th>
+            		<th class="success" id="question_{{forloop.counter}}">
+	                	{% if test_datum.question.question %}
+	                    	{{test_datum.question.question}}
+	                	{% else %}
+	                    	<b>Sorry, this question was deleted.</b>
+	                	{% endif %}
+           			 </th>
+           		</tr>
+           		<tr>
+            		<td>Correct Answer</td>
+        			<td id="correct_answer_{{forloop.counter}}">
+		                {% if test_datum.question.answer == "1" %}
+		                    {{test_datum.question.option1}}
+		                {% endif%}
+		                {% if test_datum.question.answer == "2" %}
+		                    {{test_datum.question.option2}}
+		                {% endif%} 
+		                {% if test_datum.question.answer == "3" %}
+		                    {{test_datum.question.option3}}
+		                {% endif%}
+		                {% if test_datum.question.answer == "4" %}
+		                    {{test_datum.question.option4}}
+		                {% endif%}
+            		</td>        
+        		</tr> 
+        		<tr>
+		            <td>Explanation</td>
+		            <td id="explanation_{{forloop.counter}}">
+		                {{test_datum.question.explanation}}
+		            </td>
+        		</tr>
+        		<tr>
+	            	<td>Your Answer</td>
+		            <td id="answer_{{forloop.counter}}">
+		                {% if test_datum.answer == "1" %}
+		                    {{test_datum.question.option1}}
+		                {% endif%}
+		                {% if test_datum.answer == "2" %}
+		                    {{test_datum.question.option2}}
+		                {% endif%}
+		                {% if test_datum.answer == "3" %}
+		                    {{test_datum.question.option3}}
+		                {% endif%}
+		                {% if test_datum.answer == "4" %}
+		                    {{test_datum.question.option4}}
+		                {% endif%}
+		                {% if test_datum.answer == "0" %}
+		                    Not Answered
+		                {% endif %}
+		                {% if test_datum.question.question %}
+		                    {% if not test_datum.answered %}
+		                        &nbsp;&nbsp;&nbsp;<img src="https://s3.amazonaws.com/cdn.smartindia/images/home/unanswered.png" />
+		                    {% endif %}
+		                    {% if test_datum.question.answer == test_datum.answer %}
+		                        &nbsp;&nbsp;&nbsp;<img src="https://s3.amazonaws.com/cdn.smartindia/images/home/right.png" />
+		                    {% endif %}
+		                    {% if test_datum.answered and test_datum.question.answer != test_datum.answer%}
+		                        &nbsp;&nbsp;&nbsp;<img src="https://s3.amazonaws.com/cdn.smartindia/images/home/wrong.png" />
+		                    {% endif %}
+		                {% endif %}
+		            </td>
+        		</tr>    
+			    {% endfor %}
+			    {% endautoescape %}
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block right_content %}
+<div class="col-md-12">
+	<h5><img src="/static/images/new-icon.png"><strong class="text-muted">Model Exams</strong></h5>
+  	<ul>
+	  {% for modelexam in modelexams %}
+	    <li class="text-muted list-unstyled"><a href="/student/modelexam/start/{{modelexam.exam.pk}}/?id={{modelexam.pk}}">{{modelexam.title}}</a></li>
+	  {% endfor %}
+ 	 </ul>
+  	<hr>
+</div>
+<div class="col-md-12"> 
+	<div class="panel panel-success">
+		<div class="panel-heading">
+	    	<h3 class="panel-title"><img src="/static/images/tests-icon.png" alt=""> <strong>Related Exams</strong></h3>
+	    </div>
+	    <div class="panel-body">
+	    	{% for exam in exam.state.exam_set.all %}
+				<a href="/student/modelexam/{{exam.pk}}/">{{exam.exam}}</a>
+			{% endfor %}
+	    </div>
+	</div>
+</div>	
+{% endblock %}

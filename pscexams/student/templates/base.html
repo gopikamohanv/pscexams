@@ -30,7 +30,7 @@
                   <a href="" class="dropdown-toggle" data-toggle="dropdown">Model Exams<b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     {% for exam in exams %}
-                    <li><a href="#">{{exam.exam}}</a></li>
+                    <li><a href="/student/modelexam/{{exam.pk}}/">{{exam.exam}}</a></li>
                     {% endfor %}
                   </ul>  
                 </li>

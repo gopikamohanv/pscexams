@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'pscexams.admin',
     'pscexams.tutor',
     'pscexams.publisher',
+    'pscexams.modelexam',
     
 )
 
@@ -70,7 +71,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pscexams',
         'USER': 'root',
-        'PASSWORD': 'root123',
+        'PASSWORD': '',
     }
 }
 

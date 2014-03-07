@@ -45,17 +45,12 @@ urlpatterns = patterns('',
     (r'^about/subject/topics/$',about_subject_topics),
     (r'^about/topic/subtopic/$',about_topic_subtopic),
     
-    
-    
-    
-
-
-   
     # Student Urls
     url(r'^student/', include('pscexams.student.urls')),
     url(r'^publisher/', include('pscexams.publisher.urls')),
     url(r'^siteadmin/', include('pscexams.admin.urls')),
     url(r'^tutor/', include('pscexams.tutor.urls')),
+    url(r'^student/', include('pscexams.modelexam.urls')),
 
 
 )

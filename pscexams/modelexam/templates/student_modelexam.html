@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="col-md-12">
+		<h3><strong class="text-muted">{{exam.exam}}</strong></h3>
+		<ol class="breadcrumb">
+		  <li><a href="/home/">Kerala PSC</a></li>
+		  <li>{{exam.exam}}</li>
+		</ol>
+		<div class="col-md-12">
+			<table class="table table-bordered ">
+				{% for modelexam in model_exams %}
+					<tr>
+						<td><h5><strong>{{modelexam.title}}</strong></h5></label></td>
+						<td><h5><strong><a href="/student/modelexam/start/{{modelexam.exam.pk}}/?id={{modelexam.pk}}">Attend Exam <img src="/static/images/Document-Write-icon.png"></a></strong></h5></td>
+						<td><h5><strong><a href="/student/modelexam/download/{{modelexam.exam.pk}}/?id={{modelexam.pk}}">Download <img src="/static/images/Folder-Downloads-icon.png"></a></strong></h5></td>
+					</tr>	
+				{% endfor %}
+			</table>	
+		</div>
+	</div>	
+{% endblock %}
+
+{% block right_content %}
+<div class="col-md-12"><br>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Practice Tests</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for subject in exam.subject_set.all %}
+	        	<a href="/student/exam/subject/{{subject.pk}}/">{{subject.subject}}</a><br>
+			{% endfor %}
+        </div>
+    </div>
+	<div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/previous_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Previous Year Questions</strong></h3>
+        </div>
+        <div class="panel-body">
+        	<a href="">2012</a><br>
+			<a href="">2010</a><br>
+			<a href="">2009</a>
+        </div>
+    </div>
+    <div class="panel panel-success">
+    	<div class="panel-heading">
+        	<h3 class="panel-title"><img src="/static/images/tests-icon.png" alt=""> <strong>Related Exams</strong></h3>
+        </div>
+        <div class="panel-body">
+        	{% for exam in exam.state.exam_set.all %}
+				<a href="/student/modelexam/{{exam.pk}}/">{{exam.exam}}</a>
+			{% endfor %}
+        </div>
+    </div>
+</div>   
+{% endblock %}
+

@@ -48,17 +48,12 @@ urlpatterns = patterns('',
     (r'^list/modelexams/$',list_modelexams_free),
     (r'^list/tipsandtricks/(?P<pk>\w+)$',list_tipsandtricks),
     
-    
-    
-    
-
-
-   
     # Student Urls
     url(r'^student/', include('pscexams.student.urls')),
     url(r'^publisher/', include('pscexams.publisher.urls')),
     url(r'^siteadmin/', include('pscexams.admin.urls')),
     url(r'^tutor/', include('pscexams.tutor.urls')),
+    url(r'^student/', include('pscexams.modelexam.urls')),
 
 
 )

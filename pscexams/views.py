@@ -32,7 +32,9 @@ def index(request):
 #/about/ 
 def about(request):
     response = {}
-    return render_to_response('about.html')
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about.html', response)
 
 # Description of smartindia
 #/smartindia/
@@ -122,6 +124,8 @@ def registration_add(request):
 
     states = State.objects.all()
     response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
 
     if request.method == 'GET':
         return render_to_response('registration.html', response)
@@ -332,6 +336,8 @@ def about_tipsandtricks(request):
     response = {}
     states = State.objects.all()
     response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
     return render_to_response('about_tipsandtricks.html', response)
 
 # For About Read and Learn
@@ -340,6 +346,8 @@ def about_readandlearn(request):
     response = {}
     states = State.objects.all()
     response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
     return render_to_response('about_readandlearn.html', response)
 
 # For About New Exams
@@ -348,6 +356,8 @@ def about_new(request):
     response = {}
     states = State.objects.all()
     response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
     return render_to_response('about_new.html', response)
 
 # For About Exam Categories
@@ -355,6 +365,8 @@ def about_examcategory(request):
 	response = {}
 	states = State.objects.all()
 	response.update({'states':states})
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if 'id' in request.GET and request.GET['id']:
 		exam_id = request.GET['id']
@@ -373,6 +385,8 @@ def about_subject_topics(request):
 	response = {}
 	states = State.objects.all()
 	response.update({'states':states})
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if 'id' in request.GET and request.GET['id']:
 		subject_id = request.GET['id']
@@ -391,6 +405,8 @@ def about_topic_subtopic(request):
 	response = {}
 	states = State.objects.all()
 	response.update({'states':states})
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if 'id' in request.GET and request.GET['id']:
 		topic_id = request.GET['id']
@@ -408,6 +424,8 @@ def about_topic_subtopic(request):
 def contact(request):
 	response = {}
 	response.update(csrf(request))
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if request.method == 'GET':
 		return render_to_response('contact.html', response)

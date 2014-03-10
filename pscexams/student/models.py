@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import *
 from django.contrib.auth.models import User
 from pscexams.user_type import UserType
-from pscexams.admin.models import SubTopic, State, Question
+from pscexams.admin.models import SubTopic, State, Question, ModelExam
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -52,6 +52,11 @@ class ExamScore(models.Model):
     user = models.ForeignKey(UserProfile)
     sub_topic = models.ForeignKey(SubTopic)
     test = models.ForeignKey(MockTest)
+
+class ModelexamScore(models.Model):
+    user = models.ForeignKey(UserProfile)
+    modelexam = models.ForeignKey(ModelExam) 
+    test = models.ForeignKey(MockTest)   
 
 
 

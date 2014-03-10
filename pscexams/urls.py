@@ -44,6 +44,9 @@ urlpatterns = patterns('',
     (r'^about/examcategory/$',about_examcategory),
     (r'^about/subject/topics/$',about_subject_topics),
     (r'^about/topic/subtopic/$',about_topic_subtopic),
+    (r'^contact/$',contact),
+    (r'^list/modelexams/$',list_modelexams_free),
+    (r'^list/tipsandtricks/(?P<pk>\w+)$',list_tipsandtricks),
     
     
     

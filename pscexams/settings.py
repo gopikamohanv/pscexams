@@ -71,7 +71,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pscexams',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root123',
     }
 }
 
@@ -96,3 +96,10 @@ STATIC_URL = '/static/'
 
 TIME_ZONE = 'Asia/Kolkata'
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'vishnu@smartindia.net.in'
+EMAIL_HOST_PASSWORD = 'vishnu@vishnu'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'vishnu@smartindia.net.in'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

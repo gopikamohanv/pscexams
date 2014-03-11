@@ -1,0 +1,32 @@
+{% include 'header.html' %}
+
+<div class="row">
+<div class="col-lg-8">
+	<table class="table table-bordered table-striped table-hover">
+	    <tr class="success" style="font-size:15px;">
+	      <td>No</td>
+	      <td>Model Exam</td>
+	      <td>Test</td>
+	      <td>Download</td>
+	    </tr>
+	    {% for modelexam in modelexams %}
+		    <tr>
+		      <td>No</td>
+		      <td>Model Exam</td>
+		      <td>Test</td>
+		      <td>Download</td>
+		    </tr>
+		{% endfor %}
+	</table>
+
+</div>
+
+
+<div class="col-lg-4" style="margin-top:40px;">
+		    {% include "free_signup.html" %}
+		</div>
+</div>
+
+
+
+{% include 'footer.html' %}

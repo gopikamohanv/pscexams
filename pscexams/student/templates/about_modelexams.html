@@ -2,12 +2,18 @@
 	<div class="row">
 		<div class="col-lg-8">
 			<p style="line-height:25px;font-size:18px;" align="justify">            
-       			<b><u><font color="#66CCFF"><h3>Model Exams</h3></font></u></b>
-       			<br>
-  
+       	<b><u><font color="#66CCFF"><h3>Model Exams</h3></font></u></b>
+      </p>
+     	<br>
       <p style="line-height:25px;" align="justify">            
        pscexams.com provide the candidates with all the question papers of the previous model exams, conducted by the Kerala PSC, along with answer keys. Here we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better. We assure that this model exams will help them to attend the real exams with full confidence and without fear.
       </p>
+    	<h4><strong>Our Model Exams</strong></h4>
+    	{% for exam in exams %}
+        <a href='#'>
+          <ul><h5 class="text-info"><strong>{{exam.exam}}</strong></ul>
+        </a>
+      {% endfor %} 
     </div>
 		<div class="col-lg-4" style="margin-top:40px;">
 		    {% include "free_signup.html" %}

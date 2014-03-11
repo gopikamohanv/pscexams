@@ -8,6 +8,12 @@
       <p style="line-height:25px;" align="justify">            
         pscexams.com provides the candidates for the upcoming PSC Exams with all the previous year question papers for the various categories of exams, conducted by the PSC, along with answer keys and their solutions. Here we have created a platform on which the candidates can reappear for the past PSC Exams which they have attended or missed. Past question papers assist you in getting a better idea of what to prepare for and which areas of the exams are more important. Our aim is to help the candidates manage their time better and allow them to be familiar with the terminology and type of questions asked in the actual exams.
       </p>
+      <h4><strong>Pervious Year Exams</strong></h4>
+    	{% for exam in exams %}
+        <a href='#'>
+          <ul><h5 class="text-info"><strong>{{exam.exam}}</strong></ul>
+        </a>
+      {% endfor %} 
  		</div>
 		<div class="col-lg-4" style="margin-top:40px;">
 		    {% include "free_signup.html" %}

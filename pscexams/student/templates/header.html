@@ -9,9 +9,10 @@
     <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
     <script type="text/javascript" src="http://www.technicalkeeda.com/js/javascripts/plugin/jquery.validate.js"></script>
     <script type="text/javascript" src="https://s3.amazonaws.com/cdn.smartworld/js/cycleall/jquery.cycle.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     
     
-    <script>
+<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -22,7 +23,7 @@
 
 </script>
 <script type="text/javascript">
-$(document).ready(function(){
+  $(document).ready(function(){
     $('#slideshow').cycle({
         fx:     'fade',
         speed:  'slow',
@@ -33,14 +34,16 @@ $(document).ready(function(){
             return '#slider_nav li:eq(' + (idx) + ') a';
         }
     });
-});
+  });
 </script>
 
   </head>
   <body>
     <div class="container">
       <div class="row">
+        
         <div class="navbar navbar-inverse">
+
           <div class="navbar-header">
             <strong><a class="navbar-brand" href="/">PSC Exams</a></strong>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -51,6 +54,7 @@ $(document).ready(function(){
           </div>
           <div class="navbar-collapse collapse navbar-inverse-collapse" id="navbar-main">
             <ul class="nav navbar-nav navbar-center">
+
               <li><a href="/">Home</a></li>
               <li><a href="/about/">About</a></li>
               <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
@@ -59,14 +63,16 @@ $(document).ready(function(){
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exams <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   {% for exam in exams %}
-                    <li><a href="#">{{exam.exam}}</a></li>
+                    <li><a href="/about/examcategory/?id={{exam.id}}">{{exam.exam}}</a></li>
                   {% endfor %}
                 </ul>
               </li>
+              <li><a href="/contact/">Contact</a></li>
+              <li><a><img src="/static/images/phone.png"><strong>Toll Free : 1800-123-2003</strong></a></li>
             </ul>
             <nav>
               <ul>
-                 <li id="signup"><button onclick="location.href='/registration/'" class="btn btn-success">Sign up</button>
+                 <a><li id="signup"><button onclick="location.href='/registration/'" class="btn btn-success">Sign up</button></a>
                 </li>
                 <li id="login">
                   <button id="login-trigger" href="#" class="btn btn-warning">Sign in <span>▼</span></button>
@@ -86,13 +92,15 @@ $(document).ready(function(){
               </ul>
             </nav>  
           </div><!-- /.nav-collapse --> 
-          <div id="slider">
-                <!-- start slideshow -->
+           <img src="static/images/psc_banner1.png">
+          <!-- <div id="slider">
+                
                 <div id="slideshow">
                   <div class="slider-item"><a href="#"><img src="/static/images/psc_banner1.png"></a></div>
                   <div class="slider-item"><a href="#"><img src="/static/images/psc_banner3.png"></a></div>
                   <div class="slider-item"><a href="#"><img src="/static/images/psc_banner4.png"></a></div>
                   <div class="slider-item"><a href="#"><img src="/static/images/psc_banner5.png"></a></div>
                 </div>
-            </div>
+            </div> -->
       </div><hr>
+   

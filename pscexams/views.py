@@ -6,12 +6,17 @@ from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.contrib import auth
 from django.contrib.auth import logout as auth_logout
+from django.core.mail import mail_admins
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
-from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion
+from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion, ModelExam
 from pscexams.forms import FreeRegistration
 
+import random
+import string
 
 # Index page for pscexams
 #/
@@ -27,7 +32,9 @@ def index(request):
 #/about/ 
 def about(request):
     response = {}
-    return render_to_response('about.html')
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about.html', response)
 
 # Description of smartindia
 #/smartindia/
@@ -117,6 +124,8 @@ def registration_add(request):
 
     states = State.objects.all()
     response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
 
     if request.method == 'GET':
         return render_to_response('registration.html', response)
@@ -258,8 +267,6 @@ def subtopic_ajax_oneword(request):
 	return render_to_response('ajax_onewords.html', response)
 
 
-#
-
 
 # Free Registration
 def register(request):
@@ -307,35 +314,59 @@ def register(request):
 #/about/previous/year/question/ 
 def about_previous_year_question(request):
     response = {}
-    return render_to_response('about_previous_year_question.html')
+    states = State.objects.all()
+    response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about_previous_year_question.html', response)
 
 # For About Model exams
 #/about/modelexams/ 
 def about_model_exams(request):
     response = {}
-    return render_to_response('about_modelexams.html')
+    states = State.objects.all()
+    response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about_modelexams.html', response)
 
 # For About Tips and Tricks
 #/about/tipsandtricks/ 
 def about_tipsandtricks(request):
     response = {}
-    return render_to_response('about_tipsandtricks.html')
+    states = State.objects.all()
+    response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about_tipsandtricks.html', response)
 
 # For About Read and Learn
 #/about/readandlearn/ 
 def about_readandlearn(request):
     response = {}
-    return render_to_response('about_readandlearn.html')
+    states = State.objects.all()
+    response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about_readandlearn.html', response)
 
 # For About New Exams
 #/about/readandlearn/ 
 def about_new(request):
     response = {}
-    return render_to_response('about_new.html')
+    states = State.objects.all()
+    response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about_new.html', response)
 
 # For About Exam Categories
 def about_examcategory(request):
 	response = {}
+	states = State.objects.all()
+	response.update({'states':states})
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if 'id' in request.GET and request.GET['id']:
 		exam_id = request.GET['id']
@@ -352,6 +383,10 @@ def about_examcategory(request):
 # For Topics in Subjects
 def about_subject_topics(request):
 	response = {}
+	states = State.objects.all()
+	response.update({'states':states})
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if 'id' in request.GET and request.GET['id']:
 		subject_id = request.GET['id']
@@ -368,6 +403,10 @@ def about_subject_topics(request):
 # For Sub-topics in topic
 def about_topic_subtopic(request):
 	response = {}
+	states = State.objects.all()
+	response.update({'states':states})
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
 
 	if 'id' in request.GET and request.GET['id']:
 		topic_id = request.GET['id']
@@ -381,5 +420,70 @@ def about_topic_subtopic(request):
 	response.update({'topic':topic})
 	return render_to_response('about_subtopic_in_topic.html',response)
 
+
+def contact(request):
+	response = {}
+	response.update(csrf(request))
+	exams = Exam.objects.all()
+	response.update({'exams':exams})
+
+	if request.method == 'GET':
+		return render_to_response('contact.html', response)
+
+	if request.method == 'POST':
+
+		form_error = False
+		if 'name' in request.POST and request.POST['name']:
+			name = request.POST['name']
+		else:
+			form_error = True
+
+		if 'email' in request.POST and request.POST['email']:
+			email = request.POST['email']
+		else:
+			form_error = True
+
+		if 'message' in request.POST and request.POST['message']:
+			contact_message = request.POST['message']
+		else:
+			form_error = True
+
+		usersubject = ''
+		if 'subject' in request.POST and request.POST['subject']:
+			usersubject = request.POST['subject']
+
+		if form_error:
+			response.update({'form_error':True})
+			return render_to_response('contact.html', response)
+
+		subject = "Pscexams Contact us Message"
+		template_html = 'contact_mail.html'
+		html_content = render_to_string(template_html,{'Name':name, 'Email':email, 'Message':contact_message, 'Subject':usersubject})
+		msg = EmailMultiAlternatives(subject, template_html,'', ['vishnu@smartindia.net.in'])
+		msg.attach_alternative(html_content, "text/html")
+		msg.content_subtype = "html"
+		msg.send()
+
+		response.update({'message_sent':True})
+		return render_to_response('contact.html', response)
+
+	return render_to_response('contact.html', response)
+
+
+def list_modelexams_free(request):
+	response = {}
+
+	if 'id' in request.GET and request.GET['id']:
+		exam_id = request.GET['id']
+	else:
+		form_error = True
+
+	modelexams = ModelExam.objects.get(exam=exam_id)
+	response.update({'modelexams':modelexams})
+
+	return render_to_response('free_modelexams.html', response)
 	
 
+def list_tipsandtricks(request, pk):
+	response = {}
+	return render_to_response('list_tipsandtricks.html', response)

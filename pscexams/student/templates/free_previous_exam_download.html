@@ -1,0 +1,30 @@
+{% include 'header.html' %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="col-lg-8">
+			<h4><strong class="text-info">{{exam.exam}}</strong></h4>
+			<div class="col-md-12">
+				{% if previous_exams %}
+				<table class="table table-bordered ">
+					{% for previous_exam in previous_exams %}
+					<tr>
+						<td><h5><strong>{{previous_exam.name}}</strong></h5></label></td>
+						<td><h5><strong><a href="{{previous_exam.question_url}}" target="_blank">Question Paper <img src="/static/images/Adobe-PDF-Document-icon.png"></a></strong></h5></td>
+						<td><h5><strong><a href="{{previous_exam.answer_url}}" target="_blank">Answer Key <img src="/static/images/Adobe-PDF-Document-icon.png"></a></strong></h5></td>
+					</tr>
+					{% endfor %}
+				</table>
+				{% else %}
+					<br><br><br>
+					<h4><strong class="text-muted">{{exam.exam}} course will starts on May 1 2014!!!</strong></h4>	
+				{% endif %}	
+			</div>
+		</div>
+		<div class="col-lg-4">
+			{% include "free_signup.html" %}
+			<br>
+		</div>	
+	</div>
+</div>	
+{% include 'footer.html' %}
+

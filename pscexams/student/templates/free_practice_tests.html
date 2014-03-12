@@ -1,0 +1,41 @@
+{% include 'header.html' %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="col-lg-8">
+			<h4 class="text-info"><strong>{{subject.subject}}<strong></h4>
+			<br>
+			{% for test in tests %}
+				<a href="/practice/start/{{subject.pk}}/?test={{test}}">
+					<div class="col-md-4">
+						<div class="panel panel-default">
+			     			<div class="panel-body">
+			       				<center><h4><strong class="text-success">Practice Test {{test}}</strong></h4>
+			      			</div>
+			    		</div>
+					</div>
+				</a>
+			{% empty %}
+				<div class="alert alert-info">
+					<strong>We are updating tests.....</strong>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="col-lg-4">
+			{% include "free_signup.html" %}
+			<br>
+			<div class="panel panel-default">
+		    	<div class="panel-heading">
+		        	<h3 class="panel-title"><strong><img src="/static/images/binary-tree-icon.png">Related topics</strong></h3>
+		        </div>
+		        <div class="panel-body">
+		        	<ul><a href='/practice/test/?topic=1'> പൊതുവിജ്ഞാനം</a></ul>
+				    <ul><a href='/practice/test/?topic=2'> മാനസികശേഷി പരിശോധന</a></ul>
+				    <ul><a href='/practice/test/?topic=3'> ലഘു ഗണിതം</a></ul>
+				    <ul><a href='/practice/test/?topic=9'> അടിസ്ഥാന ശാസ്ത്രം</a></ul>
+		        </div>
+    		</div>
+		</div>	
+	</div>
+</div>	
+{% include 'footer.html' %}
+

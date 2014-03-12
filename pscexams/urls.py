@@ -46,8 +46,20 @@ urlpatterns = patterns('',
     (r'^about/topic/subtopic/$',about_topic_subtopic),
     (r'^contact/$',contact),
     (r'^list/modelexams/$',list_modelexams_free),
-    (r'^list/tipsandtricks/(?P<pk>\w+)$',list_tipsandtricks),
-    
+    (r'^list/tipsandtricks/(?P<pk>\w+)/$',list_tipsandtricks),
+    (r'^practice/$',free_practice),
+    (r'^practice/test/$',free_practice_test),
+    (r'^practice/start/(?P<pk>\w+)/$',free_practice_start),
+    (r'^ajax/practice/free/$',ajax_practice_free),
+    (r'^free/modelexam/(?P<pk>\w+)/$',free_modelexam),
+    (r'^free/modelexam/(?P<pk>\w+)/$',free_modelexam),
+    (r'^free/modelexam/download/(?P<pk>\w+)/$',free_modelexam_download),
+    (r'^free/previous/exam/(?P<pk>\w+)/$',free_previous_exam),
+    (r'^free/tricks/(?P<pk>\w+)/$',free_tricks),
+    (r'^free/tricks/detail/(?P<pk>\w+)/$',free_tricks_detail),
+    (r'^free/learn/(?P<pk>\w+)/$',free_learn),
+
+
     # Student Urls
     url(r'^student/', include('pscexams.student.urls')),
     url(r'^publisher/', include('pscexams.publisher.urls')),

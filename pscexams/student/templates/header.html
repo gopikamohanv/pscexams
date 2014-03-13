@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PSC Exams</title>
+    <title>PSC Exams 
+      {% if sub_title %}
+        {% if exam %}
+          | {{exam.exam}}| {{sub_title}}
+        {% else %}
+          | {{sub_title}}
+        {% endif %}  
+      {% elif exam %}
+        | {{exam.exam}}       
+      {% endif %}
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="/static/css/bootstrap.css" media="screen">
@@ -76,7 +86,7 @@
             </nav>  
           </div><!-- /.nav-collapse --> 
           {% if index_page %}
-            <img src="static/images/psc_banner1.png">
+            <img src="static/images/psc_banner1.png" alt="Psc Exams ">
           {% endif %}  
           <!-- <div id="slider">
                 

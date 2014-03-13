@@ -34,6 +34,7 @@ def index(request):
 #/about/ 
 def about(request):
     response = {}
+    response.update({'sub_title': 'psc exams'})
     exams = Exam.objects.all()
     response.update({'exams':exams})
     return render_to_response('about.html', response)
@@ -316,6 +317,7 @@ def register(request):
 #/about/previous/year/question/ 
 def about_previous_year_question(request):
     response = {}
+    response.update({'sub_title': 'Previous year questions'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -326,6 +328,7 @@ def about_previous_year_question(request):
 #/about/modelexams/ 
 def about_model_exams(request):
     response = {}
+    response.update({'sub_title': 'Model Question Papers'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -336,6 +339,7 @@ def about_model_exams(request):
 #/about/tipsandtricks/ 
 def about_tipsandtricks(request):
     response = {}
+    response.update({'sub_title': 'Tips and tricks for pscexams'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -346,6 +350,7 @@ def about_tipsandtricks(request):
 #/about/readandlearn/ 
 def about_readandlearn(request):
     response = {}
+    response.update({'sub_title': 'psc materials'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -356,6 +361,7 @@ def about_readandlearn(request):
 #/about/readandlearn/ 
 def about_new(request):
     response = {}
+    response.update({'sub_title': 'Last Grade Servants Exam'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -425,6 +431,7 @@ def about_topic_subtopic(request):
 
 def contact(request):
 	response = {}
+	response.update({'sub_title': 'Contact'})
 	response.update(csrf(request))
 	exams = Exam.objects.all()
 	response.update({'exams':exams})
@@ -492,6 +499,7 @@ def list_tipsandtricks(request, pk):
 
 def free_practice(request):
 	response = {}
+	response.update({'sub_title': 'psc questions and answers'})
 	response.update({'states':State.objects.all()})
 	return render_to_response('free_practice.html', response)
 

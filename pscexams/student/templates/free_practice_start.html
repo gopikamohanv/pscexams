@@ -54,6 +54,7 @@ function testFinished(){
 <div class="row">
     <div class="col-lg-12">
         <div class="col-lg-6">
+            <h4><strong class="text-info">{{subject.subject}}</strong></h4>
             {% autoescape off %}
             {% for question in questions %}
                 <table id="question_{{forloop.counter}}">

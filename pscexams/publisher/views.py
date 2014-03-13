@@ -201,7 +201,7 @@ def subtopic_ajax_add_question(request):
 	if 'sub_topic' in request.GET and request.GET['sub_topic']:
 		sub_topic = request.GET['sub_topic']
 	try:
-		questions = Question.objects.filter(sub_topic=sub_topic)
+		questions = Question.objects.filter(sub_topic=sub_topic, question_type='2')
 		response.update({'questions':questions})
 		count = questions.count()
 		response.update({'count':count})

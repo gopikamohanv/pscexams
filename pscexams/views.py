@@ -1,5 +1,5 @@
 from django.http import HttpResponse,HttpResponseRedirect,Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import *
 from django.contrib.auth.models import User
@@ -12,11 +12,12 @@ from django.template.loader import render_to_string
 
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
-from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion, ModelExam
+from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion, ModelExam, ModelExamQuestionPaper, PreviousYearQuestionPaper, TipsandTricks
 from pscexams.forms import FreeRegistration
 
 import random
 import string
+import json
 
 # Index page for pscexams
 #/
@@ -26,12 +27,14 @@ def index(request):
 	exams = Exam.objects.all()
 	response.update({'exams':exams})
 	response.update({'states':states})
+	response.update({'index_page': True})
 	return render_to_response('index.html', response)
 
 # For About Us page
 #/about/ 
 def about(request):
     response = {}
+    response.update({'sub_title': 'psc exams'})
     exams = Exam.objects.all()
     response.update({'exams':exams})
     return render_to_response('about.html', response)
@@ -314,6 +317,7 @@ def register(request):
 #/about/previous/year/question/ 
 def about_previous_year_question(request):
     response = {}
+    response.update({'sub_title': 'Previous year questions'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -324,6 +328,7 @@ def about_previous_year_question(request):
 #/about/modelexams/ 
 def about_model_exams(request):
     response = {}
+    response.update({'sub_title': 'Model Question Papers'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -334,6 +339,7 @@ def about_model_exams(request):
 #/about/tipsandtricks/ 
 def about_tipsandtricks(request):
     response = {}
+    response.update({'sub_title': 'Tips and tricks for pscexams'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -344,6 +350,7 @@ def about_tipsandtricks(request):
 #/about/readandlearn/ 
 def about_readandlearn(request):
     response = {}
+    response.update({'sub_title': 'psc materials'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -354,6 +361,7 @@ def about_readandlearn(request):
 #/about/readandlearn/ 
 def about_new(request):
     response = {}
+    response.update({'sub_title': 'Last Grade Servants Exam'})
     states = State.objects.all()
     response.update({'states':states})
     exams = Exam.objects.all()
@@ -423,6 +431,7 @@ def about_topic_subtopic(request):
 
 def contact(request):
 	response = {}
+	response.update({'sub_title': 'Contact'})
 	response.update(csrf(request))
 	exams = Exam.objects.all()
 	response.update({'exams':exams})
@@ -487,3 +496,145 @@ def list_modelexams_free(request):
 def list_tipsandtricks(request, pk):
 	response = {}
 	return render_to_response('list_tipsandtricks.html', response)
+
+def free_practice(request):
+	response = {}
+	response.update({'sub_title': 'psc questions and answers'})
+	response.update({'states':State.objects.all()})
+	return render_to_response('free_practice.html', response)
+
+def free_practice_test(request):
+	response = {}
+	response.update({'states':State.objects.all()})
+	if 'topic' in request.GET and request.GET['topic']:
+		topic = request.GET['topic']
+	else:
+		response.update({'no_topic': True})
+		return render_to_response('free_practice.html', response)
+
+	subject = get_object_or_404(Subject, pk=topic)
+	response.update({'subject':subject})
+	tests = range(1,11)
+	response.update({'tests': tests})
+	return render_to_response('free_practice_tests.html', response)
+
+def free_practice_start(request, pk):
+	response = {}
+	subject = get_object_or_404(Subject, pk=pk)
+	response.update({'subject':subject})
+	response.update({'states':State.objects.all()})
+
+	if 'test' in request.GET and request.GET['test']:
+		test = request.GET['test']
+	else:
+		response.update({'no_test':True})
+		return render_to_response('free_practice_start.html', response)
+	if int(test)>10:
+		response.update({'not_allowed':True})
+		return render_to_response('free_practice_start.html', response)
+	else:			
+		page = int(test) - 1
+	questions = Question.objects.filter(sub_topic__topic__subject=subject).order_by('-pk')[(page*10):(page*10)+10]
+
+	if questions.count() < 10:
+		pass
+	else:
+		response.update({'questions':questions})
+	response.update({'test':test})
+	return render_to_response('free_practice_start.html', response)
+
+def ajax_practice_free(request):
+	response = {}
+
+	# Get POST values send from test 
+	question_pk = request.POST.get('question', '-1')
+	question = get_object_or_404(Question, pk=question_pk)
+	option = request.POST.get('option', '-1')
+	
+	json_response = {}
+	# Check the answer and give marks to the student
+	score = 0
+	if option == question.answer:
+		score += 1
+		img_url = "https://s3.amazonaws.com/uploads.smartindia/success-icon.png"
+	else:
+		img_url = "https://s3.amazonaws.com/uploads.smartindia/Cross-icon.png"	
+	json_response['answer'] = question.answer 	
+	json_response['score'] = score
+	json_response['img_url'] = img_url
+	json_response = json.dumps(json_response)
+	return HttpResponse(json_response, 'application/json')	
+
+def free_modelexam(request, pk):
+	response = {}
+	response.update({'states': State.objects.all()})	
+	exam = get_object_or_404(Exam, pk=pk)
+	response.update({'exam': exam})
+	response.update({'modelexams': ModelExam.objects.filter(exam=exam)})
+	return render_to_response('free_modelexam_list.html', response)
+
+def free_modelexam_download(request, pk):
+	response = {}
+	response.update({'states': State.objects.all()})
+	exam = get_object_or_404(Exam, pk=pk)
+	response.update({'exam':exam})
+	if 'id' in request.GET and request.GET['id']:
+		modelexam_id = request.GET['id']
+	else:
+		response.update({'no_exam':True})
+		return render_to_response('free_modelexam_download.html', response)
+	modelexam = get_object_or_404(ModelExam, pk=modelexam_id)
+	try:
+		modelquestion = ModelExamQuestionPaper.objects.get(modelexam=modelexam)
+		response.update({'modelquestion':modelquestion})
+	except:
+		response.update({'form_error': True})
+	return render_to_response('free_modelexam_download.html', response)	
+
+def free_previous_exam(request, pk):
+	response = {}
+	response.update({'states':State.objects.all()})
+	exam = get_object_or_404(Exam, pk=pk)
+	response.update({'exam':exam})
+	previous_exams = PreviousYearQuestionPaper.objects.filter(exam=exam)
+	response.update({'previous_exams':previous_exams})
+	return render_to_response('free_previous_exam_download.html', response)
+
+def free_tricks(request, pk):
+	response = {}
+	response.update({'states':State.objects.all()})
+	subject = get_object_or_404(Subject, pk=pk)
+	response.update({'subject':subject})
+	response.update({'tricks': TipsandTricks.objects.filter(sub_topic__topic__subject=subject).order_by('-pk')[:20]})
+	return render_to_response('free_tricks.html', response)
+
+def free_tricks_detail(request, pk):
+	response = {}
+	response.update({'states':State.objects.all()})
+	subject = get_object_or_404(Subject, pk=pk)
+	response.update({'subject':subject})
+	if 'id' in request.GET and request.GET['id']:
+		trick_id = request.GET['id']
+	else:
+		response.update({'no_tricks': True})
+		return render_to_response('free_tricks_detail.html', response)
+	trick = get_object_or_404(TipsandTricks, pk=trick_id)
+	response.update({'trick':trick})
+	return render_to_response('free_tricks_detail.html', response)
+
+def free_learn(request, pk):
+	response = {}
+	response.update({'states':State.objects.all()})
+	subject = get_object_or_404(Subject, pk=pk)
+	response.update({'subject': subject})
+	response.update({'materials': OnewordQuestion.objects.filter(sub_topic__topic__subject=subject).order_by('-pk')[:100]})
+	return render_to_response('free_materials.html', response)	
+					
+
+
+
+
+
+
+				
+

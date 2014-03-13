@@ -5,7 +5,7 @@
       <div class="col-lg-8">
         <div class="row">
           <div class="col-lg-1">
-            <img src="/static/images/promotion_new.png" alt="psc exams">
+            <img src="/static/images/promotion_new.png" >
           </div>
           <div class="col-lg-11">
             <br>
@@ -26,40 +26,15 @@
               </p>
             </div>
           </div>
-        </div>
+        </div>  
         <hr>
         <div class="row">
           <div class="col-lg-1"> 
-            <img src="/static/images/Office-icon.png" style="width:70px;height:60px;" alt="psc exams practice ">
+            <img src="/static/images/previous_icon.png" style="width:70px;height:60px;">
           </div>
           <div class="col-lg-11">
             <br>
-            <a href='/practice/'>
-              <h4 class="text-info"><strong> Practice Tests</strong></h4>
-            </a>
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <p class="text-muted" align="justify">
-              <strong>
-               Our practice elevates our performance. Practice Test is a real hands-on experience that will give you a sense of what to expect on Test Day. Here on pscexams.com we provide our pscexams aspirants with different practice tasks which will help them to understand the real test patterns, topics and types of questions.
-              </strong>
-              <br>  
-              <a href=href='/practice/'>
-                <span style="float:right;" class="label label-warning">Read more</span>
-              </a>
-              </p>
-            </div>  
-          </div>
-        </div>      
-        <hr>
-        <div class="row">
-          <div class="col-lg-1"> 
-            <img src="/static/images/previous_icon.png" style="width:70px;height:60px;" alt="psc previous questions and answers">
-          </div>
-          <div class="col-lg-11">
-            <br>
-            <a href='/about/previous/year/question/'>
+            <a target="_blank" href='/about/previous/year/question/'>
               <h4 class="text-info"><strong>Previous Year Questions</strong></h4>
             </a>
           </div>
@@ -70,7 +45,7 @@
                 pscexams.com provides the candidates for the upcoming PSC Exams with all the previous year question papers for the various categories of exams, conducted by the PSC, along with answer keys and their solutions.
               </strong>
               <br>  
-              <a href='/about/previous/year/question/'>
+              <a target="_blank" href='/about/previous/year/question/'>
                 <span style="float:right;" class="label label-warning">Read more</span>
               </a>
               </p>
@@ -80,11 +55,11 @@
         <hr>
         <div class="row">
           <div class="col-lg-1">
-            <img src="/static/images/modelexam_icon.png"style="width:70px;height:60px;" alt="psc model questions and answers">
+            <img src="/static/images/modelexam_icon.png"style="width:70px;height:60px;">
           </div>
           <div class="col-lg-11">
             <br>
-            <a href='/about/modelexams/'>
+            <a target="_blank" href='/about/modelexams/'>
               <p><strong><h4 class="text-info">&nbsp;Model Exams</h4></strong></p>
             </a>
           </div>
@@ -95,7 +70,7 @@
                 pscexams.com provides the candidates with all the question papers of the previous model exams, conducted by the Kerala PSC, along with answer keys. Here we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better.
               </strong>
               <br>   
-              <a href='/about/modelexams/'>
+              <a target="_blank" href='/about/modelexams/'>
                 <span style="float:right;" class="label label-warning">Read more</span>
               </a>
               </p>
@@ -105,11 +80,11 @@
         <hr>
         <div class="row">
           <div class="col-lg-1">
-            <img src="/static/images/tricks.png" style="width:70px;height:60px;" alt="psc tips">
+            <img src="/static/images/tricks.png" style="width:70px;height:60px;">
           </div>
           <div class="col-lg-11">
             <br>
-            <a href='/about/tipsandtricks/'>
+            <a target="_blank" href='/about/tipsandtricks/'>
               <p><strong><h4 class="text-info">Tips and Tricks</h4></strong></p>
             </a>
           </div>
@@ -120,7 +95,7 @@
                 Time management is yet another critical detail that is looked into while attending PSC Exams. Here we have included the related questions, facts, hints, terminologies and the vocabularies along with the answer keys which helps the candidates to prepare better.
               </strong>
               <br>  
-              <a href='/about/tipsandtricks/'>
+              <a target="_blank" href='/about/tipsandtricks/'>
                 <span style="float:right;" class="label label-warning">Read more</span>
               </a>
               </p>
@@ -130,11 +105,11 @@
         <hr>
         <div class="row">
           <div class="col-lg-1">
-            <img src="/static/images/read.png" style="width:70px;height:60px;" alt="psc materials">
+            <img src="/static/images/read.png" style="width:70px;height:60px;">
           </div>
           <div class="col-lg-11">
             <br>
-            <a href='/about/readandlearn/'>
+            <a target="_blank" href='/about/readandlearn/'>
               <p><strong><h4 class="text-info">&nbsp;&nbsp;Read and Learn</h4></strong></p>
             </a>
           </div>
@@ -145,7 +120,7 @@
                 Reading to Learn is one of the world's most powerful literacy programs. It is designed to enable all learners at all levels of education to read at their levels, grades and areas of study.
               </strong>
               <br>   
-              <a href='/about/readandlearn/'>
+              <a target="_blank" href='/about/readandlearn/'>
                 <span style="float:right;" class="label label-warning">Read more</span>
               </a>
               </p>
@@ -186,7 +161,7 @@
           {% include "free_signup.html" %}
           <div class="well">
             <fieldset>
-                <legend><img src="/static/images/Ok-icon.png" width="50px;" height="40px;" alt="psc exams"> Exams</legend>
+                <legend><img src="/static/images/Ok-icon.png" width="50px;" height="40px;"> Exams</legend>
                 {% for exam in exams %}
                   <a href='/about/examcategory/?id={{exam.id}}'>
             <h5 class="text-info"><strong>{{exam.exam}}</strong></h5><hr>
@@ -218,3 +193,5 @@
 </div>
 </div>    
 {% include "footer.html" %}
+
+<!-- <a href="#"></a><br><hr> --!>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load utils %}
 {% block content %}
 	<div class="col-md-12">
 		<h3><strong class="text-info">{{sub_topic.sub_topic}}</strong></h3>
@@ -20,8 +20,26 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
              	<div class="panel-body">
-               		<center><h4><strong class="text-success">Test {{test}}</strong></h4>
-               		<button type="button" class="btn btn-success"><img src="/static/images/lock-icon.png" width="50px;" height="40px;">Unlock</button></center>
+               		<center>
+               			<h4>
+               				<strong class="text-success">Test {{test}}</strong>
+               			</h4>
+               			{% if user|getExamStatus:sub_topic < test %}
+               				<button type="button" class="btn btn-success">
+               					<img src="/static/images/lock-icon.png" width="50px;" height="40px;"> Locked
+               				</button>
+               			{% else %} 
+               				{% if user|getExamStatus:sub_topic = test %}
+               				<button type="button" class="btn btn-warning">
+               					<img src="/static/images/unlock.png" width="50px;" height="40px;"> Unlocked
+               				</button>
+               				{% else %}
+               				<button type="button" class="btn btn-success">
+               					<img src="/static/images/Thumb-Up-icon.png" width="50px;" height="40px;"> Practiced
+               				</button> 
+               				{% endif %}
+               			{% endif %}
+               		</center>
               	</div>
             </div>
 		</div>

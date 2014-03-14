@@ -613,6 +613,7 @@ def free_tricks_detail(request, pk):
 	response.update({'states':State.objects.all()})
 	subject = get_object_or_404(Subject, pk=pk)
 	response.update({'subject':subject})
+	response.update({'tricks': TipsandTricks.objects.filter(sub_topic__topic__subject=subject).order_by('?')})
 	if 'id' in request.GET and request.GET['id']:
 		trick_id = request.GET['id']
 	else:

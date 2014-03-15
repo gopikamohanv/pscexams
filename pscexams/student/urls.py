@@ -17,4 +17,6 @@ urlpatterns = patterns('',
 		(r'^question/new/(?P<pk>\w+)/$', pscexams.student.views.student_question_new),
 		(r'^trick/new/(?P<pk>\w+)/$', pscexams.student.views.student_trick_new),
 		(r'^performance/(?P<pk>\w+)/$', pscexams.student.views.student_performance),
+		(r'^myprofile/$', pscexams.student.views.student_profile),
+		(r'^password/reset/$', pscexams.student.views.student_password_reset),
 )

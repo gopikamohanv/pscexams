@@ -27,6 +27,8 @@ def student_modelexam(request,pk):
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	response.update({'exam':exam})
 	response.update({'exams': Exam.objects.all()})
+	response.update({'oneword':OnewordQuestion.objects.all().order_by('-pk')[:2]})
+	response.update({'tricks':TipsandTricks.objects.all().order_by('-pk')[:2]})
 	response.update({'model_exams': ModelExam.objects.filter(exam=exam)})
 	return render_to_response('student_modelexam.html', response)
 

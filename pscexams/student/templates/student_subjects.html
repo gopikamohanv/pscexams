@@ -25,39 +25,38 @@
 {% endblock %}
 
 {% block right_content %}
-<br>
-<br>
-<div class="col-md-12"><br>
-	<div class="panel panel-success">
-    	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/modelexam_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Model Exams</strong></h3>
-        </div>
-        <div class="panel-body">
-        	<a href="">Model Exam1</a><br>
-			<a href="">Model Exam1</a><br>
-			<a href="">Model Exam1</a>
-        </div>
-    </div>
-	<div class="panel panel-success">
-    	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/previous_icon.png" width="50x;" heigh="45px;" alt=""> <strong>Previous Year Questions</strong></h3>
-        </div>
-        <div class="panel-body">
-        	<a href="">2012</a><br>
-			<a href="">2010</a><br>
-			<a href="">2009</a>
-        </div>
-    </div>
-    <div class="panel panel-success">
-    	<div class="panel-heading">
-        	<h3 class="panel-title"><img src="/static/images/tests-icon.png" alt=""> <strong>Related Exams</strong></h3>
-        </div>
-        <div class="panel-body">
-        	{% for exam in exam.state.exam_set.all %}
-				<a href="/student/exam/{{exam.pk}}/">{{exam.exam}}</a>
-			{% endfor %}
-        </div>
-    </div>
-</div>   
+	<div class="col-md-12">
+	  <h4><img src="/static/images/new-icon.png"><strong class="text-info"> Whats New?</strong></h4 >
+	  	{% autoescape off %}
+	 	{% for question in  oneword %}
+	 	<a href="/student/question/new/{{question.sub_topic.pk}}/?id={{question.pk}}">{{question.question}}</a>
+	 	<br><label class="label label-success">{{question.sub_topic.topic.subject.exam.exam}}</label><br>
+	 	{% endfor %}
+	 	<hr>
+	 	{% for trick in tricks %}
+	   		<a href="/student/trick/new/{{trick.sub_topic.pk}}/?id={{trick.pk}}" style="color:green;">{{trick.title}}</a>
+	   		<br>
+	   		<label class="label label-info">{{trick.sub_topic.topic.subject.exam.exam}}</label><br>
+	   	{% endfor %}
+	   	{% endautoescape %}	
+	  <hr>
+	</div>
+	<div class="col-md-12">
+	  <h4><img src="/static/images/news_psc.png" width="50x;" heigh="45px;"><strong class="text-info"> Latest News</strong></h4 >
+	  	<a href="http://www.keralapsc.gov.in/index.php?option=com_content&view=article&id=3328:notification-2014&catid=1:general" target="_blank">Notifications in kpsc</a>
+	  	<br>
+	  	<a href="http://www.keralapsc.gov.in/index.php?option=com_content&view=article&id=3244:short-list-2014&catid=103:shortlist" target="_blank">Shortlists in recent exams</a>
+	  	<br>
+	  	<a href="http://www.keralapsc.gov.in/index.php?option=com_content&view=article&id=3243:rank-list-2014&catid=102:ranklist" target="_blank">Ranklists in recent exams</a>
+	  <hr>
+	</div>
+	<div class="col-md-12">
+	  <h4><img src="/static/images/Performance-icon.png" width="50x;" heigh="45px;"><strong class="text-info">My Performance</strong></h4>
+	  	{% for exam in exams %}
+	  		<a href="/student/performance/{{exam.pk}}/">{{exam.exam}}</a><br>
+	  	{% endfor %}			
+	  <hr>
+	</div>
+	          
 {% endblock %}
 

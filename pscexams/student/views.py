@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.context_processors import csrf
+from django.contrib import auth
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
@@ -378,13 +380,103 @@ def student_performance(request, pk):
 	return render_to_response('performance.html', response)
 
 
+@login_required
+@user_passes_test(student_check)
+def student_profile(request):
+	response = {}
+	response.update(csrf(request))
+	response.update({'user':UserProfile.objects.get(user=request.user)})
+
+	if request.method == 'GET':
+		return render_to_response('my_profile.html', response)
+
+	if request.method == 'POST':
+		form_error = False
+		if 'first_name' in request.POST and request.POST['first_name']:
+			first_name = request.POST['first_name']
+		else:
+			form_error = True
+
+		
+		if 'last_name' in request.POST and request.POST['last_name']:
+			last_name = request.POST['last_name']
+		else:
+			last_name=''
+
+		if 'email' in request.POST and request.POST['email']:
+			email = request.POST['email']
+		else:
+			form_error = True
+
+		
+		if 'mobile' in request.POST and request.POST['mobile']:
+			mobile = request.POST['mobile']
+		else:
+			mobile=''
+
+		if form_error:
+			response.update({'form_error':True})
+			return render_to_response('my_profile.html', response)
+
+		request.user.first_name = first_name
+		request.user.last_name = last_name
+		request.user.email = email
+		request.user.save()
+		try:
+			userprofile = UserProfile.objects.get(user=request.user)
+		except:
+			raise Http404()
+		else:
+			userprofile.mobile_no = mobile
+			userprofile.save()
+
+		response.update({'success':True})
+
+		return render_to_response('my_profile.html', response)
 
 
+@login_required
+@user_passes_test(student_check)
+def student_password_reset(request):
+	response = {}
+	response.update(csrf(request))
 
+	if request.method == 'GET':
+		return render_to_response('password_reset.html', response)
 
+	if request.method == 'POST':
+		form_error=False
+		if 'current_password' in request.POST and request.POST['current_password']:
+			current_password = request.POST['current_password']
+		else:
+			form_error = True
 
+		if 'new_password' in request.POST and request.POST['new_password']:
+			new_password = request.POST['new_password']
+		else:
+			form_error = True
 
+		if 'confirm_password' in request.POST and request.POST['confirm_password']:
+			confirm_password = request.POST['confirm_password']
+		else:
+			form_error = True
 
+		if form_error:
+			response.update({'form_error':True})
+			return render_to_response('password_reset.html', response)
 
+		user = auth.authenticate(username=request.user.username, password=current_password)
+		if user is not None and user.is_active:
+			pass
+		else:
+			response.update({'current_password_error':True})
+			return render_to_response('password_reset.html', response)
 
+		if not new_password == confirm_password:
+			response.update({'password_error':True})
+			return render_to_response('password_reset.html', response)
 
+		request.user.set_password(confirm_password)
+		request.user.save()
+		response.update({'success':True})
+		return render_to_response('password_reset.html', response)

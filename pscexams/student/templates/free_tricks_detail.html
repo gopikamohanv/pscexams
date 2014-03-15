@@ -4,6 +4,7 @@
 		<div class="col-lg-8">
 				{% if trick %}
 					<table class="table">
+						<h3 class="text-info"><strong>{{trick.title}}</strong></h3>
 						{% autoescape off %}
 							{{trick.description}}
 						{% endautoescape %}	
@@ -22,10 +23,9 @@
 		        	<h3 class="panel-title"><strong><img src="/static/images/binary-tree-icon.png">Related topics</strong></h3>
 		        </div>
 		        <div class="panel-body">
-		        	<ul><a href='/free/tricks/1/'> പൊതുവിജ്ഞാനം</a></ul>
-				    <ul><a href='/free/tricks/2/'> മാനസികശേഷി പരിശോധന</a></ul>
-				    <ul><a href='/free/tricks/3/'> ലഘു ഗണിതം</a></ul>
-				    <ul><a href='/free/tricks/9/'> അടിസ്ഥാന ശാസ്ത്രം</a></ul>
+		        	{% for trick in tricks %}
+		        	<ul><a href="/free/tricks/detail/{{subject.pk}}/?id={{trick.pk}}">{{trick.title}}</a></ul>
+				    {% endfor %}
 		        </div>
     		</div>
 		</div>	

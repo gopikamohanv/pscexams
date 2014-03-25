@@ -310,19 +310,7 @@ def register(request):
 
 		userlogin = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
 		auth.login(request,userlogin)
-		subject = "pscexams.com"
-		#html_content = get_welcome_email_message(user.first_name, user.username, [form.cleaned_data['password'])
-		html_content = 'Dear ' + str(user.first_name)+ ',\n'
-		html_content +='\n Welcome to www.pscexams.com! \n\n'
-		html_content +='We thank you for registering on www.pscexams.com. \n\n\n'
-		html_content +='Best Regards, \n'
-		html_content +='Your Team pscexams \n'
-		#html_content = '<html><body><p><img src="static/images/psc_banner1.png"></p></body></html>'
-		msg = EmailMultiAlternatives(subject, html_content ,'', [form.cleaned_data['email']])
-		msg.attach_alternative(html_content, "text/html")
-		msg.content_subtype = "html"
-		msg.send()
-
+		
 		return HttpResponseRedirect('/home/')
 
 	response.update({'form':form})

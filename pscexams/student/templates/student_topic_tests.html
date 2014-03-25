@@ -86,9 +86,10 @@
         	<h3 class="panel-title"><img src="/static/images/MetroUI-Other-Task-icon.png" width="50x;" heigh="45px;" alt=""> <strong>Recent Answer Sheets</strong></h3>
         </div>
         <div class="panel-body">
-        	{% for mocktest_datum in mocktest_data %}
-				<a href="/student/answersheet/{{mocktest_datum.mock_test.pk}}/">{{mocktest_datum.mock_test.test_date}}</a><br>
-			{% endfor %}
+        	{% for answersheet in related_exams %}
+            <li class="text-muted list-unstyled"><a href="/student/answersheet/{{answersheet.test.id}}/?sub_topic={{answersheet.sub_topic.id}}"><h5>Practice Test {{forloop.counter}}</h5></a></li>
+          {% endfor %}
+          <a href="/student/answersheets/list/?sub_topic={{sub_topic.id}}">More</a>
         </div>
     </div>
   <hr>

@@ -56,12 +56,4 @@ class ExamScore(models.Model):
 class ModelexamScore(models.Model):
     user = models.ForeignKey(UserProfile)
     modelexam = models.ForeignKey(ModelExam) 
-    test = models.ForeignKey(MockTest)   
-
-
-
-
-
-
-
-
+    test = models.ForeignKey(MockTest)

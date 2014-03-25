@@ -5,3 +5,4 @@ from django.contrib import admin
 from pscexams.student.models import *
 
 admin.site.register(UserProfile)
+admin.site.register(ExamScore)

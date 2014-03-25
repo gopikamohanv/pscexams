@@ -1,41 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<div class="col-md-12">
-		{% for answersheet in user.mocktest_set.all %}
-			<div class="row">
-				<div class="alert alert-info col-md-4">
-					<h4><a href="/student/answersheet/{{answersheet.pk}}/">{{answersheet.test_date}}<a></h4>
+
+	<div class="col-lg-12">
+		<div class="col-lg-12">
+
+			<h4 class="text-info"><strong>Answersheets Related on {{sub_topic_name.sub_topic}}<strong></h4>
+			<br>
+			{% for answersheet in related_exams %}
+				<a href="/student/answersheet/{{answersheet.test.id}}/?sub_topic={{answersheet.sub_topic.id}}">
+					<div class="col-md-3">
+						<div class="panel panel-default">
+			     			<div class="panel-body">
+			       				<center><h4><strong class="text-success">Practice Test {{forloop.counter}}</strong></h4>
+			      			</div>
+			    		</div>
+					</div>
+				</a>
+			{% empty %}
+				<div class="alert alert-info">
+					<strong>You haven't attented any of the tests yet!!!</strong>
 				</div>
-			</div>
-		{% endfor %}
-	</div>
-{% endblock %}
-
-{% block right_content %}
-	<div class="col-md-12">
-	  <h5><img src="/static/images/new-icon.png"><strong class="text-muted"> Whats New?</strong></h5>
-	  <ul>
-	    <li class="text-muted list-unstyled">MCQs Added for LGS EXAM</li>
-	    <li class="text-muted list-unstyled">MCQs Added for LGS EXAM</li>
-	  </ul>
-	  <hr>
+			{% endfor %}
+		</div>
 	</div>
 
-	<div class="col-md-12">
-	  <h5><img src="/static/images/bar-chart-icon.png" ><strong class="text-muted">My Rank</strong></h5>
-	  <ul>
-	    <li class="text-muted list-unstyled">LGS - 9/25</li>
-	    <li class="text-muted list-unstyled">LGS - 9/25</li>
-	  </ul>
-	  <hr>
-	</div>
-	          
-	<div class="col-md-12">
-	  <h5><img src="/static/images/activity.png"> <strong class="text-muted">Recent Activities</strong></h5>
-	  <li class="text-muted">Attended LD Exam</li>
-	  <li class="text-muted">Attended LD Exam</li>
-	  <li class="text-muted">Attended LD Exam</li>
-	  <hr>
-	</div>
 {% endblock %}

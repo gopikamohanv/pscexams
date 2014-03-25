@@ -89,13 +89,17 @@
 {% endblock %}
 
 {% block right_content %}
+
 <div class="col-md-12">
-  <h5><img src="/static/images/new-icon.png"><strong class="text-muted">Related Subtopics</strong></h5>
-  <ul>
-  {% for subtopic in sub_topic.topic.subtopic_set.all %}
-    <li class="text-muted list-unstyled"><a href="/student/exam/topic/tests/{{subtopic.pk}}/">{{subtopic.sub_topic}}</a></li>
-  {% endfor %}
-  </ul>
-  <hr>
+	<h5><img src="/static/images/new-icon.png">
+		<strong class="text-muted">Recent Answersheets</strong></h5>
+	<ul>
+	  {% for answersheet in related_exams %}
+	    <li class="text-muted list-unstyled"><a href="/student/answersheet/{{answersheet.test.id}}/?sub_topic={{answersheet.sub_topic.id}}">Practice Test {{forloop.counter}}</a></li>
+	  {% endfor %}
+	  <a href="/student/answersheets/list/?sub_topic={{sub_topic.id}}">More</a>
+	</ul>
+	<hr>
 </div>   
+
 {% endblock %}

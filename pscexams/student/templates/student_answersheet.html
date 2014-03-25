@@ -80,13 +80,16 @@
 
 
 {% block right_content %}
+
 <div class="col-md-12">
-  <h5><img src="/static/images/new-icon.png"><strong class="text-muted">Your Answersheets</strong></h5>
-  <ul>
-  {% for answersheet in user.mocktest_set.all %}
-    <li class="text-muted list-unstyled"><a href="/student/answersheet/{{answersheet.pk}}/">{{answersheet.test_date}}</a></li>
-  {% endfor %}
-  </ul>
-  <hr>
+    <h5><img src="/static/images/new-icon.png"><strong class="text-muted">Recent Answersheets</strong></h5>
+    <ul>
+      {% for answersheet in related_exams %}
+        <li class="text-muted list-unstyled"><a href="/student/answersheet/{{answersheet.test.id}}/?sub_topic={{answersheet.sub_topic.id}}"><h5>Practice Test {{forloop.counter}}</h5></a></li>
+      {% endfor %}
+      <a href="/student/answersheets/list/?sub_topic={{sub_topic}}">More</a>
+    </ul>
+    <hr>
 </div>   
+
 {% endblock %}

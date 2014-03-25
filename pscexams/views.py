@@ -9,6 +9,8 @@ from django.contrib.auth import logout as auth_logout
 from django.core.mail import mail_admins
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.core.mail import mail_admins
+from django.core.mail import EmailMultiAlternatives
 
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
@@ -294,7 +296,7 @@ def register(request):
 			response.update({'user_error':True})
 			return render_to_response('index.html', response)
 		except:
-			user = User.objects.create(username=form.cleaned_data['username'], first_name=form.cleaned_data['name'])
+			user = User.objects.create(username=form.cleaned_data['username'], first_name=form.cleaned_data['name'], email=form.cleaned_data['email'])
 			user.set_password(form.cleaned_data['password'])
 			user.save()
 
@@ -308,10 +310,25 @@ def register(request):
 
 		userlogin = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
 		auth.login(request,userlogin)
+		subject = "pscexams.com"
+		#html_content = get_welcome_email_message(user.first_name, user.username, [form.cleaned_data['password'])
+		html_content = 'Dear ' + str(user.first_name)+ ',\n'
+		html_content +='\n Welcome to www.pscexams.com! \n\n'
+		html_content +='We thank you for registering on www.pscexams.com. \n\n\n'
+		html_content +='Best Regards, \n'
+		html_content +='Your Team pscexams \n'
+		#html_content = '<html><body><p><img src="static/images/psc_banner1.png"></p></body></html>'
+		msg = EmailMultiAlternatives(subject, html_content ,'', [form.cleaned_data['email']])
+		msg.attach_alternative(html_content, "text/html")
+		msg.content_subtype = "html"
+		msg.send()
+
 		return HttpResponseRedirect('/home/')
 
 	response.update({'form':form})
 	return render_to_response('index.html', response)
+
+
 
 # For About Previous year Questions
 #/about/previous/year/question/ 
@@ -613,7 +630,7 @@ def free_tricks_detail(request, pk):
 	response.update({'states':State.objects.all()})
 	subject = get_object_or_404(Subject, pk=pk)
 	response.update({'subject':subject})
-	response.update({'tricks': TipsandTricks.objects.filter(sub_topic__topic__subject=subject).order_by('?')})
+	response.update({'tricks': TipsandTricks.objects.filter(sub_topic__topic__subject=subject).order_by('?')[:10]})
 	if 'id' in request.GET and request.GET['id']:
 		trick_id = request.GET['id']
 	else:

@@ -5,8 +5,10 @@
 
               {% if form.name.errors %}
               <div class="form-group has-error">
-                <label for="name" class="col-lg-2 control-label">Name</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="name">Name</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="text" class="form-control" name="name" id="name" placeholder="Name">
                   <span class="help-block">{% for error in form.name.errors %}{{error}}{% endfor %}</span>
                 </div>
@@ -14,8 +16,10 @@
               {% else %}
 
               <div class="form-group">
-                <label for="name" class="col-lg-2 control-label">Name</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="name">Name</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="{% if form.name.value %}{{form.name.value}}{% endif %}">
                 </div>
               </div>
@@ -23,16 +27,20 @@
 
               {% if form.username.errors %}
               <div class="form-group has-error">
-                <label for="username" class="col-lg-2 control-label">Username</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3">
+                <label for="username" >Username</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="text" class="form-control" name="username" id="username" placeholder="Username">
                   <span class="help-block">{% for error in form.username.errors %}{{error}}{% endfor %}</span>
                 </div>
               </div>
               {% else %}
               <div class="form-group">
-                <label for="username" class="col-lg-2 control-label">Username</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                <label for="username">Username</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="{% if form.username.value %}{{form.username.value}}{% endif %}">
                 </div>
               </div>
@@ -40,33 +48,62 @@
 
               {% if form.password.errors %}
               <div class="form-group has-error">
-                <label for="password" class="col-lg-2 control-label">Password</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="password">Password</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                   <span class="help-block">{% for error in form.password.errors %}{{error}}{% endfor %}</span>
                 </div>
               </div>
               {% else %}
               <div class="form-group">
-                <label for="password" class="col-lg-2 control-label">Password</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="password">Password</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                </div>
+              </div>
+              {% endif %}
+
+              {% if form.email.errors %}
+              <div class="form-group has-error">
+                <div class="col-lg-3">
+                <label for="email" >Email</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                  <span class="help-block">{% for error in form.email.errors %}{{error}}{% endfor %}</span>
+                </div>
+              </div>
+              {% else %}
+              <div class="form-group">
+                <div class="col-lg-3 control-label">
+                <label for="email">Email Id</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="text" class="form-control" name="email" id="email" placeholder="Email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
                 </div>
               </div>
               {% endif %}
 
               {% if form.mobile.errors %}
               <div class="form-group has-error">
-                <label for="mobile" class="col-lg-2 control-label">Mobile</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="mobile">Mobile</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile">
                   <span class="help-block">{% for error in form.mobile.errors %}{{error}}{% endfor %}</span>
                 </div>
               </div>
               {% else %}
               <div class="form-group">
-                <label for="mobile" class="col-lg-2 control-label">Mobile</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="mobile">Mobile</label>
+                </div>
+                <div class="col-lg-9">
                   <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="{% if form.mobile.value %}{{form.mobile.value}}{% endif %}">
                 </div>
               </div>
@@ -74,8 +111,11 @@
 
               {% if form.state.errors %}
               <div class="form-group has-error">  
-                <label for="state" class="col-lg-2 control-label">State</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="state">State</label>
+                </div>
+               
+                <div class="col-lg-9">
                   <select name="state" id="state" class="form-control">
                     {% for state in states %}
                     <option value="{{state.pk}}">{{state.state}}</option>
@@ -86,8 +126,10 @@
               </div>
               {% else %}
               <div class="form-group">  
-                <label for="state" class="col-lg-2 control-label">State</label>
-                <div class="col-lg-10">
+                <div class="col-lg-3 control-label">
+                  <label for="state">State</label>
+                </div>
+                <div class="col-lg-9">
                   <select name="state" id="state" class="form-control">
                     {% for state in states %}
                     <option value="{{state.pk}}">{{state.state}}</option>

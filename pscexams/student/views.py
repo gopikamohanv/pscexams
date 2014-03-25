@@ -38,6 +38,8 @@ def student_exam(request, pk):
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	exam = get_object_or_404(Exam, pk=pk)
 	response.update({'exam':exam})
+	response.update({'oneword':OnewordQuestion.objects.all().order_by('-pk')[:2]})
+	response.update({'tricks':TipsandTricks.objects.all().order_by('-pk')[:2]})
 	return render_to_response('student_subjects.html', response)
 
 @login_required
@@ -504,6 +506,7 @@ def student_password_reset(request):
 		request.user.save()
 		response.update({'success':True})
 		return render_to_response('password_reset.html', response)
+
 
 def student_previous_year_exam(request, pk):
 	response = {}

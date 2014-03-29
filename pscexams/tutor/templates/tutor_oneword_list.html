@@ -149,42 +149,44 @@
 <br> 
 <h4 class="text-muted"><strong>Read & Learn</strong></h4>
 <hr>
-<div class="list-question">
-  <form class="form-horizontal" id="question_form" method="POST" action="#" onSubmit="return updateDivs(this);"> {% csrf_token %}
-    <table>
-      <tr>
-        <td id="td_state">
-          <select class="form-control" name="state" id="state" onChange="state_changed(this.value)" style="width:220px;">
-            <option value="0">Select State</option>
-            {% for state in states %}
-                <option value="{{state.id}}">{{state.state}}</option> 
-            {% endfor %}
-          </select>
-        </td>
-        <td id="td_exam">
-          <select class="form-control" name="exam" id="exam" onChange="exam_changed(this.value)" style="width:220px;">
-            <option value="0">Select Exams</option>
-          </select>
-        </td>
-        <td id="td_subject">
-          <select class="form-control" name="subject" id="subject" onChange="subject_changed(this.value)" style="width:220px;">
-            <option value="0">Select Subject</option>
-          </select>
-        </td>
-        <td id="td_topic">
-          <select class="form-control" name="topic" id="topic" onChange="topic_changed(this.value)" style="width:220px;">
-            <option value="0">Select Topic</option>
-          </select>
-        </td>
-        <td id="td_sub_topic">
-          <select class="form-control" name="sub_topic" id="sub_topic" onChange="subtopic_changed(this.value)" style="width:220px;">
-            <option value="0">Select Sub Topic</option>
-          </select>
-        </td>
-      </tr>
-    </table>
-  </form>
-</div>
+<div class="row">
+  <div class="list-question">
+    <form class="form-horizontal" id="question_form" method="POST" action="#" onSubmit="return updateDivs(this);"> {% csrf_token %}
+      <table>
+        <tr>
+          <td id="td_state">
+            <select class="form-control" name="state" id="state" onChange="state_changed(this.value)" style="width:220px;">
+              <option value="0">Select State</option>
+              {% for state in states %}
+                  <option value="{{state.id}}">{{state.state}}</option> 
+              {% endfor %}
+            </select>
+          </td>
+          <td id="td_exam">
+            <select class="form-control" name="exam" id="exam" onChange="exam_changed(this.value)" style="width:220px;">
+              <option value="0">Select Exams</option>
+            </select>
+          </td>
+          <td id="td_subject">
+            <select class="form-control" name="subject" id="subject" onChange="subject_changed(this.value)" style="width:220px;">
+              <option value="0">Select Subject</option>
+            </select>
+          </td>
+          <td id="td_topic">
+            <select class="form-control" name="topic" id="topic" onChange="topic_changed(this.value)" style="width:220px;">
+              <option value="0">Select Topic</option>
+            </select>
+          </td>
+          <td id="td_sub_topic">
+            <select class="form-control" name="sub_topic" id="sub_topic" onChange="subtopic_changed(this.value)" style="width:220px;">
+              <option value="0">Select Sub Topic</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
 <br>
 <br>
 <div class="col-lg-12" >
@@ -197,7 +199,7 @@
     </tr>
   </table>
 </div>
-
+</div>
 
 <div class="row" style="margin-top:100px;">
   {% include "tutor_footer.html" %}

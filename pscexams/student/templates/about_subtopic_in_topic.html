@@ -1,25 +1,22 @@
 {% include 'header.html' %}
 
 <div class="row">
-    <div class="col-lg-12">
-      <div class="col-lg-8">  
-        {% block content %}
-          <div class="col-md-12">
-            <h3><strong class="text-info">{{topic.topic}}</strong></h3> <hr>   
-          </div>  
-        {% endblock %}   
-      
+  <div class="col-lg-12">
+    <div class="col-lg-8">  
+      {% block content %}
+        <div class="col-md-12">
+          <h3><strong class="text-info">{{topic.topic}}</strong></h3> <hr>   
+        </div>  
+      {% endblock %}   
+    
 
-      {% for sub_topic in sub_topics %}
-        <a href="#">{{sub_topic.sub_topic}}</a>
-        <p align="justify">
-                {{sub_topic.descripition}}
-              </p>
-      {% endfor %}
-</div>
-
-      
-
+    {% for sub_topic in sub_topics %}
+      <a href="/subtopic/content/?topic={{topic.id}}&id={{sub_topic.id}}">{{sub_topic.sub_topic}}</a>
+      <p align="justify">
+        {{sub_topic.descripition}}
+      </p>
+    {% endfor %}
+  </div>
 
   <div class="col-lg-4">
         {%if no_user%}

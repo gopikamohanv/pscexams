@@ -10,15 +10,15 @@
 								<td><h5><strong>{{modelexam.title}}</strong></h5></label></td>
 								<td><h5><strong><a href="" data-toggle="modal" data-target="#myModal">Attend Exam <img src="/static/images/Document-Write-icon.png"></a></strong></h5>
 									<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  										<div class="modal-dialog">
-    										<div class="modal-content">
-      											
-      											<div class="modal-body">
-      												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        											{% include "free_signup.html" %}
-      											</div>
-    										</div>
+										<div class="modal-dialog">
+  										<div class="modal-content">
+  											
+  											<div class="modal-body">
+  												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    											{% include "free_signup.html" %}
+  											</div>
   										</div>
+										</div>
 									</div>
 								</td>
 								<td><h5><strong><a href="/free/modelexam/download/{{modelexam.exam.pk}}/?id={{modelexam.pk}}">Download <img src="/static/images/Folder-Downloads-icon.png"></a></strong></h5></td>
@@ -30,23 +30,23 @@
 					<h4><strong class="text-muted">{{exam.exam}} Course starts on May 1 2014!!!</strong></h4>
 				{% endif %}	
 
-		</div>
-		<div class="col-lg-4">
-			{% include "free_signup.html" %}
-			<br>
-			<div class="panel panel-default">
+			</div>
+			<div class="col-lg-4">
+				{% include "free_signup.html" %}
+				<br>
+				<div class="panel panel-default">
 		    	<div class="panel-heading">
-		        	<h3 class="panel-title"><strong><img src="/static/images/binary-tree-icon.png">Related topics</strong></h3>
-		        </div>
-		        <div class="panel-body">
-		        	<ul><a href='/practice/test/?topic=1'> പൊതുവിജ്ഞാനം</a></ul>
-				    <ul><a href='/practice/test/?topic=2'> മാനസികശേഷി പരിശോധന</a></ul>
-				    <ul><a href='/practice/test/?topic=3'> ലഘു ഗണിതം</a></ul>
-				    <ul><a href='/practice/test/?topic=9'> അടിസ്ഥാന ശാസ്ത്രം</a></ul>
-		        </div>
-    		</div>
-		</div>	
-	</div>
-</div>	
+		        <h3 class="panel-title"><strong><img src="/static/images/binary-tree-icon.png">Related topics</strong></h3>
+		      </div>
+	        <div class="panel-body">
+	        	<ul><a href='/practice/test/?topic=1'> പൊതുവിജ്ഞാനം</a></ul>
+			    <ul><a href='/practice/test/?topic=2'> മാനസികശേഷി പരിശോധന</a></ul>
+			    <ul><a href='/practice/test/?topic=3'> ലഘു ഗണിതം</a></ul>
+			    <ul><a href='/practice/test/?topic=9'> അടിസ്ഥാന ശാസ്ത്രം</a></ul>
+	        </div>
+	    	</div>
+			</div>	
+		</div>
+	</div>	
 {% include 'footer.html' %}
 

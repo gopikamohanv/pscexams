@@ -634,7 +634,27 @@ def free_learn(request, pk):
 	subject = get_object_or_404(Subject, pk=pk)
 	response.update({'subject': subject})
 	response.update({'materials': OnewordQuestion.objects.filter(sub_topic__topic__subject=subject).order_by('-pk')[:100]})
-	return render_to_response('free_materials.html', response)	
+	return render_to_response('free_materials.html', response)
+
+
+def sub_topic_content(request):
+	response = {}
+	response.update({'states':State.objects.all()})
+	if 'id' in request.GET and request.GET['id']:
+		sub_topic_id = request.GET['id']
+
+	if 'topic' in request.GET and request.GET['topic']:
+		topic_id = request.GET['topic']
+
+	sub_topic = SubTopic.objects.get(pk=sub_topic_id)
+	sub_topics_in_topic = SubTopic.objects.filter(topic=topic_id).order_by('?')[:10]
+	response.update({'sub_topics_in_topic':sub_topics_in_topic})
+	response.update({'sub_topic':sub_topic})
+	tipsandtricks = TipsandTricks.objects.filter(sub_topic=sub_topic).order_by('-pk')[:5]
+	response.update({'tipsandtricks':tipsandtricks})
+	readandlearn = OnewordQuestion.objects.filter(sub_topic=sub_topic).order_by('-pk')[:2]
+	response.update({'readandlearn':readandlearn})
+	return render_to_response('subtopic_content.html', response)
 					
 
 

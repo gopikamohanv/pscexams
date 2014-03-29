@@ -250,6 +250,7 @@ def student_exam_submit(request, pk):
 		response.update({'score':score})
 		response.update({'total_score':total_score})
 		response.update({'test':test})
+		response.update({'test_num':test_num})
 		response.update({'success':True})
 		related_exams = ExamScore.objects.filter(sub_topic=sub_topic).order_by('-pk')[:10]
 		response.update({'related_exams':related_exams})

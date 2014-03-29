@@ -1,0 +1,200 @@
+{% include 'header.html' %}
+  
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="col-lg-8">
+
+        {% block content %}
+          <div class="col-md-12">
+            <h3><strong class="text-info">{{sub_topic.sub_topic}}</strong></h3>
+            <div class="panel panel-info">
+              <div class="panel-heading"><h3 class="panel-title"><strong>Practice Tests</strong></h3></div>
+              <div class="panel-body">
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <center><h4><strong class="text-success">
+                      <a href="" data-toggle="modal" data-target="#myModal" class="text-success">Practice Test 1</a></strong></h4>
+                      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              {% include "free_signup.html" %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>  
+                    </div>
+                  </div>
+                </div>
+               
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <center><h4><strong class="text-success">
+                      <a href="" data-toggle="modal" data-target="#myModal" class="text-success">Practice Test 2</a></strong></h4>
+                      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              {% include "free_signup.html" %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>  
+                    </div>
+                  </div>
+                </div>
+             
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <center><h4><strong class="text-success">
+                      <a href="" data-toggle="modal" data-target="#myModal" class="text-success">Practice Test 3</a></strong></h4>
+                      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                {% include "free_signup.html" %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>  
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-left:580px;">
+                  <span class="label label-warning">
+                    <a href="" data-toggle="modal" data-target="#myModal" style="color:white;"><b>More Tests</b></a>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            {% include "free_signup.html" %}
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <br>
+
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title"><strong>Tips and Tricks</strong></h3>
+              </div>
+              <div class="panel-body">
+                {% for trick in tipsandtricks %}
+                  <h4><strong><a href="/free/tricks/detail/{{trick.sub_topic.topic.subject.pk}}/?id={{trick.pk}}">{{trick.title}}</a></strong></h4>
+                {% endfor %}  
+                <div style="margin-left:580px;">
+                  <span class="label label-warning">
+                    <a href="" data-toggle="modal" data-target="#myModal" style="color:white;"><b>More Tricks</b></a>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            {% include "free_signup.html" %}
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </span>
+                </div>              
+              </div>
+            </div>
+
+            <br>
+
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title"><strong>Read and Learn</strong></h3>
+              </div>
+              <div class="panel-body">
+                {% autoescape off %}
+                  {% for read in readandlearn %}
+                    <h4><strong><a>{{read.question}}</a></strong></h4>
+                    <h5 class="text-success">{{read.answer}}</h5>
+                    <h5 class="text-muted">{{read.explanation}}</h5>
+                  {% empty %}
+                    <h4><strong class="text-muted">We are updating contents...</strong></h5>   
+                  {% endfor %}
+                {% endautoescape %}
+                
+                <div style="margin-left:580px;">
+                  <span class="label label-warning">
+                    <a href="" data-toggle="modal" data-target="#myModal" style="color:white;"><b>More Questions</b></a>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            {% include "free_signup.html" %}
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </span>
+                </div> 
+              </div>
+            </div>
+
+          </div>
+        {% endblock %}
+      </div>  
+
+      <div class="col-lg-4">
+        {%if no_user%}
+          <div class="col-lg-12">
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>No Such User</strong>
+            </div>
+          </div>
+        {%endif%}
+
+        {%if inactive%}
+          <div class="col-lg-12">
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Inactive User</strong>
+            </div>
+          </div>
+        {%endif%}
+
+        {% if user_error %}
+          <div class="col-lg-12">
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Username already exists.</strong>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="col-lg-12">
+          {% include "free_signup.html" %}
+          <br>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong><img src="/static/images/binary-tree-icon.png">Related topics</strong></h3>
+            </div>
+            <div class="panel-body">
+              {% for sub_topic in sub_topics_in_topic %}
+              <ul><a href="/subtopic/content/?topic={{sub_topic.topic.id}}&id={{sub_topic.id}}">{{sub_topic.sub_topic}}</a></ul>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% include "footer.html" %}

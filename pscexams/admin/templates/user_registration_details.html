@@ -1,0 +1,64 @@
+{% include "admin_header.html" %}
+<style>
+a:active {
+background-color: red;
+    color:#0000FF;}  /* selected link */
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+<script type="text/javascript" src="https://s3.amazonaws.com/uploads.siresources.in/cdn/js/tablecloth/tablecloth.js"></script>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="col-lg-3">
+      <div class="panel panel-warning" style="margin-top:25px;">
+        <div class="panel-heading">
+          <h3 class="panel-title"><strong>User Type</strong></h3>
+        </div>
+        <form id="user_type_form" method="GET" action="/siteadmin/dashboard/">
+        <div class="panel-body">
+          <a href="/siteadmin/dashboard/" id="user_type" name="user_type" 
+            <h5><strong>All Users</strong></h5>
+          </a>
+          <hr>
+          {% for key, value in usertypes.items %}
+            <strong><a href="/siteadmin/dashboard/?user_type={{value}}" value="{{value}}" id="user_type" name="user_type">{{key}}</a></strong> <hr>
+          {% endfor %}                    
+        </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <br>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{user_profile.user.first_name}}</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-bordered table-striped">
+            <tr>
+              <td>Full Name</td>
+              <td>{{user_profile.user.first_name}} {{user_profile.user.last_name}}</td> 
+            </tr>
+            <tr>
+              <td>Username</td>
+              <td>{{user_profile.user.username}}
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>{{user_profile.user.email}}</td>
+            </tr>
+            <tr>
+              <td>Mobile No</td>
+              <td>{{user_profile.mobile_no}}</td>
+            </tr><tr>
+              <td>Date joined</td>
+              <td>{{user_profile.user.date_joined}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>   
+</div>
+{% include "admin_footer.html" %}
+
+

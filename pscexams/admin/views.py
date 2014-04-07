@@ -491,3 +491,18 @@ def admin_upload_previousyearquestion(request):
 			raise Http404()
 
 		return render_to_response('previousyear_questionpaper.html',response)
+
+
+# Details of User
+#/siteadmin/user/details/
+@login_required
+@user_passes_test(admin_check)
+def user_details(request, pk):
+	response = {}
+	user = get_object_or_404(User, pk=pk)
+	response.update({'student':user})
+	user_profile = get_object_or_404(UserProfile, user=user)
+	response.update({'user_profile':user_profile})
+	response.update({'usertypes':UserType.types})
+	return render_to_response('user_registration_details.html', response)
+

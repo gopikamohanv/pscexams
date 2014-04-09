@@ -1,0 +1,93 @@
+<!doctype html>
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}{% endblock %} | PSC Forum</title>
+	<link rel="shortcut icon" href="/static/img/fav_200.png" />
+	<link rel="stylesheet" href="{% static 'forum/css/bootstrap.css' %}">
+	<style>
+		.break {
+			padding-top:20px;
+			padding-bottom: 20px;
+		}
+	</style>
+	{% block custom_css %}{% endblock %}
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<br>
+			<div class="col-md-12">
+				<div class="row">
+					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
+						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
+							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
+						{% if not_authenticated %}
+							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
+						{% else %}
+							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
+						{% endif %}
+					</div>
+				</div><br>
+				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="600px" height="50px;" style="margin-left:160px;">
+			  	<param name="movie" value="{% for a in ad %}{{a.ad_url}}{% endfor %}" />
+			  	<param name="quality" value="high" />
+			  	<param name="wmode" value="transparent">
+			  	<PARAM NAME="SCALE" VALUE="exactfit">
+			  	<embed src="{% for a in ad %}{{a.ad_url}}{% endfor %}"
+			  		quality="high"
+			  		type="application/x-shockwave-flash"
+			  		WMODE="transparent"
+			  		width="600px"
+			  		height="50px"
+			  		SCALE="exactfit" 
+			  		pluginspage="http://www.macromedia.com/go/getflashplayer" />
+				</object>
+			</div>
+			</div>
+			<div class="col-md-12"> 
+				<form action="">
+					<input type="text" id="search" class="input-lg col-md-12" placeholder="Search">
+				</form>
+			</div>
+		</div>
+		{% block content %}{% endblock %}
+		<div class="footer">
+			<hr>
+      <p>&copy; smartindia.net.in 2014</p>
+    </div>
+	</div>
+	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'tags/bootstrap.min.js' %}"></script>
+	<script>
+	$('#search').bind('keypress', function(e) {
+		var search = $('#search').val();
+		if(e.keyCode===13){
+			if ( search === ''){
+				alert('Please search something!!');
+				return false;
+			}
+			window.location = '/question/search/' + Slug(search) +'/';
+			return false;
+		}
+	});
+	function Slug(Text)
+	{
+	    return Text
+	        .toLowerCase()
+	        .replace(/[^\w ]+/g,'')
+	        .replace(/ +/g,'-')
+	        ;
+	}
+	$('.tool').tooltip();
+	</script>
+	{% block custom_js %}{% endblock %}
+</body>
+</html>

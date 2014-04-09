@@ -1,0 +1,169 @@
+<!doctype html>
+{% load static from staticfiles %}
+{% load utils %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Users | SIQA</title>
+	<link rel="shortcut icon" href="/static/img/fav_200.png" />
+	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
+    <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<style>
+		.break {
+			padding-top:20px;
+			padding-bottom: 20px;
+		}
+		.profile {
+		min-width: 80px!important;
+		min-height: 80px!important;
+		max-width: 80px;
+		border-radius: 40px;
+		}
+	</style>
+</head>
+<body>
+
+<div class="container">
+		<div class="row">
+			<br>
+			<div class="col-md-12">
+				<div class="row">
+					<a href="/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="smartindia question answer forum"></a>
+					<div class="pull-right">
+						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
+							<a href="/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/about/">About</a> |
+							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
+						{% if not_authenticated %}
+							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
+						{% else %}
+							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
+						{% endif %}
+					</div>
+				</div><br>
+				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="600px" height="50px;" style="margin-left:160px;">
+			  	<param name="movie" value="{% for a in ad %}{{a.ad_url}}{% endfor %}" />
+			  	<param name="quality" value="high" />
+			  	<param name="wmode" value="transparent">
+			  	<PARAM NAME="SCALE" VALUE="exactfit">
+			  	<embed src="{% for a in ad %}{{a.ad_url}}{% endfor %}"
+			  		quality="high"
+			  		type="application/x-shockwave-flash"
+			  		WMODE="transparent"
+			  		width="600px"
+			  		height="50px"
+			  		SCALE="exactfit" 
+			  		pluginspage="http://www.macromedia.com/go/getflashplayer" />
+				</object>
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="row">
+					<div class="pull-right">
+						<select name="" id="" class="form-control" style="width:200px;" onChange="sort(this.value)">
+							<option value="">Sort By</option>
+							<option value="point">Points</option>
+							<option value="recent">Recent</option>
+							<option value="oldest">Oldest</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-12 break" id="sortList">
+				{% for user in users %}
+					<div class="userlist" points="{{user.getPoints}}" dateJoined="{{user|getTimeInSec}}">
+						<div class="col-md-3" style="padding:10px 10px 10px 10px;">
+							<div class="col-md-5">
+								<img src="{{user.profile.profile_pic|default:'/static/img/user.png'}}" alt="" height="50" width="50" class="profile">
+							</div>
+							<div clas="col-md-6">
+								<strong><a href="/userdetails/{{user.pk}}/">{{user.first_name|default:user.username}}</a></strong><br>
+								<small>Q : {{user.question_set.all.count}}</small> <br>
+								<small>A : {{user.answer_set.all.count}}</small><br>
+								<small>Points : {{user.getPoints}}</small>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+			
+			<div class="row">
+				<br><br>
+				<input id="next_rows" type="hidden" value="20" />
+				<button class="btn btn-info col-md-offset-4 col-md-4 loadmore">Load More</button>
+			</div>
+			<div class="footer">
+			<hr>
+      <p>&copy; smartindia.net.in 2014</p>
+    </div>
+	</div>
+	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'tags/bootstrap.min.js' %}"></script>
+	<script>
+	$('.tool').tooltip();
+	</script>	
+	<script>
+	function sort(value){
+		if (value === ''){
+			return;
+		}
+		if (value === 'point'){
+			var sortList = $(".userlist");
+			sortList.sort(function(a, b){
+	    	return $(b).attr("points")-$(a).attr("points");
+			});
+		}
+		else if (value === 'recent'){
+			var sortList = $(".userlist");
+			sortList.sort(function(a, b){
+	    	return $(b).attr("dateJoined")-$(a).attr("dateJoined");
+			});
+		}
+		else{
+			var sortList = $(".userlist");
+			sortList.sort(function(a, b){
+	    	return $(a).attr("dateJoined")-$(b).attr("dateJoined");
+			});
+		}
+		$("#sortList").html(sortList);
+	}
+
+	$('.loadmore').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		btn.html('loading...........');
+		btn.attr('disabled', true);
+		var next_rows = document.getElementById("next_rows").value;
+		$.ajax({
+			url: '/loadmore/users/',
+			type: 'GET',
+			data: {next_rows : next_rows},
+		})
+		.done(function(data) {
+			btn.html('Load More');
+			btn.removeAttr('disabled');
+			if (data != "False")
+      {
+      	document.getElementById('next_rows').value = parseInt(next_rows) + 20;
+      	$("#sortList").append(data);
+      }
+      else
+      {
+          btn.hide();
+      }
+		})
+		.fail(function() {
+			alert('An error occured, please try again!!');
+			btn.html('Load More');
+			btn.removeAttr('disabled');
+		})
+		
+	});
+
+	</script>
+	
+</body>
+</html>

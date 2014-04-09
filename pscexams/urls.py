@@ -5,6 +5,7 @@ from pscexams.tutor.views import *
 from django.contrib import admin
 from django.conf import settings
 admin.autodiscover()
+import forum.views
 
 urlpatterns = patterns('',
     # Example:
@@ -67,6 +68,11 @@ urlpatterns = patterns('',
     url(r'^siteadmin/', include('pscexams.admin.urls')),
     url(r'^tutor/', include('pscexams.tutor.urls')),
     url(r'^student/', include('pscexams.modelexam.urls')),
+
+    #forum Urls
+    url(r'^forum/$', forum.views.index, name='forum'),
+    url(r'^getTags/$', forum.views.get_tags, name='get-tags'),
+    url(r'^question/', include('pscexams.forum.urls', namespace='question')),
 
 
 )

@@ -1,0 +1,708 @@
+{% extends 'forum/base.html' %}
+{% block title %}{{question.title}}{% endblock %}
+{% load static from staticfiles %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'tags/bootstrap-tagsinput.css' %}">
+<link href="{% static 'js/pnotify/jquery.pnotify.default.css' %}" rel="stylesheet">
+	<style>
+		.nav-pills li a:hover{
+			color:black;
+		}
+		#sort a:hover{
+			background: #5bc0de;
+			color:white;
+		}
+		#questionTable td {
+			padding:20px 20px 20px 20px;
+		}
+		.question {
+		}
+		.views {
+			width:63px;
+			height:63px;
+			font-size: .75em;
+			text-align: center;
+		}
+		.icon a{
+			width:40px;
+			height:40px;
+			line-height: 30px;
+		}
+		.white, .white a {
+  		color: #fff;
+		}
+		#qVoteUp:hover {
+			background:#5cb85c;
+			color:white;
+		}
+		#qVoteDown:hover {
+			background:#d9534f;
+			color:white;
+		}
+		.aVoteUp:hover {
+			background:#5cb85c;
+			color:white;
+		}
+		.aVoteDown:hover {
+			background:#d9534f;
+			color:white;
+		}
+		.correctAnswer {
+			display:none;
+		}
+	</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12 break">
+		<table class="table table-bordered">
+			<tr>
+				<td class="col-md-12">
+					<div class="col-md-1">
+						 <h4>Status</h4>
+					</div>
+					<div class="col-md-9">
+						<ul class="nav nav-pills">
+						  <li class="col-md-2 col-xs-12"><a href="/forum/" class="btn-info text-center">All</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/unanswered/" class="btn-warning text-center">Unanswered</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/answered/" class="btn-primary text-center">Answered</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/resolved/" class="btn-success text-center">Resolved</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/closed/" class="btn-danger text-center">Closed</a></li>
+						</ul>
+					</div>
+					<div class="clearfix visible-xs"><br></div>
+					<div class="col-md-2">
+						<a href="{% url 'question:ask-question' %}" class="btn btn-lg btn-success btn-block">Ask Question</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-9">
+		<h3>
+			{{question.title}}{% csrf_token %}
+			{% if moderator %}
+			<div class="pull-right">
+				{% if not question.closed %}
+				<button class="btn btn-xs btn-danger qClose" question="{{question.pk}}">close this question</button>
+				{% else %}
+				<button class="btn btn-xs btn-info qOpen" question="{{question.pk}}">reopen</button>
+				{% endif %}
+			</div>
+			{% endif %}
+		</h3><hr>
+
+		{% if question.closed %}
+			<div class="alert alert-danger">This question is closed</div>
+		{% else %}
+		<div class="addthis_toolbox addthis_default_style ">
+	      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	      <a class="addthis_button_tweet"></a>
+	      <a class="addthis_button_pinterest_pinit"></a>
+	      <a class="addthis_counter addthis_pill_style"></a>
+	  </div><br><br>
+	  <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+	  <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-502ca0cd102cb2f6"></script>
+		<div class="row" id="questionData">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-1">
+						<button class="btn btn-default tool qVote {% if question.getvotescount > 0 %}btn-success{% endif %}" id="qVoteUp" value="1" data-placement="top" title="vote up"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+						<h3 clss="text-muted" id="qVoteCount">&nbsp;&nbsp;{{question.getvotescount}}</h3>
+						<button class="btn btn-default tool qVote {% if question.getvotescount < 0 %}btn-danger{% endif %}" id="qVoteDown" value="0" data-placement="top" title="vote down"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+					</div>
+					<div class="col-md-11">
+						{% autoescape off %}
+							{{question.description}}
+						{% endautoescape %}
+					</div>
+					<div class="col-md-11">
+						<div class="pull-right">
+							<strong class="text-muted ">Asked by {{question.created_by}} <i class="glyphicon glyphicon-user"></i></strong>
+							<p class="text-muted">{{question.created_on|date:'d-M-Y H:i'}}</p>
+						</div>
+						<div class="col-md-9 col-md-offset-3">
+							<hr>
+							<div id="qComments">
+							{% for comment in question.comment_set.all %}
+							{% if comment.approved %}
+							<div class="row">
+								<div class="col-md-12"> <small>{{comment.comment}}</small>
+								<span class="pull-right text-muted">
+									{{comment.commented_by}}({{comment.commented_on|date:'d-m-Y H:i'}})
+								</span>
+								</div>
+							</div>
+							<hr>
+							{% endif %}
+							{% endfor %}
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button class="btn btn-xs" id="qComment">comment</button>
+							</div>
+						</div>
+						<div class="row" id="qCommentTxt">
+							<div class="col-md-offset-4">
+								<textarea id="qCommentData" cols="65" rows="4"></textarea><br><br>
+								<button id="qSubmitCmt" class="btn btn-default btn-xs pull-right">comment</button>
+								<button id="qCancelCmt" class="btn btn-default btn-xs pull-right">cancel</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-11 col-md-offset-1">
+						{% if question.questiontag_set.all.count > 0 %}
+						<strong class="text-muted">Tags : </strong>
+						{% for tag in question.questiontag_set.all %}
+							<a class="btn btn-xs btn-warning tool" title="question tagged with {{tag.tag.tag}}" href="/question/tag/{{tag.tag.slug}}/">{{tag.tag.tag}}</a> 
+						{% endfor %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		{% if question.getanswerscount > 0 %}
+		<h3>{{question.getanswerscount}} Answers</h3><br>
+		{% endif %}
+
+		<div id="answers">
+		{% for answer in question.answer_set.all %}
+		{% if answer.approved %}
+		<div class="row answerRow">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-1">
+						<button class="btn btn-default tool aVoteUp {% if answer.getvotescount > 0 %}btn-success{% endif %}" id="aVoteUp{{answer.pk}}" value="{{answer.pk}}" data-placement="top" title="vote up"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+						<h3 clss="text-muted" id="aVoteCount{{answer.pk}}">&nbsp;&nbsp;{{answer.getvotescount}}</h3>
+						<button class="btn btn-default tool aVoteDown {% if answer.getvotescount < 0 %}btn-danger{% endif %}" id="aVoteDown{{answer.pk}}" value="{{answer.pk}}" data-placement="top" title="vote down"><i class="glyphicon glyphicon-thumbs-down"></i></button><br><br>
+						{% if answer.accepted %}
+						<button class="btn btn-default btn-success tool disabled"><i class="glyphicon glyphicon-ok white"></i></button>
+						{% else %}
+						<button class="btn btn-default btn-success tool correctAnswer" answer="{{answer.pk}}" title="Mark this answer as correct"><i class="glyphicon glyphicon-ok white"></i></button>
+						{% endif %}
+					</div>
+					<div class="col-md-11">
+						{% autoescape off %}
+							{{answer.answer}}
+						{% endautoescape %}
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+								<strong class="text-muted ">Answered by {{answer.answered_by}} <i class="glyphicon glyphicon-user"></i></strong>
+								<p class="text-muted">{{answer.answered_on|date:'d-M-Y H:i'}}</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12 answerComment">
+						<div class="col-md-8 col-md-offset-4">
+							<hr>
+							<div id="aComments_{{answer.pk}}">
+							{% for comment in answer.comment_set.all %}
+							{% if comment.approved %}
+							<div class="row">
+								<div class="col-md-12"> 
+								<small class="col-md-10">{{comment.comment}}</small>
+								<span class="pull-right text-muted">
+									{{comment.commented_by}}({{comment.commented_on|date:'d-M-Y H:i'}})
+								</span>
+								</div>
+							</div>
+							<hr>
+							{% endif %}
+							{% endfor %}
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button class="btn btn-xs aComment" value="{{answer.pk}}">comment</button>
+							</div>
+						</div>
+						<div class="row" id="aCommentTxt_{{answer.pk}}" style="display:none;">
+							<div class="col-md-offset-4">
+								<textarea id="aCommentData_{{answer.pk}}" cols="65" rows="4"></textarea><br><br>
+								<button class="btn btn-default btn-xs pull-right aSubmitCmt" value="{{answer.pk}}">comment</button>
+								<button class="btn btn-default btn-xs pull-right aCancelCmt" value="{{answer.pk}}">cancel</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<hr>
+		{% endif %}
+		{% endfor %}
+		</div>
+
+
+		<div class="col-md-12" id="editor">
+			{% if question.getanswerscount == 0 %}
+				<h4 class="text-muted">Be the first one to answer this question</h4>
+			{% else %}
+				<h4 class="text-muted">Your Answer</h4>
+			{% endif %}
+			<textarea  id="answer"></textarea><br>
+			<input type="hidden" id="question" value="{{question.pk}}">
+			{% if not_authenticated %}
+    			<button id="loginBtn" class="btn btn-primary btn-lg">Login/SignUp to Submit Answer</button>
+    	{% else %}
+    			<button id="submit" class="btn btn-success btn-lg">Submit Your Answer</button>
+    	{% endif %}
+		</div>
+
+	{% endif %}
+	</div>
+
+
+	<div class="col-md-3"> 
+		<div class="well">
+			<h3>Questions {{qCount}}</h2>
+			<h3>Answers {{aCount}}</h2>
+		</div>
+		<div class="well">
+			<h4>Tags</h2>
+			{% for tag in tags %}
+			<h5>
+				<a class="btn btn-xs btn-warning tool" title="question tagged with {{tag.tag}}" href="/question/tag/{{tag.slug}}/">{{tag.tag}}</a> x <span class="badge">{{tag.questiontag_set.all.count}}</span>
+			</h5>
+			{% endfor %}
+		</div>
+		<div class="well">
+			<h4>Related Questions</h2>
+		</div>
+	</div>
+</div> 	
+
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/pnotify/jquery.pnotify.min.js' %}"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$('#qCommentTxt').hide();	
+	$('#submitMsg').hide();
+});
+tinymce.init({
+    selector: "#answer",
+    plugins: [
+        "advlist autolink lists link image charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+});
+$('#loginBtn').bind('click', function(e) {
+		e.preventDefault();
+		window.location = '/login/?next={{next}}';
+});
+
+$('#submit').bind('click', function(e) {
+	/* Act on the event */
+	e.preventDefault();
+	var btn = $(this);
+	var question = $('#question').val();
+	var answer = tinyMCE.get('answer').getContent();
+	if (answer === '') {
+		alert('Answer cannot be empty!');
+		return false;
+	}
+	btn.html('Submitting....');
+	btn.attr('disabled', 'disabled');
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/submit/answer/',
+    cache : false,
+    data: 'question=' + question + '&answer=' + escape(answer),
+    success : function success(data, status) {
+    					if (data === 'empty') {
+    						alert('Answer cannot be empty.');
+    						return false;
+    					}
+    					else {
+    						tinyMCE.get('answer').setContent('');
+    						btn.html('Submit Your Answer');
+    						btn.removeAttr('disabled');
+    						$.pnotify({
+					        title: 'Success!',
+					        text: 'Answer will be posted after verification by our moderators!!!',
+					        type: 'success' 
+					      });
+    					}
+            },
+
+    error : function failure(data, status) {
+                alert('Error saving data, pls try again!');
+                btn.html('Submit Your Answer');
+    						btn.removeAttr('disabled');
+            }
+  });
+});
+
+$('#qComment').bind('click', function(e) {
+	e.preventDefault();
+	{% if not_authenticated %}
+	alert('You have to login to comment!!');
+	return false;
+	{% endif %}
+	$(this).hide();
+	$("#qCommentTxt").slideToggle();
+	$("#qCommentData").val('');
+	$("#qCommentData").focus();
+});
+
+$('#qCancelCmt').bind('click', function(e) {
+	e.preventDefault();
+	$("#qCommentTxt").slideToggle();
+	$('#qComment').show('slow');
+});
+
+$('#qSubmitCmt').bind('click', function(e) {
+	e.preventDefault();
+	var comment = $('#qCommentData').val();
+	if (comment === ''){
+		alert('Please enter your comment.')
+		return false;
+	}
+	var question = $('#question').val();
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/submit/comment/',
+    cache : false,
+    data: 'question=' + question + '&comment=' + comment,
+    success : function success(data, status) {
+    					if (data === 'empty') {
+    						alert('Comment cannot be empty.');
+    						return false;
+    					}
+    					else {
+    						$("#qCommentTxt").slideToggle();
+    						$.pnotify({
+					        title: 'Success!',
+					        text: 'Comment will be posted after verification by our moderators!!!',
+					        type: 'success' 
+					      });
+    					}
+            },
+
+    error : function failure(data, status) {
+                alert('Error saving data, pls try again!');
+            }
+  });
+});
+
+$('.aComment').bind('click', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var btn = $(this);
+	var comment = '#aCommentTxt_' + btn.attr('value');
+	{% if not_authenticated %}
+		alert('You have to login to comment!!');
+		return false;
+	{% endif %}
+	$(comment).slideToggle();
+	$("#aCommentData_" + btn.attr('value')).val('');
+	$("#aCommentData_" + btn.attr('value')).focus();
+	btn.hide();
+});
+
+$('.aSubmitCmt').bind('click', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var btn = $(this);
+	var comment = '#aCommentData_' + btn.attr('value');
+	var answer = btn.attr('value');
+	comment = $(comment).val();
+	if (comment === '')
+	{
+		alert('Please enter your comment.')
+		return false;
+	}
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/submit/answer/comment/',
+    cache : false,
+    data: 'answer=' + answer + '&comment=' + comment,
+    success : function success(data, status) {
+    					if (data === 'empty') {
+    						alert('Comment cannot be empty.');
+    						return false;
+    					}
+    					else {
+    						$("#aCommentTxt_" + btn.attr('value')).slideToggle();
+    						$(btn).parents('.answerComment').find('.aComment').show('slow');
+    						$.pnotify({
+					        title: 'Success!',
+					        text: 'Comment will be posted after verification by our moderators!!!',
+					        type: 'success' 
+					      });
+    					}
+            },
+
+    error : function failure(data, status) {
+                alert('Error saving data, pls try again!');
+            }
+  });
+});
+
+$('.aCancelCmt').bind('click', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var btn = $(this);
+	var comment = '#aCommentTxt_' + btn.attr('value');
+	$(comment).slideToggle();
+	$(btn).parents('.answerComment').find('.aComment').show('slow');
+});
+
+$('.qVote').bind('click', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var btn = $(this);
+	{% if not_authenticated %}
+		alert('You have to login to vote this question!!');
+		return false;
+	{% endif %}
+	var value = $(this).attr('value');
+	var vote
+	if (value === '1'){
+		vote = 'up';
+	}
+	else{
+		vote = 'down';
+	}
+	var question = $('#question').val();
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/vote/',
+    cache : false,
+    data: 'question=' + question + '&vote=' + vote,
+    success : function success(data, status) {
+    					if (data === 'no'){
+    						alert('You cannot vote your own question');
+    						return;
+    					}
+    					else if(data > 0) {
+    						if ($(btn).attr('value') === '1'){
+    							$('#qVoteUp').addClass('btn-success');
+    							$('#qVoteDown').removeClass('btn-danger');
+    						}
+    					}	
+    					else if(data == 0){
+    						$('#qVoteUp').removeClass('btn-success');
+    						$('#qVoteDown').removeClass('btn-danger');
+    					}
+    					else{
+    						$('#qVoteUp').removeClass('btn-success');
+    						$('#qVoteDown').addClass('btn-danger');
+    					}
+    					$('#qVoteCount').hide();
+    					$('#qVoteCount').html('&nbsp;&nbsp;' + data);
+    					$('#qVoteCount').fadeIn('slow');
+            },
+
+    error : function failure(data, status) {
+                alert('Error saving data, pls try again!');
+            }
+  });
+});
+
+$('.aVoteUp').bind('click', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var btn = $(this);
+	{% if not_authenticated %}
+		alert('You have to login to vote this answer!!');
+		return false;
+	{% endif %}
+	var answer = $(btn).attr('value');
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/answer/vote/',
+    cache : false,
+    data: 'answer=' + answer + '&vote=up',
+    success : function success(data, status) {
+    					if (data === 'no'){
+    						alert('You cannot vote your own answer');
+    						return;
+    					}
+    					else if(data > 0) {
+    							$('#aVoteUp' + answer).addClass('btn-success');
+    							$('#aVoteDown' + answer).removeClass('btn-danger');
+    					}	
+    					else if(data == 0){
+    						$('#aVoteUp' + answer).removeClass('btn-success');
+    						$('#aVoteDown' + answer).removeClass('btn-danger');
+    					}
+    					else{
+    						$('#aVoteUp' + answer).removeClass('btn-success');
+    						$('#aVoteDown' + answer).addClass('btn-danger');
+    					}
+    					$('#aVoteCount' + answer).hide();
+    					$('#aVoteCount' + answer).html('&nbsp;&nbsp;' + data);
+    					$('#aVoteCount' + answer).fadeIn('slow');
+            },
+
+    error : function failure(data, status) {
+                alert('Error saving data, pls try again!');
+            }
+  });
+});
+
+$('.aVoteDown').bind('click', function(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	var btn = $(this);
+	{% if not_authenticated %}
+		alert('You have to login to vote this answer!!');
+		return false;
+	{% endif %}
+	var answer = $(btn).attr('value');
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/answer/vote/',
+    cache : false,
+    data: 'answer=' + answer + '&vote=down',
+    success : function success(data, status) {
+    					if(data > 0) {
+    							$('#aVoteUp' + answer).addClass('btn-success');
+    							$('#aVoteDown' + answer).removeClass('btn-danger');
+    					}	
+    					else if(data == 0){
+    						$('#aVoteUp' + answer).removeClass('btn-success');
+    						$('#aVoteDown' + answer).removeClass('btn-danger');
+    					}
+    					else{
+    						$('#aVoteUp' + answer).removeClass('btn-success');
+    						$('#aVoteDown' + answer).addClass('btn-danger');
+    					}
+    					$('#aVoteCount' + answer).hide();
+    					$('#aVoteCount' + answer).html('&nbsp;&nbsp;' + data);
+    					$('#aVoteCount' + answer).fadeIn('slow');
+            },
+
+    error : function failure(data, status) {
+                alert('Error saving data, pls try again!');
+            }
+  });
+});
+
+{% if moderator %}
+
+$('.answerRow').hover(function(){
+	if ($(this).find('.correctAnswer').is(':hidden')) {
+     	$(this).find('.correctAnswer').delay(3000).show();
+  } 
+  else {
+		$(this).find('.correctAnswer').delay(3000).hide();
+  }
+});
+
+$('.correctAnswer').bind('click', function(e) {
+	e.preventDefault();
+	var btn = $(this);
+	btn.addClass('disabled');
+	var answer = $(this).attr('answer');
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/approve/answer/',
+    cache : false,
+    data: 'answer=' + answer,
+    success : function success(data, status) {
+    					if (data === 'ok') {
+	    					$.pnotify({
+						        title: 'Success!',
+						        text: 'This answer is accepted as correct answer!!!',
+						        type: 'success' 
+						      });
+	    					window.location.reload();
+	    				}
+	    				else{
+	    					alert('Sorry you have no permissions assigned.');
+	    					return false;
+	    				}
+            },
+
+    error : function failure(data, status) {
+                alert('An error occured, pls try again!');
+            }
+  });
+});
+
+$('.qClose').bind('click', function(e) {
+	var question = $(this).attr('question');
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/close/',
+    cache : false,
+    data: 'question=' + question,
+    success : function success(data, status) {
+    					if (data === 'ok'){
+	    					$.pnotify({
+						        title: 'Success!',
+						        text: 'This question is closed!!!',
+						        type: 'success' 
+						      });
+	    					$('#editor').hide('slow');
+	    					$('#answers').hide('slow');
+	    					window.location.reload();	
+	    				}
+	    				else{
+	    					alert('Sorry you have no permissions assigned.');
+	    					return false;
+	    				}
+            },
+
+    error : function failure(data, status) {
+                alert('An error occured, pls try again!');
+            }
+  });
+});
+
+$('.qOpen').bind('click', function(e) {
+	var question = $(this).attr('question');
+	$.ajax({
+    type  : 'POST',
+    url   : '/question/reopen/',
+    cache : false,
+    data: 'question=' + question,
+    success : function success(data, status) {
+    					if (data === 'ok'){
+	    					$.pnotify({
+						        title: 'Success!',
+						        text: 'This question is reopened!!!',
+						        type: 'success' 
+						      });
+	    					window.location.reload();	
+	    				}
+	    				else{
+	    					alert('Sorry you have no permissions assigned.');
+	    					return false;
+	    				}
+            },
+
+    error : function failure(data, status) {
+                alert('An error occured, pls try again!');
+            }
+  });
+});
+
+{% endif %}
+ 
+</script>
+{% endblock %}

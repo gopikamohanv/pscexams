@@ -13,7 +13,6 @@ urlpatterns = patterns('',
 		(r'^add/subtopic/$', pscexams.admin.views.admin_add_sub_topic),
 		(r'^upload/modelexam/question/$', pscexams.admin.views.admin_upload_modelexamquestion),
 		(r'^upload/previousyear/question/$', pscexams.admin.views.admin_upload_previousyearquestion),
-<<<<<<< HEAD
 		(r'^forum/questions/$', pscexams.admin.views.questions),
 		(r'^forum/answers/$', pscexams.admin.views.answers),
 		(r'^forum/comments/$', pscexams.admin.views.comments),
@@ -24,7 +23,5 @@ urlpatterns = patterns('',
 		(r'^approve/comment/$', pscexams.admin.views.approve_comment),
 		(r'^delete/comment/$', pscexams.admin.views.delete_comment),
 		(r'^send_message/$', pscexams.admin.views.send_message),
-=======
 		(r'^user/details/(?P<pk>\w+)/$', pscexams.admin.views.user_details), 
->>>>>>> 4821c6816056151fa244df879d859ec52bf4e988
 )

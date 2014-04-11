@@ -5,6 +5,7 @@ from pscexams.tutor.views import *
 from django.contrib import admin
 from django.conf import settings
 admin.autodiscover()
+import forum.views
 
 urlpatterns = patterns('',
     # Example:
@@ -67,6 +68,22 @@ urlpatterns = patterns('',
     url(r'^siteadmin/', include('pscexams.admin.urls')),
     url(r'^tutor/', include('pscexams.tutor.urls')),
     url(r'^student/', include('pscexams.modelexam.urls')),
+
+    #forum Urls
+    url(r'^user/$', forum.views.user, name='user'),
+    url(r'^user/delete/question/$', forum.views.user_delete_question, name='user-delete-question'),
+    url(r'^user/delete/answer/$', forum.views.user_delete_answer, name='user-delete-answer'),
+    url(r'^user/delete/comment/$', forum.views.user_delete_comment, name='user-delete-comment'),
+    url(r'^user/edit/question/(?P<pk>\w+)/$', forum.views.user_edit_question, name='user-edit-question'),
+    url(r'^user/edit/answer/$', forum.views.user_edit_answer, name='user-edit-answer'),
+    url(r'^user/edit/comment/$', forum.views.user_edit_comment, name='user-edit-comment'),
+    url(r'^users/$', forum.views.users, name='users'),
+    url(r'^userdetails/(?P<pk>\w+)/$', forum.views.userdetails, name="user-details"),
+    url(r'^getAnswer/$', forum.views.get_answer, name='get-answer'),
+    url(r'^loadmore/users/$', forum.views.loadmore_users, name='loadmore-users'),
+    url(r'^forum/$', forum.views.index, name='forum'),
+    url(r'^getTags/$', forum.views.get_tags, name='get-tags'),
+    url(r'^question/', include('pscexams.forum.urls', namespace='question')),
 
 
 )

@@ -1,0 +1,16 @@
+{% load utils %}
+{% for user in users %}
+	<div class="userlist" points="{{user.getPoints}}" dateJoined="{{user|getTimeInSec}}">
+		<div class="col-md-3" style="padding:10px 10px 10px 10px;">
+			<div class="col-md-5">
+				<img src="{{user.profile.profile_pic|default:'/static/images/user.png'}}" alt="" height="50" width="50" class="profile">
+			</div>
+			<div clas="col-md-6">
+				<strong><a href="/userdetails/{{user.pk}}/">{{user.first_name|default:user.username}}</a></strong><br>
+				<small>Q : {{user.question_set.all.count}}</small> <br>
+				<small>A : {{user.answer_set.all.count}}</small><br>
+				<small>Points : {{user.getPoints}}</small>
+			</div>
+		</div>
+	</div>
+{% endfor %}

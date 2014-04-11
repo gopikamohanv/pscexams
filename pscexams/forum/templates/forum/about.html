@@ -1,0 +1,107 @@
+<!doctype html>
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>About | SIQA</title>
+	<link rel="shortcut icon" href="/static/img/fav_200.png" />
+	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
+    <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<style>
+		.break {
+			padding-top:20px;
+			padding-bottom: 20px;
+		}
+		.profile {
+		min-width: 80px!important;
+		min-height: 80px!important;
+		max-width: 80px;
+		border-radius: 40px;
+		}
+	</style>
+</head>
+<body>
+
+<div class="container">
+		<div class="row">
+			<br>
+			<div class="col-md-12">
+				<div class="row">
+					<a href="/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="smartindia question answer forum"></a>
+					<div class="pull-right">
+						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
+							<a href="/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/about/">About</a> |
+							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
+						{% if not_authenticated %}
+							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
+						{% else %}
+							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
+						{% endif %}
+					</div>
+				</div><br>
+				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="600px" height="50px;" style="margin-left:160px;">
+			  	<param name="movie" value="{% for a in ad %}{{a.ad_url}}{% endfor %}" />
+			  	<param name="quality" value="high" />
+			  	<param name="wmode" value="transparent">
+			  	<PARAM NAME="SCALE" VALUE="exactfit">
+			  	<embed src="{% for a in ad %}{{a.ad_url}}{% endfor %}"
+			  		quality="high"
+			  		type="application/x-shockwave-flash"
+			  		WMODE="transparent"
+			  		width="600px"
+			  		height="50px"
+			  		SCALE="exactfit" 
+			  		pluginspage="http://www.macromedia.com/go/getflashplayer" />
+				</object>
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-10">
+					<h2>About</h2><hr>
+					<p class="lead">In <strong>SIQA</strong> you can ask and answer questions, comment and vote for the questions of others and their answers. Questions can be tagged with the relevant keywords. Our site is moderated by our members.</p> 
+					<p class="lead">Users can earn points based on their questions and answers, and votes they gather. These points are added to the users account. No points are necessary to ask or answer the questions, so please join us!</p>
+
+					<h4>Points Calculation</h4>
+					<ul>
+						<li>For each approved question and answer by our moderator you earn 5 points respectively.</li>
+						<li>For accepted answers you earn 10 points.</li>
+						<li>Total points will be the sum of above 2 and total votes you gather in your questions and answers.</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="footer">
+			<hr>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li ><a href="/" style="color:white;">Home</a></li>
+                  <li><a href="/about/" style="color:white;">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in" style="color:white;">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/" style="color:white;">Kerala PSC</a></li>
+                  <li><a href="#" style="color:white;">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
+	</div>
+	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'tags/bootstrap.min.js' %}"></script>
+	<script>
+	$('.tool').tooltip();
+	</script>	
+	
+</body>
+</html>

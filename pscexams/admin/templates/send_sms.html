@@ -1,0 +1,19 @@
+{% include "admin_header.html" %}
+<div class="row">
+	<div class="col-lg-8">
+	  <div class="well">
+	  	{% if message_error %}
+	  	<div class="alert alert-danger">Message is required.</div>
+	  	{% endif %}
+	  	{% if success %}
+	  	<div class="alert alert-success">Message sent successfully.</div>
+	  	{% endif %}
+			<form action="/siteadmin/send_message/" method="POST">{% csrf_token %}
+				<label for="">Enter message</label>
+				<textarea name="message" cols="30" rows="10"></textarea><br><br>
+				<input type="submit" value="Send SMS">
+			</form>
+		</div>
+	</div>
+</div>	
+{% include "admin_footer.html" %}

@@ -1,0 +1,328 @@
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<!doctype html>
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{user}} | SIQA</title>
+	<link rel="shortcut icon" href="/static/img/fav_200.png" />
+	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
+    <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
+	<link rel="stylesheet" href="{% static 'forum/css/bootstrap.css' %}">
+	<style>
+		.break {
+			padding-top:20px;
+			padding-bottom: 20px;
+		}
+		.navbar-nav li a{
+			color:white;
+		}
+		.navbar-nav li a:hover{
+			color:black;
+		}
+	</style>
+	{% block custom_css %}{% endblock %}
+</head>
+<body>
+<form action="/user/edit/answer/" method="POST">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">{% csrf_token %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Edit Answer</h4>
+        <input type="hidden" name="answer_id" id="answer_id">
+      </div>
+      <div class="modal-body">
+      	{% if error %}
+      	<div class="alert alert-danger">Answer can't be empty</div>
+      	{% endif %}
+        <textarea  name="answer" id="answer"></textarea><br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</form>
+
+	<div class="container">
+		<div class="row">
+			<br>
+			<div class="col-md-12">
+				<div class="row">
+					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'images/04.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
+						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
+							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
+						{% if not_authenticated %}
+							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
+						{% else %}
+							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
+						{% endif %}
+						<br><br>
+						<img src="/static/images/logo.png" alt="">
+					</div>
+				</div><br>
+				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="600px" height="50px;" style="margin-left:160px;">
+			  	<param name="movie" value="{% for a in ad %}{{a.ad_url}}{% endfor %}" />
+			  	<param name="quality" value="high" />
+			  	<param name="wmode" value="transparent">
+			  	<PARAM NAME="SCALE" VALUE="exactfit">
+			  	<embed src="{% for a in ad %}{{a.ad_url}}{% endfor %}"
+			  		quality="high"
+			  		type="application/x-shockwave-flash"
+			  		WMODE="transparent"
+			  		width="600px"
+			  		height="50px"
+			  		SCALE="exactfit" 
+			  		pluginspage="http://www.macromedia.com/go/getflashplayer" />
+				</object>
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 break">
+					<ul id="myTab" class="nav nav-tabs">
+			      <li id="myquestions"><a href="#questions" data-toggle="tab">My Questions</a></li>
+			      <li id="myanswers"><a href="#answers" data-toggle="tab">My Answers</a></li>
+			      <li id="mycomments"><a href="#comments" data-toggle="tab">My Comments</a></li>
+			    </ul>
+			    <div id="myTabContent" class="tab-content">
+			      <div class="tab-pane fade in active" id="questions">
+			      	<br>
+			      	<table class="table table-bordered table-hover">
+			      	{% autoescape off %}
+			        	{% for question in user.question_set.all %}
+			        		<tr class="question">
+			        			<td><a href="/question/view/{{question.pk}}/{{question.slug}}/">{{question.title}}</a></td>
+			        			<td><a href="/user/edit/question/{{question.pk}}/" class="btn btn-xs btn-primary">edit</a></td>
+			        			<td><button question="{{question.pk}}" class="btn btn-xs btn-danger qdelete">delete</button></td>
+			        		</tr>
+			        	{% empty %}
+			        		<div class="alert alert-info">
+			        			No questions added by you.
+			        		</div>
+			        	{% endfor %}
+			        {% endautoescape %}
+			        </table>
+			      </div>
+			      <div class="tab-pane fade" id="answers">
+			        <br>
+			      	<table class="table table-bordered table-hover">
+			      	{% autoescape off %}
+			        	{% for answer in user.answer_set.all %}
+			        		<tr class="answer">
+			        			<td>{{answer.answer}}</td>
+			        			<td><a class="btn btn-xs btn-primary editAnswer" answerpk="{{answer.pk}}">edit</a></td>
+			        			<td><button answer="{{answer.pk}}" class="btn btn-xs btn-danger adelete">delete</button></td>
+			        		</tr>
+			        	{% empty %}
+			        		<div class="alert alert-info">
+			        			No answers added by you.
+			        		</div>
+			        	{% endfor %}
+			        {% endautoescape %}
+			        </table>
+			      </div>
+			      <div class="tab-pane fade" id="comments">
+			        <br>
+			      	<table class="table table-bordered table-hover">
+			      	{% autoescape off %}
+			        	{% for comment in user.comment_set.all %}
+			        		<tr class="comment">
+			        			<td id="{{comment.pk}}">{{comment.comment}}</td>
+			        			<td><a class="btn btn-xs btn-primary editComment" comment="{{comment.pk}}">edit</a></td>
+			        			<td><button comment="{{comment.pk}}" class="btn btn-xs btn-danger cdelete">delete</button></td>
+			        		</tr>
+			        	{% empty %}
+			        		<div class="alert alert-info">
+			        			No comments added by you.
+			        		</div>
+			        	{% endfor %}
+			        {% endautoescape %}
+			        </table>
+			      </div>
+			    </div>
+				</div>
+			</div>
+
+			<div class="footer">
+			<hr>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
+    </div>
+	</div>
+	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'tags/bootstrap.min.js' %}"></script>
+	<script>
+	$('.tool').tooltip();
+	</script>
+	<script>
+		jQuery(document).ready(function($) {
+			$('#myquestions a').tab('show');
+			{% if profile_pic %}
+			$('#mysettings a').tab('show');
+			{% endif %}
+			{% if answer %}
+			$('#myanswers a').tab('show');
+			{% endif %}
+		});
+
+		$('.qdelete').click(function(e) {
+			e.preventDefault();
+			var btn = $(this);
+			$.ajax({
+		    type  : 'GET',
+		    url   : '/user/delete/question/',
+		    cache : false,
+		    data  : 'question=' + btn.attr('question'),
+		    success : function(data,textStatus)
+		    {
+		     	 btn.parents('.question').fadeOut('slow');
+		    },
+		    error : function(data,textStatus){alert("An error occured, pls try again.");}
+		  }); 
+		});
+
+		$('.adelete').click(function(e) {
+			e.preventDefault();
+			var btn = $(this);
+			$.ajax({
+		    type  : 'GET',
+		    url   : '/user/delete/answer/',
+		    cache : false,
+		    data  : 'answer=' + btn.attr('answer'),
+		    success : function(data,textStatus)
+		    {
+		     	 btn.parents('.answer').fadeOut('slow');
+		    },
+		    error : function(data,textStatus){alert("An error occured, pls try again.");}
+		  }); 
+		});
+
+		$('.cdelete').click(function(e) {
+			e.preventDefault();
+			var btn = $(this);
+			$.ajax({
+		    type  : 'GET',
+		    url   : '/user/delete/comment/',
+		    cache : false,
+		    data  : 'comment=' + btn.attr('comment'),
+		    success : function(data,textStatus)
+		    {
+		     	 btn.parents('.comment').fadeOut('slow');
+		    },
+		    error : function(data,textStatus){alert("An error occured, pls try again.");}
+		  }); 
+		});
+	</script>
+	
+	<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+	<script>
+	tinymce.init({
+	    selector: "#answer",
+	    plugins: [
+	        "advlist autolink lists link image charmap print preview anchor",
+	        "searchreplace visualblocks code fullscreen",
+	        "insertdatetime media table contextmenu paste"
+	    ],
+	    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+	});
+	$(document).on('focusin', function(e) {
+	    if ($(e.target).closest(".mce-window").length) {
+	        e.stopImmediatePropagation();
+	    }
+	});
+
+	$('.editAnswer').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		$('#answer_id').val(btn.attr('answerpk'));
+		$.ajax({
+			url: '/getAnswer/',
+			type: 'GET',
+			data: {answer: btn.attr('answerpk')},
+		})
+		.done(function(data) {
+			$('#myModal').modal('show');
+			tinyMCE.get('answer').setContent(data)
+		})
+		.fail(function() {
+			alert('An error occured please try again!!');
+		})
+	});
+
+	{% if error %}
+	$('#myModal').modal('show');
+	$('#answer_id').val('{{answer_id}}');
+	{% endif %}
+	</script>
+
+	<script>
+	$('.editComment').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		var comment = btn.attr('comment');
+		if(btn.html() == 'save'){
+			var comment_data = $('#'+comment).html();
+			if (comment_data === ''){
+				alert('Comment cannot be empty!');
+				$('#'+comment).focus();
+				return;
+			}
+			$.ajax({
+				url: '/user/edit/comment/',
+				type: 'POST',
+				data: {comment_id : comment, comment : comment_data},
+			})
+			.done(function() {
+				$('#'+comment).removeAttr('contenteditable');
+				btn.html('edit');
+				btn.removeClass();
+				btn.addClass('btn btn-xs btn-primary');
+			})
+			.fail(function() {
+				alert('An error occured, please try again.');
+				$('#'+comment).removeAttr('contenteditable');
+				btn.html('edit');
+				btn.removeClass();
+				btn.addClass('btn btn-xs btn-primary');
+			})
+		}
+		else{
+			$('#'+comment).attr('contenteditable','true');
+			$('#'+comment).focus();
+			btn.html('save');
+			btn.removeClass();
+			btn.addClass('btn btn-xs btn-success');
+		}
+	});
+	</script>
+	
+</body>
+</html>

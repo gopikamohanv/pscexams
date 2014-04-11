@@ -1,0 +1,67 @@
+{% include "admin_header.html" %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+	<div class="row">
+		<div class="col-md-10">
+			<h1>Answers</h1>
+			<small class="pull-right">Total:{{answers.count}}</small>
+			<hr>
+			<table class="table table-bordered">
+				{% autoescape off %}
+					{% for answer in answers %}
+						<tr class="answer">
+							<td>
+								{{answer.answer}}
+								<br><br>
+								<small class="pull-right">{{answer.answered_on}}</small>
+							</td>
+							<td>{{answer.answered_by}}</td>
+							<td>
+								<button class="btn btn-info btn-xs approve" answer="{{answer.pk}}">approve</button>
+							</td>
+							<td>
+								<button class="btn btn-danger btn-xs delete" answer="{{answer.pk}}">delete</button>
+							</td>
+						</tr>
+					{% empty %}
+					<div class="alert alert-info">No answers to approve</div>
+					{% endfor %}
+				{% endautoescape %}
+			</table>
+		</div>
+	</div>
+
+<script>
+	$('.approve').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		$.ajax({
+	    type  : 'GET',
+	    url   : '/siteadmin/approve/answer/',
+	    cache : false,
+	    data  : 'answer=' + btn.attr('answer'),
+	    success : function(data,textStatus)
+	    {
+	     	 btn.parents('.answer').fadeOut('slow');
+	    },
+	    error : function(data,textStatus){alert("An error occured, pls try again.");}
+	  }); 
+	});
+
+	$('.delete').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		$.ajax({
+	    type  : 'GET',
+	    url   : '/siteadmin/delete/answer/',
+	    cache : false,
+	    data  : 'answer=' + btn.attr('answer'),
+	    success : function(data,textStatus)
+	    {
+	     	 btn.parents('.answer').fadeOut('slow');
+	    },
+	    error : function(data,textStatus){alert("An error occured, pls try again.");}
+	  }); 
+	});
+</script>
+{% include "admin_footer.html" %}

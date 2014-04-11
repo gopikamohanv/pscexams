@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'pscexams.tutor',
     'pscexams.publisher',
     'pscexams.modelexam',
-    
+    'pscexams.forum',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,8 +98,8 @@ TIME_ZONE = 'Asia/Kolkata'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'vishnu@smartindia.net.in'
-EMAIL_HOST_PASSWORD = 'vishnu@vishnu'
+EMAIL_HOST_USER = 'info@pscexams.com'
+EMAIL_HOST_PASSWORD = 'pscexams@833_'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'vishnu@smartindia.net.in'
+DEFAULT_FROM_EMAIL = 'info@pscexams.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

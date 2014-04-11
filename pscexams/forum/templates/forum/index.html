@@ -1,0 +1,184 @@
+{% extends 'forum/base.html' %}
+{% block title %}{% if status %}{{status}}{% else %}Home{% endif %}{% endblock %}
+{% block custom_css %}
+	<style>
+		.nav-pills li a:hover{
+			color:black;
+		}
+		#sort a:hover{
+			background: #5bc0de;
+			color:white;
+		}
+		#questionTable td {
+			padding:20px 20px 20px 20px;
+		}
+		.question {
+		}
+		.views {
+			width:63px;
+			height:63px;
+			font-size: .75em;
+			text-align: center;
+		}
+		.icon a{
+			width:40px;
+			height:40px;
+			line-height: 30px;
+		}
+		.white, .white a {
+  		color: #fff;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12 break">
+		<table class="table table-bordered">
+			<tr>
+				<td class="col-md-12">
+					<div class="col-md-1">
+						 <h4>Status</h4>
+					</div>
+					<div class="col-md-9">
+						<ul class="nav nav-pills">
+						  <li class="col-md-2 col-xs-12"><a href="/forum/?page=1" class="btn-info text-center">All</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/unanswered/?page=1" class="btn-warning text-center">Unanswered</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/answered/?page=1" class="btn-primary text-center">Answered</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/resolved/?page=1" class="btn-success text-center">Resolved</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/closed/?page=1" class="btn-danger text-center">Closed</a></li>
+						</ul>
+					</div>
+					<div class="clearfix visible-xs"><br></div>
+					<div class="col-md-2">
+						<a href="{% url 'question:ask-question' %}" class="btn btn-lg btn-success btn-block">Ask Question</a>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td id="sort" class="col-md-12">
+					<div class="col-md-9">
+						<h4>{{status}} <strong class="badge">{{count}}</strong></h4>
+					</div>
+					<div class="col-md-3">
+						<a class="btn btn-default btn-sm col-md-3 col-xs-12 {% if oldest %}btn-info{% endif  %}" href="/forum/?sort_by=oldest&page=1">oldest</a>
+						<a class="btn btn-default btn-sm col-md-3 col-xs-12 {% if latest %}btn-info{% endif  %}" href="/forum/?sort_by=latest&page=1">latest</a>
+						<a class="btn btn-default btn-sm col-md-3 col-xs-12 {% if most_viewed %}btn-info{% endif  %}" href="/forum/?sort_by=most_viewed&page=1">viewed</a>
+						<a class="btn btn-default btn-sm col-md-3 col-xs-12 {% if most_voted %}btn-info{% endif  %}" href="/forum/?sort_by=most_voted&page=1">voted</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+		{% if questions %}
+		<div class="pull-right">
+			<ul class="pagination pagination-sm">
+				<li><a>Page</a></li>
+			  {% if questions.has_previous %}
+			      <li><a href="{{url}}page={{questions.previous_page_number}}">&laquo;</a></li>
+			  {% endif %}
+			  {% for num in questions.paginator.page_range %}
+			    {% if num < questions.number|add:4 and num > questions.number|add:-4 and num != questions.number %}
+			      <li><a href="{{url}}page={{num}}"> {{ num }}</a></li>
+			    {% elif num == questions.number %}
+			      <li class="active"><a href="{{url}}page={{num}}">{{ num }}</a></li>
+			    {% endif %} 
+			  {% endfor %}
+			  {% if questions.has_next %}
+			      <li><a href="{{url}}page={{questions.next_page_number}}">&raquo;</a></li>
+			  {% endif %}
+		  </ul>
+	  </div>
+	  {% endif %}
+		<table class="table table-bordered table-hover" id="questionTable">
+			{% for question in questions %}
+			<tr>
+				<td>
+					<div class="col-md-1 icon text-center">
+						{% if question.getanswerscount >  0 %}
+							{% if question.accepted %}
+								<a class="btn btn-success tool" title="Resolved">
+									<i class="glyphicon glyphicon-ok white"></i>
+								</a>
+							{% else %}
+								{% if question.closed %}
+									<a class="btn btn-danger tool" title="Closed">
+										<i class="glyphicon glyphicon-warning-sign white"></i>
+									</a>
+								{% else %}
+									<a class="btn btn-primary tool" title="Answered">
+										<i class="glyphicon glyphicon-check white"></i>
+									</a>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+						{% if question.getanswerscount == 0 %}
+								{% if question.closed %}
+									<a class="btn btn-danger tool" title="Closed">
+										<i class="glyphicon glyphicon-remove-sign white"></i>
+									</a>
+								{% else %}
+									<a class="btn btn-warning tool" title="Unanswered">
+										<i class="glyphicon glyphicon-minus-sign white"></i>
+									</a>
+								{% endif %}
+						{% endif %}
+					</div>
+					<div class="clearfix visible-xs"><br></div>
+					<div class="col-md-8 question">
+						<h4><a href="/question/view/{{question.pk}}/{{question.slug}}/">{{question.title}}</a></h4>
+						<small class="col-md-8 text-muted">by {{question.created_by.first_name|default:question.created_by}}  {{question.created_on|timesince}} ago</small>
+					</div>
+					<div class="clearfix visible-xs"><br></div>
+					<div class="col-md-1">
+						<button class="btn btn-default views" disabled>{{question.questionview_set.count}} <br>views</button>
+					</div>
+					<div class="col-md-1">
+						<button class="btn btn-default views" disabled>{{question.getanswerscount}} <br>answers</button>
+					</div>
+					<div class="col-md-1">
+						<button class="btn btn-default views" disabled>{{question.getvotescount}} <br>votes</button>
+					</div>
+				</td>
+			</tr>	
+			{% empty %}
+			<tr>
+				<td>
+					<div class="alert alert-info">Sorry! No questions there.</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<form action="" id="questionSubmit" method="GET">
+		</form>
+		{% if questions %}
+		<div class="pull-right">
+			<ul class="pagination pagination-sm">
+				<li><a>Page</a></li>
+			  {% if questions.has_previous %}
+			      <li><a href="{{url}}page={{questions.previous_page_number}}">&laquo;</a></li>
+			  {% endif %}
+			  {% for num in questions.paginator.page_range %}
+			    {% if num < questions.number|add:4 and num > questions.number|add:-4 and num != questions.number %}
+			      <li><a href="{{url}}page={{num}}"> {{ num }}</a></li>
+			    {% elif num == questions.number %}
+			      <li class="active"><a href="{{url}}page={{num}}">{{ num }}</a></li>
+			    {% endif %} 
+			  {% endfor %}
+			  {% if questions.has_next %}
+			      <li><a href="{{url}}page={{questions.next_page_number}}">&raquo;</a></li>
+			  {% endif %}
+		  </ul>
+	  </div>
+	  {% endif %}
+	</div>
+</div>
+
+{% endblock %}
+
+{% block custom_js %}
+{% endblock %}

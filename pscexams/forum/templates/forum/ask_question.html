@@ -1,0 +1,174 @@
+{% extends 'forum/base.html' %}
+{% block title %}Ask a Question{% endblock %}
+{% load static from staticfiles %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'tags/bootstrap-tagsinput.css' %}">
+	<style>
+		.nav-pills li a:hover{
+			color:black;
+		}
+		#sort a:hover{
+			background: #5bc0de;
+			color:white;
+		}
+		#questionTable td {
+			padding:20px 20px 20px 20px;
+		}
+		.question {
+		}
+		.views {
+			width:63px;
+			height:63px;
+			font-size: .75em;
+			text-align: center;
+		}
+		.icon a{
+			width:40px;
+			height:40px;
+			line-height: 30px;
+		}
+		.white, .white a {
+  		color: #fff;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-12 break">
+		<table class="table table-bordered">
+			<tr>
+				<td class="col-md-12">
+					<div class="col-md-1">
+						 <h4>Status</h4>
+					</div>
+					<div class="col-md-9">
+						<ul class="nav nav-pills">
+						  <li class="col-md-2 col-xs-12"><a href="/forum/" class="btn-info text-center">All</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/unanswered/" class="btn-warning text-center">Unanswered</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/answered/" class="btn-primary text-center">Answered</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/resolved/" class="btn-success text-center">Resolved</a></li>
+						  <div class="clearfix visible-xs"></div>
+						  <li class="col-md-2 col-xs-12"><a href="/question/closed/" class="btn-danger text-center">Closed</a></li>
+						</ul>
+					</div>
+					<div class="clearfix visible-xs"><br></div>
+					<div class="col-md-2">
+						<a href="{% url 'question:ask-question' %}" class="btn btn-lg btn-success btn-block">Ask Question</a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="alert alert-info col-md-9">
+			<strong>Info : </strong> Please give suitable title and tags for questions you asking, so that others can easily search your question.
+			<ul>
+				<li>Title should not be more than 50 words.</li>
+				<li>Tags should be a one word.</li>
+				<li>Please click enter button after typing tag word and you can add multiple tags for a question.</li>
+				<li>Please search for the question before you ask to avoid repetition.</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="col-md-12">
+		<form method="POST" action="{% url 'question:ask-question' %}">{%csrf_token%}
+			<div class="col-md-9">
+				
+				{% if form_error %}
+					<div class="alert alert-danger">
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+						<strong>Please correct the following errors.</strong>
+						<ul>
+						{% if title_error %}
+							<li>Title is required.</li>
+						{% endif %}
+						
+						{% if description_error %}
+							<li>Description is required</li>
+						{% endif %}
+						</ul>	
+					</div>
+				{% endif %}
+
+				{% if success %}
+					<div class="alert alert-success">
+						<strong>Your question will be posted after verification by our moderators.</strong>
+						<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+					</div>
+				{% endif %}
+
+				<label for="">Title</label><br>
+				<input type="text" name="title" id="title" value="{{title}}" class="col-md-12"><br><br>
+
+    		<label for="">Enter Question</label>
+    		<textarea name="description" style="width:100%">{{description}}</textarea>
+    		<br>
+    		{% if not_authenticated %}
+    			<button id="loginBtn" class="btn btn-primary btn-lg">Login/SignUp to Post</button>
+    		{% else %}
+    			<button type="submit" class="btn btn-success btn-lg">Submit</button>	
+    		{% endif %}
+			</div>
+			<div class="clearfix visible-sm visible-xs"><br><br></div>
+			<div class="col-md-3">
+				<label>Tags</label>
+				<input type="text" name="tags" data-role="tagsinput" placeholder="Add tags and click enter" class="tag">
+			</div>
+		</form>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+<script src="/static/js/bower_components/angular/angular.min.js"></script>
+<script src="/static/js/bower_components/google-code-prettify-lite/prettify.js"></script>
+<script src="/static/tags/bootstrap-tagsinput.js"></script>
+<script src="/static/tags/bootstrap-tagsinput-angular.js"></script>
+<script src="/static/tags/app_bs2.js"></script>
+<script src="/static/tags/app.js"></script>
+<script type="text/javascript">
+tinymce.init({
+    selector: "textarea",
+    plugins: [
+        "advlist autolink lists link image charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+});
+</script>
+<script>
+$('#loginBtn').bind('click', function(e) {
+		e.preventDefault();
+		window.location = '/';
+});
+$('.tag').tagsinput({
+  typeahead: {
+    source: function(query) {
+      return $.getJSON('/getTags/');
+    }
+  }
+});
+$('#title').keydown(function(e) {
+	if($('#title').val().length > 49){
+		if(e.keyCode == 8 || e.keyCode == 46){
+			return;
+		}
+		else{
+			alert('Only 50 characters allowed!!');
+			e.preventDefault(); 
+		}
+	}
+});
+</script>
+{% endblock %}

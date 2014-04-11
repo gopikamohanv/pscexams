@@ -1,0 +1,250 @@
+<!doctype html>
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Users | SIQA</title>
+	<link rel="shortcut icon" href="/static/img/fav_200.png" />
+	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
+    <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
+	<link rel="stylesheet" href="{% static 'forum/css/bootstrap.css' %}">
+	<style>
+		.break {
+			padding-top:20px;
+			padding-bottom: 20px;
+		}
+		.profile {
+		min-width: 80px!important;
+		min-height: 80px!important;
+		max-width: 80px;
+		border-radius: 40px;
+		}
+		.nav-pills li a:hover{
+			color:black;
+		}
+		#sort a:hover{
+			background: #5bc0de;
+			color:white;
+		}
+		#questionTable td {
+			padding:20px 20px 20px 20px;
+		}
+		.question {
+		}
+		.views {
+			width:63px;
+			height:63px;
+			font-size: .75em;
+			text-align: center;
+		}
+		.icon a{
+			width:40px;
+			height:40px;
+			line-height: 30px;
+		}
+		.white, .white a {
+  		color: #fff;
+		}
+		.nav li a{
+			color:white;
+		}
+		.nav li a:hover{
+			color:black;
+		}
+	</style>
+</head>
+<body>
+
+<div class="container">
+		<div class="row">
+			<br>
+			<div class="col-md-12">
+				<div class="row">
+					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'images/04.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
+						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
+							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
+						{% if not_authenticated %}
+							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
+						{% else %}
+							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
+						{% endif %}
+						<br><br>
+						<img src="/static/images/logo.png" alt="">
+					</div>
+				</div><br>
+				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="600px" height="50px;" style="margin-left:160px;">
+			  	<param name="movie" value="{% for a in ad %}{{a.ad_url}}{% endfor %}" />
+			  	<param name="quality" value="high" />
+			  	<param name="wmode" value="transparent">
+			  	<PARAM NAME="SCALE" VALUE="exactfit">
+			  	<embed src="{% for a in ad %}{{a.ad_url}}{% endfor %}"
+			  		quality="high"
+			  		type="application/x-shockwave-flash"
+			  		WMODE="transparent"
+			  		width="600px"
+			  		height="50px"
+			  		SCALE="exactfit" 
+			  		pluginspage="http://www.macromedia.com/go/getflashplayer" />
+				</object>
+			</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 break">
+					<h2>{{userdetails.first_name}} <small>({{userdetails.getPoints}} points)</small></h2><hr>
+					<div class="row">
+						<div class="col-md-3">
+							<img src="{{user.profile.profile_pic|default:'/static/images/user.png'}}" alt="" height="150" width="150">
+						</div>
+						<div class="col-md-6">
+							<table class="table table-bordered">
+								<tr>
+									<td colspan="2">Points Table</td>
+								</tr>
+								<tr>
+									<th>Questions</th>
+									<td>
+										<span class="badge">{{userdetails.getQuestionsPoints}}</span>
+									</td>
+								</tr>
+								<tr>
+									<th>Answers</th>
+									<td>
+										<span class="badge">{{userdetails.getAnswersPoints}}</span>
+									</td>
+								</tr>
+								<tr>
+									<th>Accepted Answers</th>
+									<td>
+										<span class="badge">{{userdetails.getAcceptedAnswersPoints}}</span>
+									</td>
+								</tr>
+								<tr>
+									<th>Votes</th>
+									<th>
+										<span class="badge">{{userdetails.getVotes}}</span>
+									</th>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+					<br><br>
+					<div class="col-md-10">
+						<h3>Recent Questions <span class="badge">{{userdetails.getApprovedQuestions}}</span></h3>
+						{% autoescape off %}
+						<table class="table table-bordered table-hover" id="questionTable">
+								{% for question in questions %}
+								<tr>
+									<td>
+										<div class="col-md-1 icon text-center">
+											{% if question.getanswerscount >  0 %}
+												{% if question.accepted %}
+													<a class="btn btn-success tool" title="Resolved">
+														<i class="glyphicon glyphicon-ok white"></i>
+													</a>
+												{% else %}
+													{% if question.closed %}
+														<a class="btn btn-danger tool" title="Closed">
+															<i class="glyphicon glyphicon-warning-sign white"></i>
+														</a>
+													{% else %}
+														<a class="btn btn-primary tool" title="Answered">
+															<i class="glyphicon glyphicon-check white"></i>
+														</a>
+													{% endif %}
+												{% endif %}
+											{% endif %}
+											{% if question.getanswerscount == 0 %}
+													{% if question.closed %}
+														<a class="btn btn-danger tool" title="Closed">
+															<i class="glyphicon glyphicon-remove-sign white"></i>
+														</a>
+													{% else %}
+														<a class="btn btn-warning tool" title="Unanswered">
+															<i class="glyphicon glyphicon-minus-sign white"></i>
+														</a>
+													{% endif %}
+											{% endif %}
+										</div>
+										<div class="clearfix visible-xs"><br></div>
+										<div class="col-md-8 question">
+											<h4><a href="/question/view/{{question.pk}}/{{question.slug}}/">{{question.title}}</a></h4>
+										</div>
+										<div class="clearfix visible-xs"><br></div>
+										<div class="col-md-1">
+											<button class="btn btn-default views" disabled>{{question.questionview_set.count}} <br>views</button>
+										</div>
+										<div class="col-md-1">
+											<button class="btn btn-default views" disabled>{{question.getanswerscount}} <br>answers</button>
+										</div>
+										<div class="col-md-1">
+											<button class="btn btn-default views" disabled>{{question.getvotescount}} <br>votes</button>
+										</div>
+									</td>
+								</tr>	
+								{% empty %}
+								<tr>
+									<td>
+										<div class="alert alert-info">Sorry! No questions there.</div>
+									</td>
+								</tr>
+								{% endfor %}
+							</table>
+						{% endautoescape %}
+
+						<br>
+						<h3>Recent Answers <span class="badge">{{userdetails.getApprovedAnswers}}</span></h3><hr>
+						{% autoescape off %}
+						<div class="col-md-12">
+							{% for answer in answers %}
+								<li><a href="/question/view/{{answer.question.pk}}/{{answer.question.slug}}/" style="font-size:14px;">{{answer.question.title}}</a></li>
+							{% empty %}
+							<div class="alert alert-info">
+								No answers.
+							</div>
+							{% endfor %}
+						</div>
+						{% endautoescape %}
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+			<hr>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
+    </div>
+	</div>
+	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'tags/bootstrap.min.js' %}"></script>
+	<script>
+	$('.tool').tooltip();
+	</script>	
+	
+</body>
+</html>

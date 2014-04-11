@@ -647,10 +647,9 @@ def send_message(request):
 	students = UserProfile.objects.filter(user_type=UserType.types['Student'])
 	for student in students:
 		try:
-			sms(message, student.mobile)
+			sms(message, str(student.mobile))
 		except:
 			pass
 
-	#send_sms(message, '9539073833')
 	response.update({'success':True})
 	return render_to_response('send_sms.html', response)

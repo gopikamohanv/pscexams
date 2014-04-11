@@ -493,6 +493,7 @@ def admin_upload_previousyearquestion(request):
 
 		return render_to_response('previousyear_questionpaper.html',response)
 
+<<<<<<< HEAD
 @login_required
 @user_passes_test(admin_check)
 def questions(request):
@@ -653,3 +654,19 @@ def send_message(request):
 
 	response.update({'success':True})
 	return render_to_response('send_sms.html', response)
+=======
+
+# Details of User
+#/siteadmin/user/details/
+@login_required
+@user_passes_test(admin_check)
+def user_details(request, pk):
+	response = {}
+	user = get_object_or_404(User, pk=pk)
+	response.update({'student':user})
+	user_profile = get_object_or_404(UserProfile, user=user)
+	response.update({'user_profile':user_profile})
+	response.update({'usertypes':UserType.types})
+	return render_to_response('user_registration_details.html', response)
+
+>>>>>>> 4821c6816056151fa244df879d859ec52bf4e988

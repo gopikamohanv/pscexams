@@ -18,10 +18,12 @@ background-color: red;
           <a href="/siteadmin/dashboard/" id="user_type" name="user_type" 
             <h5><strong>All Users</strong></h5>
           </a>
+
           <hr>
           {% for key, value in usertypes.items %}
             <strong><a href="/siteadmin/dashboard/?user_type={{value}}" value="{{value}}" id="user_type" name="user_type">{{key}}</a></strong> <hr>
-          {% endfor %}                    
+          {% endfor %} 
+
         </div>
         </form>
       </div>

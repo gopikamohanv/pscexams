@@ -9,16 +9,16 @@
 	<link rel="shortcut icon" href="/static/img/fav_200.png" />
 	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
     <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
-	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'forum/css/bootstrap.css' %}">
 	<style>
 		.break {
 			padding-top:20px;
 			padding-bottom: 20px;
 		}
-		.nav li a{
+		.navbar-nav li a{
 			color:white;
 		}
-		.nav li a:hover{
+		.navbar-nav li a:hover{
 			color:black;
 		}
 	</style>
@@ -54,7 +54,7 @@
 			<div class="col-md-12">
 				<div class="row">
 					<div class="pull-right">
-						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+						<a href="/forum/?page=1"><img src="{% static 'images/04.png' %}" alt="psc question answer forum"></a>
 					</div>
 					<div>
 						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
@@ -65,6 +65,8 @@
 						{% else %}
 							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
 						{% endif %}
+						<br><br>
+						<img src="/static/images/logo.png" alt="">
 					</div>
 				</div><br>
 				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">

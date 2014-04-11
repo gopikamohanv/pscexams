@@ -19,6 +19,7 @@ from pscexams.exam_type import ExamType
 from pscexams.admin.models import *
 from pscexams.student.models import UserProfile
 from pscexams.forum.models import Question, QuestionView, Tag, QuestionTag, Answer, Comment, QuestionVotes, AnswerVotes, Ad
+from pscexams.sms import *
 
 def admin_check(user):
 	try:
@@ -627,3 +628,29 @@ def delete_comment(request):
 	comment.delete()
 
 	return HttpResponse('ok')
+
+
+@login_required
+@user_passes_test(admin_check)
+def send_message(request):
+	response = {}
+	response.update(csrf(request))
+	if request.method == 'GET':
+		return render_to_response('send_sms.html')
+
+	if 'message' in request.POST and request.POST['message']:
+		message = request.POST['message']
+	else:
+		response.update({'message_error':True})
+		return render_to_response('send_sms.html', response)
+
+	students = UserProfile.objects.filter(user_type=UserType.types['Student'])
+	for student in students:
+		try:
+			sms(message, student.mobile)
+		except:
+			pass
+
+	#send_sms(message, '9539073833')
+	response.update({'success':True})
+	return render_to_response('send_sms.html', response)

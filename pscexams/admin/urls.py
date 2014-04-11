@@ -22,4 +22,5 @@ urlpatterns = patterns('',
 		(r'^delete/answer/$', pscexams.admin.views.delete_answer),
 		(r'^approve/comment/$', pscexams.admin.views.approve_comment),
 		(r'^delete/comment/$', pscexams.admin.views.delete_comment),
+		(r'^send_message/$', pscexams.admin.views.send_message),
 )

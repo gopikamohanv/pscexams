@@ -37,7 +37,7 @@
 			<div class="col-md-12">
 				<div class="row">
 					<div class="pull-right">
-						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+						<a href="/forum/?page=1"><img src="{% static 'images/04.png' %}" alt="psc question answer forum"></a>
 					</div>
 					<div>
 						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
@@ -48,6 +48,8 @@
 						{% else %}
 							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
 						{% endif %}
+						<br><br>
+						<img src="/static/images/logo.png" alt="">
 					</div>
 				</div><br>
 				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">

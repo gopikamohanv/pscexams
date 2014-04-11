@@ -1,0 +1,67 @@
+{% include "admin_header.html" %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+	<div class="row">
+		<div class="col-md-10">
+			<h1>Comments</h1>
+			<small class="pull-right">Total:{{comments.count}}</small>
+			<hr>
+			<table class="table table-bordered">
+				{% autoescape off %}
+					{% for comment in comments %}
+						<tr class="comment">
+							<td>
+								{{comment.comment}}
+								<br><br>
+								<small class="pull-right">{{comment.commented_on}}</small>
+							</td>
+							<td>{{comment.commented_by}}</td>
+							<td>
+								<button class="btn btn-info btn-xs approve" comment="{{comment.pk}}">approve</button>
+							</td>
+							<td>
+								<button class="btn btn-danger btn-xs delete" comment="{{comment.pk}}">delete</button>
+							</td>
+						</tr>
+					{% empty %}
+					<div class="alert alert-info">No comments to approve</div>
+					{% endfor %}
+				{% endautoescape %}
+			</table>
+		</div>
+	</div>
+
+<script>
+	$('.approve').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		$.ajax({
+	    type  : 'GET',
+	    url   : '/siteadmin/approve/comment/',
+	    cache : false,
+	    data  : 'comment=' + btn.attr('comment'),
+	    success : function(data,textStatus)
+	    {
+	     	 btn.parents('.comment').fadeOut('slow');
+	    },
+	    error : function(data,textStatus){alert("An error occured, pls try again.");}
+	  }); 
+	});
+
+	$('.delete').click(function(e) {
+		e.preventDefault();
+		var btn = $(this);
+		$.ajax({
+	    type  : 'GET',
+	    url   : '/siteadmin/delete/comment/',
+	    cache : false,
+	    data  : 'comment=' + btn.attr('comment'),
+	    success : function(data,textStatus)
+	    {
+	     	 btn.parents('.comment').fadeOut('slow');
+	    },
+	    error : function(data,textStatus){alert("An error occured, pls try again.");}
+	  }); 
+	});
+</script>
+{% include "admin_footer.html" %}

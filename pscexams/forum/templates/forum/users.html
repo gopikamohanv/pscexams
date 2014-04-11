@@ -9,7 +9,7 @@
 	<link rel="shortcut icon" href="/static/img/fav_200.png" />
 	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
     <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
-	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'forum/css/bootstrap.css' %}">
 	<style>
 		.break {
 			padding-top:20px;
@@ -21,6 +21,12 @@
 		max-width: 80px;
 		border-radius: 40px;
 		}
+		.nav li a{
+			color:white;
+		}
+		.nav li a:hover{
+			color:black;
+		}
 	</style>
 </head>
 <body>
@@ -30,10 +36,12 @@
 			<br>
 			<div class="col-md-12">
 				<div class="row">
-					<a href="/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="smartindia question answer forum"></a>
 					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
 						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
-							<a href="/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/about/">About</a> |
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
 							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
 						{% if not_authenticated %}
 							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
@@ -76,7 +84,7 @@
 					<div class="userlist" points="{{user.getPoints}}" dateJoined="{{user|getTimeInSec}}">
 						<div class="col-md-3" style="padding:10px 10px 10px 10px;">
 							<div class="col-md-5">
-								<img src="{{user.profile.profile_pic|default:'/static/img/user.png'}}" alt="" height="50" width="50" class="profile">
+								<img src="{{user.profile.profile_pic|default:'/static/images/user.png'}}" alt="" height="50" width="50" class="profile">
 							</div>
 							<div clas="col-md-6">
 								<strong><a href="/userdetails/{{user.pk}}/">{{user.first_name|default:user.username}}</a></strong><br>
@@ -97,7 +105,26 @@
 			</div>
 			<div class="footer">
 			<hr>
-      <p>&copy; smartindia.net.in 2014</p>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
     </div>
 	</div>
 	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>

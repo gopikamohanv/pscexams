@@ -12,6 +12,12 @@
 			padding-top:20px;
 			padding-bottom: 20px;
 		}
+		.nav li a{
+			color:white;
+		}
+		.nav li a:hover{
+			color:black;
+		}
 	</style>
 	{% block custom_css %}{% endblock %}
 </head>
@@ -61,7 +67,26 @@
 		{% block content %}{% endblock %}
 		<div class="footer">
 			<hr>
-      <p>&copy; smartindia.net.in 2014</p>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
     </div>
 	</div>
 	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>

@@ -3,7 +3,7 @@
 	<div class="userlist" points="{{user.getPoints}}" dateJoined="{{user|getTimeInSec}}">
 		<div class="col-md-3" style="padding:10px 10px 10px 10px;">
 			<div class="col-md-5">
-				<img src="{{user.profile.profile_pic|default:'/static/img/user.png'}}" alt="" height="50" width="50" class="profile">
+				<img src="{{user.profile.profile_pic|default:'/static/images/user.png'}}" alt="" height="50" width="50" class="profile">
 			</div>
 			<div clas="col-md-6">
 				<strong><a href="/userdetails/{{user.pk}}/">{{user.first_name|default:user.username}}</a></strong><br>

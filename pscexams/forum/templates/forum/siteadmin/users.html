@@ -1,0 +1,24 @@
+{% extends 'siteadmin/base.html' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-10">
+			<h1>Students</h1><hr>
+			<small class="pull-right">Total : {{users.count}}</small>
+			<table class="table table-bordered">
+				<tr>
+					<th>Name</th>
+					<th>Date Joined</th>
+				</tr>
+					{% for user in users %}
+						<tr class="comment">
+							<td>{{user.first_name}}</td>
+							<td>{{user.date_joined}}</td>
+						</tr>
+					{% empty %}
+					<div class="alert alert-info">No users there.</div>
+					{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}

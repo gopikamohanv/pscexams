@@ -15,6 +15,12 @@
 			padding-top:20px;
 			padding-bottom: 20px;
 		}
+		.nav li a{
+			color:white;
+		}
+		.nav li a:hover{
+			color:black;
+		}
 	</style>
 	{% block custom_css %}{% endblock %}
 </head>
@@ -47,10 +53,12 @@
 			<br>
 			<div class="col-md-12">
 				<div class="row">
-					<a href="/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="smartindia question answer forum"></a>
 					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
 						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
-							<a href="/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/about/">About</a> |
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
 							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
 						{% if not_authenticated %}
 							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
@@ -83,7 +91,6 @@
 			      <li id="myquestions"><a href="#questions" data-toggle="tab">My Questions</a></li>
 			      <li id="myanswers"><a href="#answers" data-toggle="tab">My Answers</a></li>
 			      <li id="mycomments"><a href="#comments" data-toggle="tab">My Comments</a></li>
-			      <li id="mysettings"><a href="#settings" data-toggle="tab">Settings</a></li>
 			    </ul>
 			    <div id="myTabContent" class="tab-content">
 			      <div class="tab-pane fade in active" id="questions">
@@ -140,47 +147,32 @@
 			        {% endautoescape %}
 			        </table>
 			      </div>
-			      <div class="tab-pane fade" id="settings">
-			        <div class="col-md-3">
-			        	<br>
-			        	{% if image_empty %}
-								<div class="alert alert-danger"> 
-									<strong>Please select an image to upload.</strong>
-								</div>
-								{% endif %}
-								{% if not_image %}
-								<div class="alert alert-danger"> 
-									<strong>Its not an image.</strong>
-								</div>
-								{% endif %}
-								{% if image_type_error %}
-								<div class="alert alert-danger"> 
-									<strong>Only jpg/png images allowed.</strong>
-								</div>
-								{% endif %}
-								{% if image_size_error %}
-								<div class="alert alert-danger"> 
-									<strong>Image size upto 1mb is allowed.</strong>
-								</div>
-								{% endif %}
-
-								<form action="/profile-pic/" method="POST" enctype="multipart/form-data" onSubmit="return validate();">{% csrf_token %}
-									<br>
-									<a href="#" class="thumbnail">
-										<img src="{{user.profile.profile_pic|default:'/static/img/user.png'}}" height="128" width="128" alt="profile pic">
-									</a>
-									<input type="file" name="profile" id="profile"><br>
-									<button type="submit" class="btn btn-primary btn-block" id="profileBtn">Change Profile Pic</button>
-								</form>
-			        </div>
-			      </div>
 			    </div>
 				</div>
 			</div>
 
 			<div class="footer">
 			<hr>
-      <p>&copy; smartindia.net.in 2014</p>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
     </div>
 	</div>
 	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
@@ -304,7 +296,7 @@
 			$.ajax({
 				url: '/user/edit/comment/',
 				type: 'POST',
-				data: {csrfmiddlewaretoken: document.getElementsByName("csrfmiddlewaretoken")[0].value, comment_id : comment, comment : comment_data},
+				data: {comment_id : comment, comment : comment_data},
 			})
 			.done(function() {
 				$('#'+comment).removeAttr('contenteditable');

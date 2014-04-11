@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import auth
+from pscexams.admin.models import Question
 
 import datetime
 
 # Question Model 
 class Question(models.Model):
 		title = models.TextField()
+		question = models.ForeignKey(Question, null=True, blank=True, related_name="PSC Question")
 		description = models.TextField()
 		created_by = models.ForeignKey(User)
 		created_on = models.DateTimeField(null=True, blank=True)

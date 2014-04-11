@@ -46,7 +46,7 @@
 					</div>
 					<div class="col-md-9">
 						<ul class="nav nav-pills">
-						  <li class="col-md-2 col-xs-12"><a href="/" class="btn-info text-center">All</a></li>
+						  <li class="col-md-2 col-xs-12"><a href="/forum/" class="btn-info text-center">All</a></li>
 						  <div class="clearfix visible-xs"></div>
 						  <li class="col-md-2 col-xs-12"><a href="/question/unanswered/" class="btn-warning text-center">Unanswered</a></li>
 						  <div class="clearfix visible-xs"></div>
@@ -150,7 +150,7 @@ tinymce.init({
 <script>
 $('#loginBtn').bind('click', function(e) {
 		e.preventDefault();
-		window.location = '/login/?next={{next}}';
+		window.location = '/';
 });
 $('.tag').tagsinput({
   typeahead: {

@@ -8,7 +8,7 @@
 	<link rel="shortcut icon" href="/static/img/fav_200.png" />
 	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
     <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
-	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'forum/css/bootstrap.css' %}">
 	<style>
 		.break {
 			padding-top:20px;
@@ -46,6 +46,12 @@
 		.white, .white a {
   		color: #fff;
 		}
+		.nav li a{
+			color:white;
+		}
+		.nav li a:hover{
+			color:black;
+		}
 	</style>
 </head>
 <body>
@@ -55,10 +61,12 @@
 			<br>
 			<div class="col-md-12">
 				<div class="row">
-					<a href="/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="smartindia question answer forum"></a>
 					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
 						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
-							<a href="/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/about/">About</a> |
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
 							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
 						{% if not_authenticated %}
 							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
@@ -66,7 +74,7 @@
 							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
 						{% endif %}
 					</div>
-				</div><br>
+				</div></div><br>
 				<div class="col-md-8 col-md-offset-4" style="margin-top:-55px;">
 			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="600px" height="50px;" style="margin-left:160px;">
 			  	<param name="movie" value="{% for a in ad %}{{a.ad_url}}{% endfor %}" />
@@ -208,7 +216,26 @@
 
 			<div class="footer">
 			<hr>
-      <p>&copy; smartindia.net.in 2014</p>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
     </div>
 	</div>
 	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>

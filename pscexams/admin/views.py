@@ -497,8 +497,6 @@ def admin_upload_previousyearquestion(request):
 @user_passes_test(admin_check)
 def questions(request):
 	response = {}
-	if not request.user.is_staff:
-		return HttpResponseRedirect('/')
 	questions = Question.objects.filter(approved=False)
 	response.update({'questions':questions})
 	return render_to_response('forum/siteadmin/question.html', response)
@@ -507,8 +505,6 @@ def questions(request):
 @user_passes_test(admin_check)
 def answers(request):
 	response = {}
-	if not request.user.is_staff:
-		return HttpResponseRedirect('/')
 	answers = Answer.objects.filter(approved=False)
 	response.update({'answers':answers})
 	return render_to_response('forum/siteadmin/answer.html', response)
@@ -517,8 +513,6 @@ def answers(request):
 @user_passes_test(admin_check)
 def comments(request):
 	response = {}
-	if not request.user.is_staff:
-		return HttpResponseRedirect('/')
 	comments = Comment.objects.filter(approved=False)
 	response.update({'comments':comments})
 	return render_to_response('forum/siteadmin/comment.html', response)
@@ -527,9 +521,6 @@ def comments(request):
 @user_passes_test(admin_check)
 def approve_question(request):
 	response = {}
-	if not request.user.is_staff:
-		raise Http404()
-
 	if 'question' in request.GET and request.GET['question']:
 		question_id = request.GET['question']
 	else:
@@ -545,8 +536,6 @@ def approve_question(request):
 @user_passes_test(admin_check)
 def delete_question(request):
 	response = {}
-	if not request.user.is_staff:
-		raise Http404()
 
 	if 'question' in request.GET and request.GET['question']:
 		question_id = request.GET['question']
@@ -562,8 +551,6 @@ def delete_question(request):
 @user_passes_test(admin_check)
 def approve_answer(request):
 	response = {}
-	if not request.user.is_staff:
-		raise Http404()
 
 	if 'answer' in request.GET and request.GET['answer']:
 		answer_id = request.GET['answer']
@@ -581,8 +568,6 @@ def approve_answer(request):
 @user_passes_test(admin_check)
 def delete_answer(request):
 	response = {}
-	if not request.user.is_staff:
-		raise Http404()
 
 	if 'answer' in request.GET and request.GET['answer']:
 		answer_id = request.GET['answer']
@@ -598,8 +583,6 @@ def delete_answer(request):
 @user_passes_test(admin_check)
 def approve_comment(request):
 	response = {}
-	if not request.user.is_staff:
-		raise Http404()
 
 	if 'comment' in request.GET and request.GET['comment']:
 		comment_id = request.GET['comment']
@@ -616,8 +599,6 @@ def approve_comment(request):
 @user_passes_test(admin_check)
 def delete_comment(request):
 	response = {}
-	if not request.user.is_staff:
-		raise Http404()
 
 	if 'comment' in request.GET and request.GET['comment']:
 		comment_id = request.GET['comment']

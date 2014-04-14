@@ -666,7 +666,7 @@ def send_message(request):
 
 	students = UserProfile.objects.filter(user_type=UserType.types['Student'])
 	for student in students:
-		sms(message, str(student.mobile))
+		send_sms(message, str(student.mobile_no))
 
 	response.update({'success':True})
 	return render_to_response('send_sms.html', response)

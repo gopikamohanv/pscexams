@@ -1,0 +1,63 @@
+{% load static from staticfiles %}
+<!doctype html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Siteadmin | SIQA</title>
+    <link rel="shortcut icon" href="/static/img/fav_200.png" />
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+	</head>
+	<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/siteadmin/dashboard/">Dashboard</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Publish <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/siteadmin/questions/">Questions</a></li>
+                <li><a href="/siteadmin/answers/">Answers</a></li>
+                <li><a href="/siteadmin/comments/">Comments</a></li>
+              </ul>
+            </li>
+            <li><a href="/siteadmin/users/">Users</a></li>
+            <li><a href="/">Forum</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">{% csrf_token %}
+            <a href="/logout/" class="btn btn-success">Sign out</a>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="container" style="padding:50px;">
+    	{% block content %}{% endblock %}
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <hr>
+      <footer>
+        <p>&copy; forum.smartindia.net.in</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% block custom_js %}{% endblock %}
+  </body>
+</html>

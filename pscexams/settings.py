@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'pscexams.publisher',
     'pscexams.modelexam',
     'pscexams.currentaffairs',
-    
+    'pscexams.forum',
+
 )
 
 MIDDLEWARE_CLASSES = (

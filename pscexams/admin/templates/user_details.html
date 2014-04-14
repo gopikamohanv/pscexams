@@ -82,7 +82,7 @@ background-color: red;
               }
                 else
                 {
-                  $("#load_more_users").hide();
+                  $("load_more_users").hide();
                 }
             },
             error   : function(data,textStatus) {
@@ -115,7 +115,10 @@ background-color: red;
           <hr>
           {% for key, value in usertypes.items %}
             <strong><a href="/siteadmin/dashboard/?user_type={{value}}" value="{{value}}" id="user_type" name="user_type">{{key}}</a></strong> <hr>
-          {% endfor %}                    
+          {% endfor %}          
+          <strong><a href="/siteadmin/forum/questions/">Forum Questions</a></strong><hr>
+          <strong><a href="/siteadmin/forum/answers/">Forum Answers</a></strong><hr>
+          <strong><a href="/siteadmin/forum/comments/">Forum Comments</a></strong><hr>          
         </div>
         </form>
       </div>
@@ -144,8 +147,7 @@ background-color: red;
                   <img src="/static/images/unpublished.png">{% endif %}
               </td>
               <td style="width:300px;text-align:left;">
-                <!--<a href="/siteadmin/users/workdetails/?user_id={{users.user.id}}">{{users.user.username}}</a>-->
-                <a href="#">{{users.user.username}}</a>
+                <a href="/siteadmin/user/details/{{users.user.pk}}/">{{users.user.username}}</a>
               </td>
               <td style="width:100px;text-align:center;">
                 <a href="#"><img src="/static/images/trash.png"></a>

@@ -20,6 +20,9 @@ from pscexams.admin.models import *
 from pscexams.student.models import UserProfile
 from pscexams.currentaffairs.models import *
 
+from pscexams.forum.models import Question, QuestionView, Tag, QuestionTag, Answer, Comment, QuestionVotes, AnswerVotes, Ad
+from pscexams.sms import *
+
 
 def admin_check(user):
 	try:
@@ -528,3 +531,159 @@ def add_currentaffairs_topic(request):
 			response.update({'save_error':True})
 
 		return render_to_response('add_currentaffairs_topic.html', response)
+
+@login_required
+@user_passes_test(admin_check)
+def questions(request):
+	response = {}
+	questions = Question.objects.filter(approved=False)
+	response.update({'questions':questions})
+	return render_to_response('forum/siteadmin/question.html', response)
+
+@login_required
+@user_passes_test(admin_check)
+def answers(request):
+	response = {}
+	answers = Answer.objects.filter(approved=False)
+	response.update({'answers':answers})
+	return render_to_response('forum/siteadmin/answer.html', response)
+
+@login_required
+@user_passes_test(admin_check)
+def comments(request):
+	response = {}
+	comments = Comment.objects.filter(approved=False)
+	response.update({'comments':comments})
+	return render_to_response('forum/siteadmin/comment.html', response)
+
+@login_required
+@user_passes_test(admin_check)
+def approve_question(request):
+	response = {}
+	if 'question' in request.GET and request.GET['question']:
+		question_id = request.GET['question']
+	else:
+		raise Http404()
+
+	question = get_object_or_404(Question, id=question_id)
+	question.approved = True
+	question.save()
+
+	return HttpResponse('ok')
+
+@login_required
+@user_passes_test(admin_check)
+def delete_question(request):
+	response = {}
+
+	if 'question' in request.GET and request.GET['question']:
+		question_id = request.GET['question']
+	else:
+		raise Http404()
+
+	question = get_object_or_404(Question, id=question_id)
+	question.delete()
+
+	return HttpResponse('ok')
+
+@login_required
+@user_passes_test(admin_check)
+def approve_answer(request):
+	response = {}
+
+	if 'answer' in request.GET and request.GET['answer']:
+		answer_id = request.GET['answer']
+	else:
+		raise Http404()
+
+	answer = get_object_or_404(Answer, id=answer_id)
+	answer.approved = True
+	answer.save()
+	answer.question.save()
+
+	return HttpResponse('ok')
+
+@login_required
+@user_passes_test(admin_check)
+def delete_answer(request):
+	response = {}
+
+	if 'answer' in request.GET and request.GET['answer']:
+		answer_id = request.GET['answer']
+	else:
+		raise Http404()
+
+	answer = get_object_or_404(Answer, id=answer_id)
+	answer.delete()
+
+	return HttpResponse('ok')
+
+@login_required
+@user_passes_test(admin_check)
+def approve_comment(request):
+	response = {}
+
+	if 'comment' in request.GET and request.GET['comment']:
+		comment_id = request.GET['comment']
+	else:
+		raise Http404()
+
+	comment = get_object_or_404(Comment, id=comment_id)
+	comment.approved = True
+	comment.save()
+
+	return HttpResponse('ok')
+
+@login_required
+@user_passes_test(admin_check)
+def delete_comment(request):
+	response = {}
+
+	if 'comment' in request.GET and request.GET['comment']:
+		comment_id = request.GET['comment']
+	else:
+		raise Http404()
+
+	comment = get_object_or_404(Comment, id=comment_id)
+	comment.delete()
+
+	return HttpResponse('ok')
+
+
+@login_required
+@user_passes_test(admin_check)
+def send_message(request):
+	response = {}
+	response.update(csrf(request))
+	if request.method == 'GET':
+		return render_to_response('send_sms.html')
+
+	if 'message' in request.POST and request.POST['message']:
+		message = request.POST['message']
+	else:
+		response.update({'message_error':True})
+		return render_to_response('send_sms.html', response)
+
+	students = UserProfile.objects.filter(user_type=UserType.types['Student'])
+	for student in students:
+		try:
+			sms(message, str(student.mobile))
+		except:
+			pass
+
+	response.update({'success':True})
+	return render_to_response('send_sms.html', response)
+
+# Details of User
+#/siteadmin/user/details/
+@login_required
+@user_passes_test(admin_check)
+def user_details(request, pk):
+	response = {}
+	user = get_object_or_404(User, pk=pk)
+	response.update({'student':user})
+	user_profile = get_object_or_404(UserProfile, user=user)
+	response.update({'user_profile':user_profile})
+	response.update({'usertypes':UserType.types})
+	return render_to_response('user_registration_details.html', response)
+

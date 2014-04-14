@@ -1,0 +1,154 @@
+<!doctype html>
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{user}} | SIQA</title>
+	<link rel="shortcut icon" href="/static/img/fav_200.png" />
+	<meta name="keywords" content="SIQA, Smartindia, Forum, Question Answer Forum, Questions, Answers, Smartindia Forum, QA Forum" />
+    <meta name="description" content="SIQA is a discussion forum where users from all over the world can ask their doubts and also give answers to others doubts too. They can also share their ideas and knowledge." />
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<style>
+		.break {
+			padding-top:20px;
+			padding-bottom: 20px;
+		}
+		.nav li a{
+			color:white;
+		}
+		.nav li a:hover{
+			color:black;
+		}
+	</style>
+	<link rel="stylesheet" href="{% static 'tags/bootstrap-tagsinput.css' %}">
+</head>
+<body>
+	<div class="container">
+		<div class="col-md-12 break">
+				<div class="row">
+					<div class="pull-right">
+						<a href="/forum/?page=1"><img src="{% static 'img/siqa1.png' %}" alt="psc question answer forum"></a>
+					</div>
+					<div>
+						{% if not_authenticated %}{% else %}<strong>Welcome <a href="/user/">{{user}}</a> </strong> |{% endif %}
+							<a href="/forum/?page=1">Home</a> | <a href="/users/">Users</a> | <a href="/">Pscexams</a> |
+							{% if user.is_staff %}<a href="/siteadmin/dashboard/"> admin</a> | {% endif %}
+						{% if not_authenticated %}
+							<a class="btn btn-primary btn-xs" href="/login/{% if next %}?next={{next}}{% endif %}">Login / Register</a>
+						{% else %}
+							<a class="btn btn-primary btn-xs" href="/logout/">logout</a>
+						{% endif %}
+					</div>
+
+			<div class="col-md-12 break">
+				<h3>Edit Question</h3><hr>
+				<form method="POST" action="/user/edit/question/{{question.pk}}/">{%csrf_token%}
+					<div class="col-md-9">
+						
+						{% if form_error %}
+							<div class="alert alert-danger">
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+								<strong>Please correct the following errors.</strong>
+								<ul>
+								{% if title_error %}
+									<li>Title is required.</li>
+								{% endif %}
+								
+								{% if description_error %}
+									<li>Description is required</li>
+								{% endif %}
+								</ul>	
+							</div>
+						{% endif %}
+
+						{% if success %}
+							<div class="alert alert-success">
+								<strong>Question has been edited successfully.</strong>
+								<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+							</div>
+						{% endif %}
+
+						<label for="">Title</label><br>
+						<input type="text" name="title" id="title" value="{{title|default:question.title}}" class="col-md-12"><br><br>
+
+		    		<label for="">Enter Question</label>
+		    		<textarea name="description" style="width:100%">{{description|default:question.description}}</textarea>
+		    		<br>
+		    		{% if not_authenticated %}
+		    			<button id="loginBtn" class="btn btn-primary btn-lg">Login/SignUp to Post</button>
+		    		{% else %}
+		    			<button type="submit" class="btn btn-success btn-lg">Submit</button>	
+		    		{% endif %}
+					</div>
+					<div class="clearfix visible-sm visible-xs"><br><br></div>
+					<div class="col-md-3">
+						<label>Tags</label>
+						<input type="text" name="tags" data-role="tagsinput" placeholder="Add tags and click enter" class="tag" value="{% for tag in question.questiontag_set.all %}{{tag.tag.tag}}, {% endfor %}">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="footer">
+			<hr>
+      <footer>
+        <div class="row">
+          <div class="well" style="background-color: #008cba;" id="footer">
+            <fieldset>
+              <div class="col-lg-12">
+                <ul class="nav navbar-nav navbar-center">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about/">About</a></li>
+                  <li><a target="_blank" href="https://smartindia.net.in">Smartindia</a></li>
+                  <li><a target="_blank" href="http://www.keralapsc.org/">Kerala PSC</a></li>
+                  <li><a href="#">Exams</a></li> 
+                </ul>  
+                <ul class="list-unstyled"> 
+                  <li class="pull-right"><a href="#top" style="color:white;">Back to top</a></li>
+                </ul>
+              </div>
+            </fieldset>
+          </div>
+        </div>       
+      </footer> 
+    </div>
+	</div>
+	<script src="/static/js/bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'tags/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+	<script src="/static/js/bower_components/angular/angular.min.js"></script>
+	<script src="/static/js/bower_components/google-code-prettify-lite/prettify.js"></script>
+	<script src="/static/tags/bootstrap-tagsinput.js"></script>
+	<script src="/static/tags/bootstrap-tagsinput-angular.js"></script>
+	<script src="/static/tags/app_bs2.js"></script>
+	<script src="/static/tags/app.js"></script>
+	<script type="text/javascript">
+	tinymce.init({
+	    selector: "textarea",
+	    plugins: [
+	        "advlist autolink lists link image charmap print preview anchor",
+	        "searchreplace visualblocks code fullscreen",
+	    ],
+	    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+	});
+	$('.tag').tagsinput({
+	  typeahead: {
+	    source: function(query) {
+	      return $.getJSON('/getTags/');
+	    }
+	  }
+	});
+	$('#title').keypress(function(e) {
+		if($('#title').val().length > 49){
+			if(e.keyCode == 8 || e.keyCode == 46){
+				return;
+			}
+			else{
+				alert('Only 50 characters allowed!!');
+				e.preventDefault(); 
+			}
+		}
+	});
+	</script>
+</body>
+</html>

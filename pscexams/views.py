@@ -17,6 +17,7 @@ from pscexams.student.models import UserProfile
 from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion, ModelExam, ModelExamQuestionPaper, PreviousYearQuestionPaper, TipsandTricks
 from pscexams.currentaffairs.models import *
 from pscexams.forms import FreeRegistration
+from pscexams.sms import *
 
 import random
 import string
@@ -312,6 +313,16 @@ def register(request):
 		userlogin = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
 		auth.login(request,userlogin)
 		
+		subject = "PSC Exams"
+		template_html = 'Dear ' + form.cleaned_data['name'] + ',  Thank you for registering in pscexams.com.<br><br>If you have any queries, mail us to info@pscexams.com.'
+		msg = EmailMultiAlternatives(subject, template_html,'', [form.cleaned_data['email']])
+		msg.attach_alternative(template_html, "text/html")
+		msg.content_subtype = "html"
+		msg.send()
+
+		message = 'Dear ' + form.cleaned_data['username'] + ', Your account has been activated and is ready to use. For more support call 1800-123-2003 or write to info@pscexams.com'
+		send_sms(message, form.cleaned_data['mobile'])
+
 		return HttpResponseRedirect('/home/')
 
 	response.update({'form':form})
@@ -474,7 +485,7 @@ def contact(request):
 		subject = "Pscexams Contact us Message"
 		template_html = 'contact_mail.html'
 		html_content = render_to_string(template_html,{'Name':name, 'Email':email, 'Message':contact_message, 'Subject':usersubject})
-		msg = EmailMultiAlternatives(subject, template_html,'', ['vishnu@smartindia.net.in'])
+		msg = EmailMultiAlternatives(subject, template_html,'', ['info@pscexams.com'])
 		msg.attach_alternative(html_content, "text/html")
 		msg.content_subtype = "html"
 		msg.send()

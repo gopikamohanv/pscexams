@@ -13,4 +13,5 @@ urlpatterns = patterns('',
 		(r'^add/subtopic/$', pscexams.admin.views.admin_add_sub_topic),
 		(r'^upload/modelexam/question/$', pscexams.admin.views.admin_upload_modelexamquestion),
 		(r'^upload/previousyear/question/$', pscexams.admin.views.admin_upload_previousyearquestion),
+		(r'^add/currentaffairs/topic/$', pscexams.admin.views.add_currentaffairs_topic),
 )

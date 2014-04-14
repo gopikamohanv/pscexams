@@ -12,6 +12,7 @@ import datetime
 from pscexams.user_type import UserType
 from pscexams.student.models import *
 from pscexams.admin.models import *
+from pscexams.currentaffairs.models import *
 import time
 from datetime import date,timedelta
 
@@ -841,3 +842,197 @@ def tutor_edit_tips_and_tricks(request):
         response.update({'sub_topics':sub_topics})
 
         return render_to_response('edit_tips_and_tricks.html', response)
+
+
+@login_required
+@user_passes_test(tutor_check)
+def tutor_add_currentaffairs(request):
+    response = {}
+    response.update(csrf(request))
+    languages = CurrentAffair_Language.objects.all()
+    response.update({'languages':languages})
+
+    if request.method == 'GET':
+        return render_to_response('add_current_affairs.html', response)
+
+    form_error = False
+    error_text = ''
+
+    if 'language' in request.POST and request.POST['language']:
+        language = request.POST['language']
+        if language == '0':
+            form_error = True
+    else:
+        form_error = True
+
+    if 'topic' in request.POST and request.POST['topic']:
+        topic = request.POST['topic']
+        if topic == '0':
+            form_error = True
+    else:
+        form_error = True
+
+    if 'question' in request.POST and request.POST['question']:
+        question = request.POST['question']
+    else:
+        form_error = True
+
+    if 'option1' in request.POST and request.POST['option1']:
+        option1 = request.POST['option1']
+    else:
+        form_error = True
+
+    if 'option2' in request.POST and request.POST['option2']:
+        option2 = request.POST['option2']
+    else:
+        form_error = True
+
+    if 'option3' in request.POST and request.POST['option3']:
+        option3 = request.POST['option3']
+    else:
+        form_error = True
+
+    if 'option4' in request.POST and request.POST['option4']:
+        option4 = request.POST['option4']
+    else:
+        form_error = True
+
+    if 'explanation' in request.POST and request.POST['explanation']:
+        explanation = request.POST['explanation']
+    else:
+        form_error = True
+        
+    if 'answer_in_option' in request.POST and request.POST['answer_in_option']:
+        answer_in_option = request.POST['answer_in_option']
+    else:
+        form_error = True
+
+    
+    if form_error:
+        response.update({'form_error':True})
+        response.update({'error_text':'Error: Please enter all required fields'})
+        return render_to_response('add_current_affairs.html', response)
+
+    data_error = False
+    try:
+        currentaffair_topic = CurrentAffairs_topic.objects.get(id=topic)
+    except:
+        data_error = True
+
+    if data_error:
+        response.update({'form_error':True})
+        response.update({'error_text':'Error occured while saving your question. If this problem repeats, please contact the Smart World Technical team'})
+        return render_to_response('tutor_question_add.html', response)
+ 
+
+    # Create a new object and save the damn question
+    question_obj = CurrentAffairs_Question()
+    question_obj.question = question
+    question_obj.option1 = option1
+    question_obj.option2 = option2
+    question_obj.option3 = option3
+    question_obj.option4 = option4
+    question_obj.answer = answer_in_option
+    question_obj.explanation = explanation
+    question_obj.tutor = request.user
+    question_obj.created_date = datetime.datetime.today()
+    question_obj.is_published = False
+    question_obj.topic = currentaffair_topic
+    question_obj.is_in_use = True
+    # TODO: Add a try catch statement here
+    try:
+        question_obj.save()
+    except:
+        response.update({'form_error':True})
+        response.update({'error_text':'Error occured while saving your question. If this problem repeats, please contact the Smart World Technical team'})
+        return render_to_response('add_current_affairs.html', response)
+    
+   
+    response.update({'question_saved':True})
+    return render_to_response('add_current_affairs.html', response)
+
+
+@login_required
+@user_passes_test(tutor_check)
+def tutor_add_currentaffairs_oneword(request):
+    response = {}
+    response.update(csrf(request))
+    languages = CurrentAffair_Language.objects.all()
+    response.update({'languages':languages})
+
+    if request.method == 'GET':
+        return render_to_response('add_current_affairs_oneword.html', response)
+
+
+    if request.method == 'POST':
+        form_error = False
+        error_text = ''
+
+        if 'language' in request.POST and request.POST['language']:
+            language = request.POST['language']
+            if language == '0':
+                form_error = True
+        else:
+            form_error = True
+
+        if 'topic' in request.POST and request.POST['topic']:
+            topic = request.POST['topic']
+            if topic == '0':
+                form_error = True
+        else:
+            form_error = True
+
+        if 'question' in request.POST and request.POST['question']:
+            question = request.POST['question']
+        else:
+            form_error = True
+
+        if 'answer' in request.POST and request.POST['answer']:
+            answer = request.POST['answer']
+        else:
+            form_error = True
+
+        if 'explanation' in request.POST and request.POST['explanation']:
+            explanation = request.POST['explanation']
+        else:
+            form_error = True
+
+        if form_error:
+            response.update({'form_error':True})
+            response.update({'error_text':'Error: Please enter all required fields'})
+            return render_to_response('add_current_affairs_oneword.html', response)
+
+        # Get syllabus, grade, subject, chapter object before saving
+        # We will make this a library in the future
+        data_error = False
+        try:
+            currentaffairs_topic = CurrentAffairs_topic.objects.get(id=topic)
+        except:
+            data_error = True
+
+        if data_error:
+            response.update({'form_error':True})
+            response.update({'error_text':'Error occured while saving your question. If this problem repeats, please contact the Smart World Technical team'})
+            return render_to_response('add_current_affairs_oneword.html', response) 
+
+        # Create new one word
+        currentaffairs_oneword_question = CurrentAffairs_OnewordQuestion()
+        currentaffairs_oneword_question.question = question
+        currentaffairs_oneword_question.answer = answer
+        currentaffairs_oneword_question.explanation = explanation
+        currentaffairs_oneword_question.tutor = request.user
+        currentaffairs_oneword_question.created_date = datetime.datetime.today()
+        currentaffairs_oneword_question.is_published = False
+        currentaffairs_oneword_question.topic = currentaffairs_topic
+        currentaffairs_oneword_question.is_in_use = True
+        # TODO: Add a try catch statement here
+        try:
+            currentaffairs_oneword_question.save()
+        except:
+            response.update({'form_error':True})
+            response.update({'error_text':'Error occured while saving your question. If this problem repeats, please contact the Smart World Technical team'})
+            return render_to_response('add_current_affairs_oneword.html', response)
+        
+       
+        response.update({'question_saved':True})
+        return render_to_response('add_current_affairs_oneword.html', response)

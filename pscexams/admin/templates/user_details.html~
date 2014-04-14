@@ -1,0 +1,176 @@
+{% include "admin_header.html" %}
+<style>
+a:active {
+background-color: red;
+    color:#0000FF;}  /* selected link */
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+<script type="text/javascript" src="https://s3.amazonaws.com/uploads.siresources.in/cdn/js/tablecloth/tablecloth.js"></script>
+   
+  {% if usertype_selected %}
+    <script type="text/javascript">
+      $(document).ready(function()
+      {
+        $('#user_type').val('{{selected_usertype}}');
+      });
+    </script>
+  {% endif %}
+  
+  <script type="text/javascript">
+    $(document).ready(function()
+      {        
+        $("a[rel='popup_link']").colorbox({transition:'fade', width:"45%", height:"60%", iframe:true});
+        $("a[rel='workreport_link']").colorbox({transition:'fade', width:"80%", height:"90%", iframe:true});
+      });
+  </script>
+  {% csrf_token %}
+  <script type="text/javascript">  
+      
+      function getParticularUser()
+        {
+          var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          var particular_user = document.getElementById("particular_user").value;
+          /*if (particular_user == "" || !filter.test(document.getElementById('particular_user').value))
+          {
+              alert("Please enter an email id to search");
+              return false;
+          }*/
+          document.getElementById("particular_user_button").value = "Please Wait";
+            $.ajax({
+              type    : 'GET',
+              url     : '/siteadmin/ajax/users/search/',
+              cache   : false,
+              data    : "email=" + particular_user,
+              success : function(data,textStatus)
+              {
+                document.getElementById("particular_user_button").value = "Search";
+                if (data != "False"){
+                  $("#users_table").html(data);
+                  $("a[rel='popup_link']").colorbox({transition:'fade', width:"45%", height:"60%", iframe:true});
+                  $("a[rel='workreport_link']").colorbox({transition:'fade', width:"80%", height:"90%", iframe:true});
+                }
+                else{
+                  alert('Oops, the user you are looking for not found. Check the email and try again');
+                }
+              },
+              error   : function(data,textStatus){alert("Error connecting to Siresources Servers. Please check your internet connection and try again.");}
+            });
+            document.getElementById("particular_user_button").value = "Search";
+        }
+        function ajax_load_more()
+        {
+         
+          var user_type = document.getElementById("user_type").value;
+          var next_rows = document.getElementById("next_rows").value;         
+          
+          document.getElementById("load_more_users").value = "Please Wait";
+          $.ajax({
+            type    : 'GET',
+            url     : '/siteadmin/users/ajax/browse/',
+            cache   : false,
+            data    : "user_type=" + user_type + "&next_rows=" + next_rows,
+            success : function(data,textStatus)
+            {
+              document.getElementById("load_more_users").value = "Load More";
+              if (data != "Null")
+              {
+                $("#users_table").append(data);
+                tablecloth();
+                document.getElementById('next_rows').value = parseInt(next_rows) + 20;
+                $("a[rel='popup_link']").colorbox({transition:'fade', width:"45%", height:"60%", iframe:true});
+                $("a[rel='workreport_link']").colorbox({transition:'fade', width:"80%", height:"90%", iframe:true});
+              }
+                else
+                {
+                  $("#load_more_users").hide();
+                }
+            },
+            error   : function(data,textStatus) {
+              alert("Error connecting to PSC Exam Servers. Please check your internet connection and try again.");
+              document.getElementById("load_more_users").value = "Load More";
+              }
+          });
+        }        
+   
+</script>
+<div style="text-align:right;margin-top:30px;">
+  Total No. of Users:{{user_count}}<br>
+  Active Users:{{activeuser_count}}
+</div><br>
+<div style="display:none;">
+  <input id="next_rows" type="hidden" value="20" />
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="col-lg-3">
+      <div class="panel panel-warning" style="margin-top:25px;">
+        <div class="panel-heading">
+          <h3 class="panel-title"><strong>User Type</strong></h3>
+        </div>
+        <form id="user_type_form" method="GET" action="/siteadmin/dashboard/">
+        <div class="panel-body">
+          <a href="/siteadmin/dashboard/" id="user_type" name="user_type" 
+            <h5><strong>All Users</strong></h5>
+          </a>
+          <hr>
+          {% for key, value in usertypes.items %}
+            <strong><a href="/siteadmin/dashboard/?user_type={{value}}" value="{{value}}" id="user_type" name="user_type">{{key}}</a></strong> <hr>
+          {% endfor %}                    
+        </div>
+        </form>
+      </div>
+    </div> 
+
+    <div class="col-lg-9">    
+      <div style="display:none;">
+        <input id="next_rows" type="hidden" value="0" />
+      </div>
+      <div style="display:none;">
+        <input id="next_rows" type="hidden" value="0" />
+      </div>
+      <div class="CSSTableGenerator" >
+        <table id="users_table">
+          <tr>      
+            <td>User Status</td>
+            <td>Name</td>
+            <td>Actions</td>
+          </tr>
+          {% for users in users %}
+            <tr>      
+              <td style="width:100px;text-align:center;">
+                {% if users.user.is_active %}
+                  <img src="/static/images/published.png">
+                {% else %}
+                  <img src="/static/images/unpublished.png">{% endif %}
+              </td>
+              <td style="width:300px;text-align:left;">
+                <!--<a href="/siteadmin/users/workdetails/?user_id={{users.user.id}}">{{users.user.username}}</a>-->
+                <a href="#">{{users.user.username}}</a>
+              </td>
+              <td style="width:100px;text-align:center;">
+                <a href="#"><img src="/static/images/trash.png"></a>
+              </td>
+            </tr>
+          {% empty %}
+          <tr>
+            <td>
+              <p style="color:red;">There are no such type of users!!!</p>
+            </td>
+          </tr>
+          {%endfor%}
+        </table>
+      </div>
+      <br>
+      <div align="center">
+        <input class="load-more" id="load_more_users" type="button" value="Load More" onClick="ajax_load_more();"/>
+      </div>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+
+
+{% include "admin_footer.html" %}
+
+

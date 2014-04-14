@@ -59,6 +59,7 @@ urlpatterns = patterns('',
     (r'^free/tricks/detail/(?P<pk>\w+)/$',free_tricks_detail),
     (r'^free/learn/(?P<pk>\w+)/$',free_learn),
     (r'^subtopic/content/$',sub_topic_content),
+    (r'^language/ajax/topic/$',language_ajax_topic),
 
 
     # Student Urls

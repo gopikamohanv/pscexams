@@ -18,6 +18,7 @@ from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
 from pscexams.admin.models import *
 from pscexams.student.models import UserProfile
+from pscexams.currentaffairs.models import *
 
 
 def admin_check(user):
@@ -491,3 +492,39 @@ def admin_upload_previousyearquestion(request):
 			raise Http404()
 
 		return render_to_response('previousyear_questionpaper.html',response)
+
+
+@login_required
+@user_passes_test(admin_check)
+def add_currentaffairs_topic(request):
+	response = {}
+	languages = CurrentAffair_Language.objects.all()
+	response.update({'languages':languages})
+
+	if request.method == 'GET':
+		return render_to_response('add_currentaffairs_topic.html', response)
+
+	if request.method == 'POST':
+		form_error = False
+		if 'language' in request.POST and request.POST['language']:
+			language = request.POST['language']
+		else:
+			form_error = True
+
+		if 'topic' in request.POST and request.POST['topic']:
+			topic = request.POST['topic']
+		else:
+			form_error = True
+		
+		if form_error:
+			response.update({'form_error':form_error})
+			return render_to_response('add_currentaffairs_topic.html', response) 
+
+		currentaffairs_topic = CurrentAffairs_topic(language = get_object_or_404(CurrentAffair_Language,id=language), topic = topic)
+		try:
+			currentaffairs_topic.save()
+			response.update({'saved':True})
+		except:
+			response.update({'save_error':True})
+
+		return render_to_response('add_currentaffairs_topic.html', response)

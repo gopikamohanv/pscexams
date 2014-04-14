@@ -15,6 +15,7 @@ from django.core.mail import EmailMultiAlternatives
 from pscexams.user_type import UserType
 from pscexams.student.models import UserProfile
 from pscexams.admin.models import State, Question, Exam, Subject, Topic, SubTopic, OnewordQuestion, ModelExam, ModelExamQuestionPaper, PreviousYearQuestionPaper, TipsandTricks
+from pscexams.currentaffairs.models import *
 from pscexams.forms import FreeRegistration
 
 import random
@@ -647,6 +648,9 @@ def sub_topic_content(request):
 		topic_id = request.GET['topic']
 
 	sub_topic = SubTopic.objects.get(pk=sub_topic_id)
+	#tests = Question.objects.filter(sub_topic=sub_topic).count() / 10
+	#tests = range(1, tests+1)[:3]
+	#response.update({'tests':tests})
 	sub_topics_in_topic = SubTopic.objects.filter(topic=topic_id).order_by('?')[:10]
 	response.update({'sub_topics_in_topic':sub_topics_in_topic})
 	response.update({'sub_topic':sub_topic})
@@ -655,7 +659,22 @@ def sub_topic_content(request):
 	readandlearn = OnewordQuestion.objects.filter(sub_topic=sub_topic).order_by('-pk')[:2]
 	response.update({'readandlearn':readandlearn})
 	return render_to_response('subtopic_content.html', response)
-					
+
+
+def language_ajax_topic(request):
+	if 'language' in request.GET and request.GET['language']:
+		language = request.GET['language']
+		currentaffairs_topics = CurrentAffairs_topic.objects.filter(language=language)
+		response = '<option value=\"0\">Select Topic</option>'
+		for currentaffairs_topic in currentaffairs_topics:
+			response += '<option value=\"'
+			response += str(currentaffairs_topic.id)
+			response += '\">'
+			response += currentaffairs_topic.topic
+			response += '</option>'
+		return HttpResponse(response)
+	else:
+		return HttpResponse('Error# No State Specified')
 
 
 

@@ -13,7 +13,7 @@ class UserProfile(models.Model):
 	address = models.CharField(max_length=30, null=True, blank=True)
 
 	def __unicode__(self):
-		return self.user_type
+		return str(self.user)
 
 
 # MOCK TEST

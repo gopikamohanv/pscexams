@@ -72,7 +72,8 @@ def student_exam_topic_tests(request, pk):
 	mocktest_data = MockTestData.objects.filter(question__sub_topic=sub_topic).order_by('-pk')[:5]
 	response.update({'mocktest_data':mocktest_data})
 	response.update({'sub_topic':sub_topic})
-	related_exams = ExamScore.objects.filter(sub_topic=sub_topic).order_by('-pk')[:10]
+	userprofile = get_object_or_404(UserProfile, user=request.user)
+	related_exams = ExamScore.objects.filter(user=userprofile, sub_topic=sub_topic).order_by('-pk')[:10]
 	response.update({'related_exams':related_exams})		 
 	return render_to_response('student_topic_tests.html', response)
 
@@ -252,7 +253,8 @@ def student_exam_submit(request, pk):
 		response.update({'test':test})
 		response.update({'test_num':test_num})
 		response.update({'success':True})
-		related_exams = ExamScore.objects.filter(sub_topic=sub_topic).order_by('-pk')[:10]
+		userprofile = get_object_or_404(UserProfile, user=request.user)
+		related_exams = ExamScore.objects.filter(user=userprofile, sub_topic=sub_topic).order_by('-pk')[:10]
 		response.update({'related_exams':related_exams})
 		response.update({'sub_topic':sub_topic})
 		return render_to_response('student_exam_complete.html', response)
@@ -267,7 +269,8 @@ def student_answersheets_list(request):
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	if 'sub_topic' in request.GET and request.GET['sub_topic']:
 		sub_topic = request.GET['sub_topic']
-	related_exams = ExamScore.objects.filter(sub_topic=sub_topic).order_by('-pk')
+	userprofile = get_object_or_404(UserProfile,user=request.user)
+	related_exams = ExamScore.objects.filter(user=userprofile, sub_topic=sub_topic).order_by('-pk')
 	response.update({'related_exams':related_exams})
 	sub_topic_name = SubTopic.objects.get(id=sub_topic)
 	response.update({'sub_topic_name':sub_topic_name})
@@ -517,3 +520,7 @@ def student_previous_year_exam(request, pk):
 	previous_exams = PreviousYearQuestionPaper.objects.filter(exam=exam)
 	response.update({'previous_exams':previous_exams})
 	return render_to_response('student_previous_year_download.html', response)
+
+def top_students_list(request):
+	response = {}
+	return render_to_response('top_students_list.html', response)

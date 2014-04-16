@@ -1,5 +1,5 @@
 
-{% include 'header.html' %}
+{% include 'center_header.html' %}
 <script type='text/javascript'> 
   function validate()
     {
@@ -80,11 +80,11 @@
     }
   </script>
 
-  <form method='POST' class="bs-example form-horizontal" name="form" id="regform" action="/registration/" onSubmit="return validate()"> 
+  <form method='POST' class="bs-example form-horizontal" name="form" id="regform" action="/center/add/user/" onSubmit="return validate()"> 
     <div class="well">       
-      <h3><b>Sign up Now!</b></h3><br>
+      <h3><b>Add User</b></h3><br>
       <div id ="warn_message"></div>
-      {%if success%}
+      {%if saved%}
        <div class="alert alert-dismissable alert-success">
             <button type="button" class="close" data-dismiss="alert">&times;</button><strong>Successfully registered.... </strong></p>
         </div>
@@ -177,14 +177,13 @@
         </tr>            
         <tr>
           <td>
+          </td>
+          <td>
             <br><br><input type="submit" value="Register" id="btn"  class="btn btn-primary" />
           </td>&nbsp;
-          <td>
-            <br><br><input type="reset" value="Cancel" id="btn" class="btn btn-default"/>
-          </td>
         </tr>
       </table>
     </div>
   </form>
 <br> 
- {% include 'footer.html' %}
+ {% include 'center_footer.html' %}

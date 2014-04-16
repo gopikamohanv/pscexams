@@ -121,7 +121,10 @@ def home(request):
 		return HttpResponseRedirect('/publisher/dashboard/')
 
 	if user_profile.user_type == UserType.types['Admin']:
-		return HttpResponseRedirect('/siteadmin/dashboard/')   
+		return HttpResponseRedirect('/siteadmin/dashboard/')
+
+	if user_profile.user_type == UserType.types['Center']:
+		return HttpResponseRedirect('/center/dashboard/')
 
 
 #save new user details

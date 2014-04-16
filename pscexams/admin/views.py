@@ -684,3 +684,69 @@ def user_details(request, pk):
 	response.update({'usertypes':UserType.types})
 	return render_to_response('user_registration_details.html', response)
 
+
+# Details of Center
+#/siteadmin/add/center/
+@login_required
+@user_passes_test(admin_check)
+def add_center(request):
+	response = {}
+	states = State.objects.all()
+	response.update({'states':states})
+
+	if request.method == 'GET':
+		return render_to_response('add_center.html', response)
+
+	if request.method == 'POST':
+		form_error = False
+		if 'name' in request.POST and request.POST['name']:
+			name=request.POST['name']
+		else:
+			form_error = True
+        
+        if 'email' in request.POST and request.POST['email']:
+            email=request.POST['email']
+        else:
+        	form_error = True
+        
+        if 'username' in request.POST and request.POST['username']:
+            username=request.POST['username']
+        else:
+        	form_error = True   
+            
+        if 'password' in request.POST and request.POST['password']:
+            password=request.POST['password']
+        else:
+        	form_error = True
+
+        if 'address' in request.POST and request.POST['address']:
+            address=request.POST['address']
+        else:
+        	form_error = True
+
+        if 'state' in request.POST and request.POST['state']:
+            state=request.POST['state']
+        else:
+        	form_error = True        
+
+        if 'mobile' in request.POST and request.POST['mobile']:
+            mobile_no=request.POST['mobile']
+        else:
+        	form_error = True
+
+        if form_error:
+			response.update({'form_error':True})
+			return render_to_response('add_center.html', response)  
+            
+        user_obj=User(username=username, first_name=name, email=email)
+        user_obj.set_password(password)
+        user_obj.save();
+        userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 6, address=address, state=State.objects.get(id=state), mobile_no=mobile_no)      
+        try:
+        	userprofiles_obj.save();
+        	response.update({'saved':True})
+        except:
+            raise Http404()
+        
+        return render_to_response('add_center.html',response)
+

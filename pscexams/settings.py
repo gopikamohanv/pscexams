@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'pscexams.modelexam',
     'pscexams.currentaffairs',
     'pscexams.forum',
+    'pscexams.center',
 
 )
 

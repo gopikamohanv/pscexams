@@ -10,6 +10,10 @@ from pscexams.exam_type import ExamType
 from pscexams.admin.models import Exam, Question, Subject, Topic, SubTopic, OnewordQuestion, TipsandTricks, State, PreviousYearQuestionPaper
 from pscexams.student.models import UserProfile, MockTest, MockTestData, MockTestType, ExamTest, ExamScore
 
+from pscexams.forum.models import Question as GQuestion
+
+import datetime
+
 def student_check(user):
 	try:
 		user_profile = UserProfile.objects.get(user=user)
@@ -24,10 +28,12 @@ def student_check(user):
 @user_passes_test(student_check)
 def student_dashboard(request):
 	response = {}
+	today = datetime.datetime.today()
 	response.update({'user':UserProfile.objects.get(user=request.user)})
 	response.update({'exams':Exam.objects.all()})
 	response.update({'oneword':OnewordQuestion.objects.all().order_by('-pk')[:2]})
 	response.update({'tricks':TipsandTricks.objects.all().order_by('-pk')[:2]})
+	response.update({'qcount':GQuestion.objects.filter(created_on__day=today.day, created_on__month=today.month, created_on__year=today.year, approved=True).exclude(questionview__user=request.user).count()})
 	return render_to_response('student_home.html', response)
 
 @login_required

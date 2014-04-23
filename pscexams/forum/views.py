@@ -398,10 +398,16 @@ def view_question(request, pk, slug):
 		response.update({'moderator':True})
 
 	# Question View Count
-	try:
-		QuestionView.objects.create(question=question)
-	except:
-		pass
+	if not check_auth(request):
+		try:
+			QuestionView.objects.create(question=question, user=request.user)
+		except:
+			pass
+	else:
+		try:
+			QuestionView.objects.create(question=question)
+		except:
+			pass
 	
 	response.update({'question':question})
 	return render_to_response('forum/view_question.html', response)

@@ -329,7 +329,7 @@ $('#submit').bind('click', function(e) {
     type  : 'POST',
     url   : '/question/submit/answer/',
     cache : false,
-    data: 'question=' + question + '&answer=' + escape(answer),
+    data: 'question=' + question + '&answer=' + encodeURIComponent(answer),
     success : function success(data, status) {
     					if (data === 'empty') {
     						alert('Answer cannot be empty.');

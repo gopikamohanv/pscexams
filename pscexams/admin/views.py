@@ -13,6 +13,7 @@ from boto.s3.key import Key
 
 import os.path
 import datetime
+import time
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
@@ -628,6 +629,7 @@ def send_message(request):
 	students = UserProfile.objects.filter(user_type=UserType.types['Student'])
 	for student in students:
 		send_sms(message, str(student.mobile_no))
+		time.sleep(5)
 
 	response.update({'success':True})
 	return render_to_response('send_sms.html', response)

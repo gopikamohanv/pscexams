@@ -13,6 +13,7 @@ from boto.s3.key import Key
 
 import os.path
 import datetime
+import time
 
 from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
@@ -667,6 +668,7 @@ def send_message(request):
 	students = UserProfile.objects.filter(user_type=UserType.types['Student'])
 	for student in students:
 		send_sms(message, str(student.mobile_no))
+		time.sleep(5)
 
 	response.update({'success':True})
 	return render_to_response('send_sms.html', response)
@@ -738,15 +740,21 @@ def add_center(request):
 			response.update({'form_error':True})
 			return render_to_response('add_center.html', response)  
             
-        user_obj=User(username=username, first_name=name, email=email)
-        user_obj.set_password(password)
-        user_obj.save();
-        userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 6, address=address, state=State.objects.get(id=state), mobile_no=mobile_no)      
         try:
-        	userprofiles_obj.save();
-        	response.update({'saved':True})
+        	user_obj=User.objects.get(username=username)
+        	response.update({'user_exists':True})
+        	return render_to_response('add_center.html',response)
         except:
-            raise Http404()
+        	user_obj=User(username=username, first_name=name, email=email)
+        	user_obj.set_password(password)
+        	user_obj.save();
+        	userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 6, address=address, state=State.objects.get(id=state), mobile_no=mobile_no)      
+        	try:
+        		userprofiles_obj.save();
+        		response.update({'saved':True})
+        	except:
+        		response.update({'save_error':True})
+        		return render_to_response('add_center.html',response)
         
         return render_to_response('add_center.html',response)
 

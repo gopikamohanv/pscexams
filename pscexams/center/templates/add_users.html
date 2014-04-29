@@ -34,7 +34,7 @@
         if( password == ''|| password.length < 8)
         {
           $("#password_message").css('color','red');
-          $("#password_message").html("Password is required");
+          $("#password_message").html("Minimum 9 charaters needed");
           return false;
         }
         var conpassword=document.form.conpassword.value;

@@ -73,6 +73,8 @@ class QuestionVotes(models.Model):
 
 class QuestionView(models.Model):
 		question = models.ForeignKey(Question)
+		user = models.ForeignKey(User, null=True, blank=True)
+		date = models.DateTimeField(auto_now=True, null=True, blank=True)
 
 # Votes for answer
 class AnswerVotes(models.Model):

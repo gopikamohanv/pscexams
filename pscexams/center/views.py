@@ -89,17 +89,22 @@ def center_add_users(request):
 			response.update({'form_error':True})
 			return render_to_response('add_center.html', response)  
 			 
-        user_obj=User(username=username, first_name=name, email=email, is_active=False)
-        user_obj.set_password(password)
-        user_obj.save();
-        center_obj=Center(student=User.objects.get(id=user_obj.id), center=User.objects.get(id=request.user.id))
-        center_obj.save();
-        userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 4, state=State.objects.get(id=state), mobile_no=mobile_no)      
         try:
-        	userprofiles_obj.save();
-        	response.update({'saved':True})
+            user_obj=User.objects.get(username=username)
+            response.update({'reg_error':True})
+            return render_to_response('add_users.html', response)
         except:
-            raise Http404()
+            user_obj=User(username=username, first_name=name, email=email, is_active=False)
+            user_obj.set_password(password)
+            user_obj.save();
+            center_obj=Center(student=User.objects.get(id=user_obj.id), center=User.objects.get(id=request.user.id))
+            center_obj.save();
+            userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 4, state=State.objects.get(id=state), mobile_no=mobile_no)      
+            try:
+            	userprofiles_obj.save();
+            	response.update({'saved':True})
+            except:
+                raise Http404()
 
         return render_to_response('add_users.html', response)
 	

@@ -58,7 +58,6 @@ class Topic(models.Model):
 	subject = models.ForeignKey(Subject)
 	topic = models.CharField(max_length=255)
 
-
 class SubTopic(models.Model):
 	state = models.ForeignKey(State)
 	exam = models.ForeignKey(Exam)

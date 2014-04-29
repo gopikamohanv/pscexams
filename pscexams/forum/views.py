@@ -357,7 +357,13 @@ def ask_question(request):
 				response.update({'form_error':True})
 				return render_to_response('forum/ask_question.html', response)
 
-		q = Question.objects.create(title=title, description=description, created_by=request.user, slug=slugify(title))
+
+		if not slugify(title):
+			slug = "malayalam"
+		else:
+			slug = slugify(title)
+			
+		q = Question.objects.create(title=title, description=description, created_by=request.user, slug=slug)
 
 		tags = ''
 		if 'tags' in request.POST and request.POST['tags']:
@@ -398,10 +404,16 @@ def view_question(request, pk, slug):
 		response.update({'moderator':True})
 
 	# Question View Count
-	try:
-		QuestionView.objects.create(question=question)
-	except:
-		pass
+	if not check_auth(request):
+		try:
+			QuestionView.objects.create(question=question, user=request.user)
+		except:
+			pass
+	else:
+		try:
+			QuestionView.objects.create(question=question)
+		except:
+			pass
 	
 	response.update({'question':question})
 	return render_to_response('forum/view_question.html', response)

@@ -388,6 +388,15 @@ def about_new(request):
     response.update({'exams':exams})
     return render_to_response('about_new.html', response)
 
+def about_new2(request):
+    response = {}
+    response.update({'sub_title': 'Village Extension Officer Exam'})
+    states = State.objects.all()
+    response.update({'states':states})
+    exams = Exam.objects.all()
+    response.update({'exams':exams})
+    return render_to_response('about_new2.html', response)    
+
 # For About Exam Categories
 def about_examcategory(request):
 	response = {}

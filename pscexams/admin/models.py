@@ -31,9 +31,6 @@ class Subject(models.Model):
 	exam = models.ForeignKey(Exam)
 	subject = models.CharField(max_length=255)
 
-	#def __unicode__(self):
-	#	return self.state.state + '->' + self.exam.exam + '->' + str(self.subject)
-
 	def get_subject_description(self):
 		try:
 			description = SubjectDescription.objects.get(subject=self.pk)
@@ -61,8 +58,6 @@ class Topic(models.Model):
 	subject = models.ForeignKey(Subject)
 	topic = models.CharField(max_length=255)
 
-	#def __unicode__(self):
-	#	return self.state.state + '->' + self.exam.exam + '->' + self.subject.subject + '->' + str(self.topic)
 
 class SubTopic(models.Model):
 	state = models.ForeignKey(State)

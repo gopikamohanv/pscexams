@@ -1,0 +1,23 @@
+{% include "center_header.html" %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-4">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Hi, {{user_profile.user.username}}</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <a href="/center/add/user/">
+                        <h5><strong>Add Users</strong></h5>
+                    </a>
+                    <hr> 
+                    <a href="#">
+                        <h5><strong>Sub Centers</strong></h5>
+                    </a>   
+                    <hr>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+{% include "center_footer.html" %}

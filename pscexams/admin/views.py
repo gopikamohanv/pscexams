@@ -19,8 +19,11 @@ from pscexams.user_type import UserType
 from pscexams.exam_type import ExamType
 from pscexams.admin.models import *
 from pscexams.student.models import UserProfile
+from pscexams.currentaffairs.models import *
+
 from pscexams.forum.models import Question, QuestionView, Tag, QuestionTag, Answer, Comment, QuestionVotes, AnswerVotes, Ad
 from pscexams.sms import *
+
 
 def admin_check(user):
 	try:
@@ -494,6 +497,42 @@ def admin_upload_previousyearquestion(request):
 
 		return render_to_response('previousyear_questionpaper.html',response)
 
+
+@login_required
+@user_passes_test(admin_check)
+def add_currentaffairs_topic(request):
+	response = {}
+	languages = CurrentAffair_Language.objects.all()
+	response.update({'languages':languages})
+
+	if request.method == 'GET':
+		return render_to_response('add_currentaffairs_topic.html', response)
+
+	if request.method == 'POST':
+		form_error = False
+		if 'language' in request.POST and request.POST['language']:
+			language = request.POST['language']
+		else:
+			form_error = True
+
+		if 'topic' in request.POST and request.POST['topic']:
+			topic = request.POST['topic']
+		else:
+			form_error = True
+		
+		if form_error:
+			response.update({'form_error':form_error})
+			return render_to_response('add_currentaffairs_topic.html', response) 
+
+		currentaffairs_topic = CurrentAffairs_topic(language = get_object_or_404(CurrentAffair_Language,id=language), topic = topic)
+		try:
+			currentaffairs_topic.save()
+			response.update({'saved':True})
+		except:
+			response.update({'save_error':True})
+
+		return render_to_response('add_currentaffairs_topic.html', response)
+
 @login_required
 @user_passes_test(admin_check)
 def questions(request):
@@ -647,3 +686,98 @@ def user_details(request, pk):
 	response.update({'usertypes':UserType.types})
 	return render_to_response('user_registration_details.html', response)
 
+
+# Details of Center
+#/siteadmin/add/center/
+@login_required
+@user_passes_test(admin_check)
+def add_center(request):
+	response = {}
+	states = State.objects.all()
+	response.update({'states':states})
+
+	if request.method == 'GET':
+		return render_to_response('add_center.html', response)
+
+	if request.method == 'POST':
+		form_error = False
+		if 'name' in request.POST and request.POST['name']:
+			name=request.POST['name']
+		else:
+			form_error = True
+        
+        if 'email' in request.POST and request.POST['email']:
+            email=request.POST['email']
+        else:
+        	form_error = True
+        
+        if 'username' in request.POST and request.POST['username']:
+            username=request.POST['username']
+        else:
+        	form_error = True   
+            
+        if 'password' in request.POST and request.POST['password']:
+            password=request.POST['password']
+        else:
+        	form_error = True
+
+        if 'address' in request.POST and request.POST['address']:
+            address=request.POST['address']
+        else:
+        	form_error = True
+
+        if 'state' in request.POST and request.POST['state']:
+            state=request.POST['state']
+        else:
+        	form_error = True        
+
+        if 'mobile' in request.POST and request.POST['mobile']:
+            mobile_no=request.POST['mobile']
+        else:
+        	form_error = True
+
+        if form_error:
+			response.update({'form_error':True})
+			return render_to_response('add_center.html', response)  
+            
+        try:
+        	user_obj=User.objects.get(username=username)
+        	response.update({'user_exists':True})
+        	return render_to_response('add_center.html',response)
+        except:
+        	user_obj=User(username=username, first_name=name, email=email)
+        	user_obj.set_password(password)
+        	user_obj.save();
+        	userprofiles_obj=UserProfile(user=User.objects.get(id=user_obj.id), user_type = 6, address=address, state=State.objects.get(id=state), mobile_no=mobile_no)      
+        	try:
+        		userprofiles_obj.save();
+        		response.update({'saved':True})
+        	except:
+        		response.update({'save_error':True})
+        		return render_to_response('add_center.html',response)
+        
+        return render_to_response('add_center.html',response)
+
+
+@login_required
+@user_passes_test(admin_check)
+def list_centers(request):
+	response = {}
+	centers = UserProfile.objects.filter(user_type=6)
+	response.update({'centers':centers})
+	return render_to_response('list_centers.html', response)
+
+
+@login_required
+@user_passes_test(admin_check)
+def center_added_students_list(request):
+	response = {}
+
+	if 'center_id' in request.GET and request.GET['center_id']:
+		center_id = request.GET['center_id']
+	else:
+		form_error = True
+	student_lists = Center.objects.get(center=center_id)
+	response.update({'student_lists':student_lists})
+
+	return render_to_response('center_added_students_list.html', response)

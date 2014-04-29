@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.conf import settings
 admin.autodiscover()
 import forum.views
+import center.views
 
 urlpatterns = patterns('',
     # Example:
@@ -61,6 +62,7 @@ urlpatterns = patterns('',
     (r'^free/tricks/detail/(?P<pk>\w+)/$',free_tricks_detail),
     (r'^free/learn/(?P<pk>\w+)/$',free_learn),
     (r'^subtopic/content/$',sub_topic_content),
+    (r'^language/ajax/topic/$',language_ajax_topic),
 
 
     # Student Urls
@@ -69,6 +71,8 @@ urlpatterns = patterns('',
     url(r'^siteadmin/', include('pscexams.admin.urls')),
     url(r'^tutor/', include('pscexams.tutor.urls')),
     url(r'^student/', include('pscexams.modelexam.urls')),
+    url(r'^center/', include('pscexams.center.urls')),
+    
 
     #forum Urls
     url(r'^user/$', forum.views.user, name='user'),

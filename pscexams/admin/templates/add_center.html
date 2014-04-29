@@ -1,0 +1,107 @@
+{% include "admin_header.html" %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+<div class="row">
+	<div class="col-lg-8">
+	  <div class="well">
+	    <form class="bs-example form-horizontal" action="/siteadmin/add/center/" method="POST">
+	      <fieldset>
+	        <legend>Add Center</legend>
+
+	        {% if saved %}
+		        <div class="alert alert-dismissable alert-success">
+		          <button type="button" class="close" data-dismiss="alert">&times;</button>
+		          <strong>Center added successfully.</strong> 
+		        </div>
+      		{% endif %}
+
+      		{% if save_error %}
+		        <div class="alert alert-dismissable alert-danger">
+		          <button type="button" class="close" data-dismiss="alert">&times;</button>
+		          <strong>Error in saving data.</strong> 
+		        </div>
+		    {% endif %}
+
+		    {% if user_exists %}
+		        <div class="alert alert-dismissable alert-danger">
+		          <button type="button" class="close" data-dismiss="alert">&times;</button>
+		          <strong>Username already exists.</strong> 
+		        </div>
+		    {% endif %}
+
+			{% if form_error %}
+				<div class="alert alert-dismissable alert-danger">
+				  <button type="button" class="close" data-dismiss="alert">&times;</button>
+				  <strong>You must fill all fields. Image URL is not mandatory.</strong> 
+				</div>
+			{% endif %}
+
+
+         	<div class="form-group">
+            	<label for="center_name" class="col-lg-2 control-label">Name</label>
+	            <div class="col-lg-9">
+	            	<input type="text" class="form-control" name="name" id="name">
+	          	</div>
+          	</div>
+
+ 			<div class="form-group">
+            	<label for="center_email" class="col-lg-2 control-label">Email id</label>
+	            <div class="col-lg-9">
+	            	<input type="text" class="form-control" name="email" id="email">
+	          	</div>
+          	</div>
+
+          	<div class="form-group">
+            	<label for="center_username" class="col-lg-2 control-label">Username</label>
+	            <div class="col-lg-9">
+	            	<input type="text" class="form-control" name="username" id="username">
+	          	</div>
+          	</div>
+
+          	<div class="form-group">
+            	<label for="center_password" class="col-lg-2 control-label">Password</label>
+	            <div class="col-lg-9">
+	            	<input type="password" class="form-control" name="password" id="password">
+	          	</div>
+          	</div>
+
+          	<div class="form-group">
+            	<label for="center_address" class="col-lg-2 control-label">Address</label>
+	            <div class="col-lg-9">
+	            	<textarea class="form-control" name="address" id="address"></textarea>
+	          	</div>
+          	</div>
+
+          	<div class="form-group">
+            	<label for="state" class="col-lg-2 control-label">State</label>
+	            <div class="col-lg-9">
+	              <select name="state" id="state" class="form-control">
+	              	<option value="0">Select State</option>
+	                {% for state in states %}
+	                  <option value="{{state.pk}}">{{state.state}}</option>
+	                {% endfor %}
+	              </select>
+	            </div>
+	        </div>
+
+          	<div class="form-group">
+            	<label for="center_mobile" class="col-lg-2 control-label">Mobile</label>
+	            <div class="col-lg-9">
+	            	<input type="text" class="form-control" name="mobile" id="mobile">
+	          	</div>
+          	</div>
+
+          <br>
+        	<div class="form-group">
+	        	<div class="col-lg-10 col-lg-offset-2">
+	            <button type="submit" class="btn btn-primary">Submit</button> 
+	        	</div>
+      		</div>
+
+        </fieldset>
+	    </form>
+	  </div>
+	</div>
+</div>
+
+{% include "admin_footer.html" %}

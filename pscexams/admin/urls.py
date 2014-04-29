@@ -26,5 +26,7 @@ urlpatterns = patterns('',
 		(r'^send_message/$', pscexams.admin.views.send_message),
 		(r'^user/details/(?P<pk>\w+)/$', pscexams.admin.views.user_details),
 		(r'^add/center/$', pscexams.admin.views.add_center),
+		(r'^list/center/$', pscexams.admin.views.list_centers),
+		(r'^center/added/students/list/$', pscexams.admin.views.center_added_students_list),
 
 )

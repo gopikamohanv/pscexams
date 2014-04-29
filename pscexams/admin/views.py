@@ -750,3 +750,26 @@ def add_center(request):
         
         return render_to_response('add_center.html',response)
 
+
+@login_required
+@user_passes_test(admin_check)
+def list_centers(request):
+	response = {}
+	centers = UserProfile.objects.filter(user_type=6)
+	response.update({'centers':centers})
+	return render_to_response('list_centers.html', response)
+
+
+@login_required
+@user_passes_test(admin_check)
+def center_added_students_list(request):
+	response = {}
+
+	if 'center_id' in request.GET and request.GET['center_id']:
+		center_id = request.GET['center_id']
+	else:
+		form_error = True
+	student_lists = Center.objects.get(center=center_id)
+	response.update({'student_lists':student_lists})
+
+	return render_to_response('center_added_students_list.html', response)

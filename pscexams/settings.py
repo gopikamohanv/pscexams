@@ -43,7 +43,10 @@ INSTALLED_APPS = (
     'pscexams.tutor',
     'pscexams.publisher',
     'pscexams.modelexam',
+    'pscexams.currentaffairs',
     'pscexams.forum',
+    'pscexams.center',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,7 +74,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pscexams',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root123',
     }
 }
 

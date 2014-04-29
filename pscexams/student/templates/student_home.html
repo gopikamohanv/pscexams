@@ -15,7 +15,9 @@
 
 {% block right_content %}
 	<div class="col-md-12">
-	  <h4><img src="/static/images/new-icon.png"><strong class="text-info"> Whats New?</strong></h4 >
+		<!-- <h4><img src="#"><strong class="text-info">Current Affairs</strong></h4 >
+			<li><a href="#"></a></li>-->
+	  	<h4><img src="/static/images/new-icon.png"><strong class="text-info"> Whats New?</strong></h4 >
 	  	{% autoescape off %}
 	 	{% for question in  oneword %}
 	 	<a href="/student/question/new/{{question.sub_topic.pk}}/?id={{question.pk}}">{{question.question}}</a>

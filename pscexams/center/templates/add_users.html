@@ -1,0 +1,189 @@
+
+{% include 'center_header.html' %}
+<script type='text/javascript'> 
+  function validate()
+    {
+      $("#name_message").html("");
+      $("#username_message").html("");
+      $("#password_message").html("");
+      $("#conpassword_message").html("");
+      $("#email_message").html("");
+      $("#mobile_message").html("");
+      $("#state_message").html("");
+      $("#warn_message").html("");
+      if( document.form.name.value == '' && document.form.username.value == '' &&  document.form.password.value == ''&&document.form.password.value == ''&& document.form.email.value == '' ){
+          $("#warn_message").css('color','red');
+          $("#warn_message").html("Must fill required feilds");
+          return false;    
+      }else{
+
+        if( document.form.name.value == '' )
+        {
+          $("#name_message").css('color','red');
+          $("#name_message").html("Name is required");
+          return false;
+        }
+        
+        if( document.form.username.value == '' )
+        {
+          $("#username_message").css('color','red');
+          $("#username_message").html("Username is required");
+          return false;
+        }
+        var password=document.form.password.value ;
+        if( password == ''|| password.length < 8)
+        {
+          $("#password_message").css('color','red');
+          $("#password_message").html("Minimum 9 charaters needed");
+          return false;
+        }
+        var conpassword=document.form.conpassword.value;
+        if((conpassword == '') || (password!=conpassword))
+        {
+          $("#conpassword_message").css('color','red');
+          $("#conpassword_message").html("Confirm Password Not Matches");        
+          return false;          
+        }
+        if( document.form.email.value == '' )
+        {
+          $("#email_message").css('color','red');
+          $("#email_message").html("EmailID is required");
+          return false;
+        }
+        else{
+          var emailID = document.form.email.value;
+          atpos = emailID.indexOf("@");
+          dotpos = emailID.lastIndexOf(".");
+          if (atpos < 1 || ( dotpos - atpos < 2 )) 
+          {
+            $("#email_message").css('color','red');
+            $("#email_message").html("Enter correct EmailID");
+            return false;
+          }
+        }
+        if( document.form.mobile.value.length < 10 )
+        {          
+          $("#mobile_message").css('color','red');
+          $("#mobile_message").html("Enter the valid Mobile Number");
+          document.form.mobile.focus();
+          return false;
+        }
+        if( document.form.state.value == '' )
+        {
+          $("#state_message").css('color','red');
+          $("#state_message").html("Select State");
+          return false;
+        }
+
+      }     
+      return true;
+    }
+  </script>
+
+  <form method='POST' class="bs-example form-horizontal" name="form" id="regform" action="/center/add/user/" onSubmit="return validate()"> 
+    <div class="well">       
+      <h3><b>Add User</b></h3><br>
+      <div id ="warn_message"></div>
+      {%if saved%}
+       <div class="alert alert-dismissable alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button><strong>Successfully registered.... </strong></p>
+        </div>
+      {%endif%}
+      {%if reg_error%}
+       <div class="row">          
+          <div class="alert alert-dismissable alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+           <strong>This username already exist.</strong>
+          </div>
+        </div>
+      {%endif%}
+      <table>
+        <tr>
+          <td style="width:100px;">
+            <label>Name:</label>
+            <span class="form-required" > *</span>
+          </td>
+          <td>
+            <input type='textbox' name='name' class='name validatefield' placeholder='Name' style="width:200px;">
+            <p id="name_message"></p>
+          </td>
+            
+        </tr>            
+        <tr>
+          <td>
+            <label>Username:</label><span class="form-required" > *</span>
+          </td>       
+          <td>
+            <input type='textbox' name='username' class='username validatefield' placeholder='Username' style="width:200px;">
+            <p id="username_message"></p>
+          </td>
+          
+        </tr>
+        <tr>
+          <td>
+            <label>Password:</label><span class="form-required" > *</span>
+          </td>      
+          <td>
+            <input type="password" name="password" id="password" placeholder='Password' style="width:200px;">
+            <p id="password_message"></p>
+          </td>
+          
+        </tr>
+
+        <tr>
+          <td>
+            <label>Confirm Password:</label><span class="form-required" > *</span>
+          </td>
+          <td>
+            <input type='password' name='conpassword' id='conpassword' placeholder='Confirm Password' style="width:200px;">
+            <p id="conpassword_message"></p>
+          </td>
+          
+        </tr>
+        <tr>
+          <td>
+            <label>Email Id:</label><span class="form-required" > *</span>
+          </td>
+          <td>
+            <input type='textbox' name='email' class='email validatefield' placeholder='Email Id' style="width:200px;">
+            <p id="email_message"></p>
+          </td>
+          
+        </tr>              
+        <tr>
+          <td>
+            <label>Mobile No:</label><span class="form-required" > *</span>
+          </td>
+          <td>
+            <input type='textbox' name='mobile' class='mobile validatefield' placeholder='Mobile number' style="width:200px;">
+            <p id="mobile_message"></p>
+          </td>
+          
+        </tr>            
+        <tr>
+          <td>
+            <label>Exam:</label><span class="form-required" > *</span>
+          </td>
+          <td>
+            <select id="state"  class="form-control" name="state"  style="width:200px;">
+              <option>Select Exam</option>
+                {% for state in states %}
+                    <option value="{{state.id}}">{{state.state}}</option> 
+                {% endfor %}
+            </select>
+            <p id="state_message"></p>
+          </td>
+          
+        </tr>            
+        <tr>
+          <td>
+          </td>
+          <td>
+            <br><br><input type="submit" value="Register" id="btn"  class="btn btn-primary" />
+          </td>&nbsp;
+        </tr>
+      </table>
+    </div>
+  </form>
+<br> 
+ {% include 'center_footer.html' %}

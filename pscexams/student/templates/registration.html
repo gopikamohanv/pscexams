@@ -34,7 +34,7 @@
         if( password == ''|| password.length < 8)
         {
           $("#password_message").css('color','red');
-          $("#password_message").html("Password is required");
+          $("#password_message").html("Minimum 9 charaters needed");
           return false;
         }
         var conpassword=document.form.conpassword.value;
@@ -132,7 +132,7 @@
 
         <tr>
           <td>
-            <label>Confirm Passord:</label><span class="form-required" > *</span>
+            <label>Confirm Password:</label><span class="form-required" > *</span>
           </td>
           <td>
             <input type='password' name='conpassword' id='conpassword' placeholder='Confirm Password' style="width:200px;">

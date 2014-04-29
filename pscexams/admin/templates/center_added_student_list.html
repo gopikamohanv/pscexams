@@ -1,0 +1,33 @@
+{% include "admin_header.html" %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+<div class="row" style="margin-top:40px;">
+	<div class="col-lg-2">
+	</div>
+	<div class="col-lg-8">
+		<table class="table table-bordered">
+		  <thead>
+		  	<tr>
+		  		<th>Centers</th>
+		  	</tr>
+		    <tr>
+		      <th>Sl. No</th>
+		      <th>Center Name</th>
+		      <th>Student List</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% for center in centers %}
+			    <tr>
+			      <td>{{ forloop.counter }}</td>
+			      <td>{{center.user.first_name}}</td>
+			      <td><a href="/siteadmin/center/added/students/list/?center_id={{center.id}}">Click</a></td>
+			    </tr>
+			{% endfor%}
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+
+{% include "admin_footer.html" %}

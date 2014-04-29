@@ -4,5 +4,7 @@ class UserType:
 				'Tutor':'2',
 				'Publisher':'3',
 				'Student':'4',
-				'Free_User':'5',
+				'Paid_Active_User':'5',
+				'Paid_InActive_User':'6',
+				'Center':'6',
 }
